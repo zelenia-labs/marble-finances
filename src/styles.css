@@ -1,0 +1,326 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+@theme {
+  /* ── Core ── */
+  --color-canvas: #F5F3ED;        /* Soft Cream — page background */
+  --color-slate: #333333;         /* Near-black — primary text & dark surfaces */
+
+  /* ── Brand / Asset ── */
+  --color-labelYellow: #F3D05F;   /* Golden yellow — labels & highlights */
+  --color-labelYellowMuted: #FFF9E6; /* Very pale yellow — action-items bg */
+  --color-flowOrange: #F09E6D;    /* Warm orange — expense flow blocks */
+  --color-assetGreen: #82C37E;    /* Soft green — Investments, Stocks, Crypto */
+  --color-assetPurple: #C694F9;   /* Soft purple — Cash */
+  --color-assetBlue: #84ADF8;     /* Soft blue — Retirement */
+  --color-assetSand: #D4C3A3;     /* Warm sand */
+  --color-assetRose: #F0A8A8;     /* Soft rose */
+  --color-assetTeal: #82C4C3;     /* Soft teal */
+  --color-assetStone: #A0AAB2;    /* Cool gray */
+
+  /* ── Semantic / Functional ── */
+  --color-positive: #10B981;      /* Emerald 500 — gains */
+  --color-negative: #F43F5E;      /* Rose 500 — losses */
+  --color-accent: #3B82F6;        /* Blue 500 — active indicators & projections */
+  --color-actionIndicator: #D4A100; /* Dark amber — checkbox borders / checkmarks */
+
+  /* ── Borders ── */
+  --color-border-card: #F3F4F6;   /* Gray 100 — card borders (1px stroke) */
+  --color-border-interactive: #E5E7EB; /* Gray 200 — interactive element borders */
+  --color-border-timeline: #EFEFE8; /* Off-white — timeline sidebar right border */
+
+  /* ── Surfaces ── */
+  --color-surface-inset: #F9FAFB; /* Gray 50 — inset panel background */
+  --color-surface-timeline: #F6F5EF; /* Warm off-white — timeline sidebar background */
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+[contenteditable]:focus {
+    outline: none;
+    border-bottom: 2px solid var(--color-slate);
+    margin-bottom: -2px;
+}
+
+/* Static cursor — no blinking */
+input, textarea, [contenteditable] {
+    animation: none;
+}
+
+.interactive-element {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior: none;
+  background-color: var(--color-canvas);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: var(--color-slate);
+}
+
+#canvas-wrapper {
+  transform-origin: 0 0;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+#canvas-grid {
+  /* High-performance 2D grid rendering enabled */
+}
+
+/* Hide number input arrows */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* 🎉 Big Block Celebration Easter Egg */
+@keyframes celebrate-burst {
+  0%   { opacity: 0; transform: scale(0.5); }
+  20%  { opacity: 1; transform: scale(1.375); }
+  35%  { opacity: 1; transform: scale(1); }
+  50%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+.celebrate-burst {
+  animation: celebrate-burst 0.96s ease-out forwards;
+  display: inline-block;
+}
+
+/* 
+  Floating preview when dragging a subcategory.
+  We clear global styles here and let the internal template handle the card look.
+*/
+.cdk-drag-preview {
+  display: flex !important;
+  z-index: 1000 !important;
+  opacity: 1 !important;
+  pointer-events: none;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Minimalist Placeholder Line */
+.cdk-drag-placeholder {
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+.cdk-drag-placeholder > * {
+  visibility: hidden !important;
+}
+
+.cdk-drag-placeholder::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background-color: var(--color-assetBlue) !important;
+  border-radius: 4px !important;
+  transform: translateY(-50%) !important;
+  opacity: 0.8 !important;
+}
+
+/* Hide original element in the list while dragging */
+.cdk-drag-dragging:not(.cdk-drag-preview) {
+  opacity: 0 !important;
+}
+
+/* Force dots to be visible within the preview */
+.cdk-drag-preview div[class*="-left-7"] {
+  opacity: 0.8 !important;
+  left: 0 !important;
+  position: relative !important;
+  margin-right: 12px;
+}
+
+.cdk-drop-list-dragging .cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+[cdkDragHandle] {
+  cursor: move !important;
+}
+
+.cdk-drag-preview,
+.cdk-drag-dragging {
+  cursor: move !important;
+}
+
+/* ── Tooltips ── */
+[data-tooltip] {
+    position: relative;
+    isolation: isolate;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    translate: -50% -8px;
+    
+    padding: 8px 14px;
+    background: oklch(0.25 0.02 240 / 88%);
+    backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid oklch(1 0 0 / 10%);
+    border-radius: 14px;
+    
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    
+    box-shadow: 
+        0 10px 20px oklch(0 0 0 / 15%),
+        0 4px 6px oklch(0 0 0 / 10%);
+    
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1.4);
+    transition-property: opacity, translate;
+    z-index: 1000;
+}
+
+/* Tooltip Arrow */
+[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    translate: -50% -4px;
+    border: 5px solid transparent;
+    border-bottom-color: oklch(0.25 0.02 240 / 88%);
+    
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1.4);
+    transition-property: opacity, translate;
+    z-index: 1000;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:hover::before {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+/* Right-aligned tooltips (for buttons near right edge) */
+.tooltip-left[data-tooltip]::after {
+    left: auto;
+    right: 0;
+    translate: 0 -8px;
+}
+.tooltip-left[data-tooltip]::before {
+    left: auto;
+    right: 14px;
+    translate: 0 -4px;
+}
+.tooltip-left[data-tooltip]:hover::after,
+.tooltip-left[data-tooltip]:hover::before {
+    translate: 0 0;
+}
+
+
+/* ── Reveal Animations ── */
+@keyframes reveal-pulse {
+  0% { transform: scale(0.95); opacity: 0; box-shadow: 0 0 0 0 rgba(51, 51, 51, 0.2); }
+  50% { transform: scale(1.02); opacity: 1; box-shadow: 0 0 0 20px rgba(51, 51, 51, 0); }
+  100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(51, 51, 51, 0); }
+}
+
+.animate-reveal-pulse {
+  animation: reveal-pulse 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* ── Dismiss Button ── */
+/* Canonical close/dismiss button for modals and overlays.       */
+/* Usage: <button class="btn-dismiss" aria-label="Close">…</button> */
+
+.btn-dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: color-mix(in srgb, var(--color-slate) 8%, transparent);
+  backdrop-filter: blur(4px);
+  border-radius: 9999px;
+  color: var(--color-slate);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+}
+.btn-dismiss svg {
+  width: 16px;
+  height: 16px;
+}
+.interactive-element {
+  outline: none !important;
+}
+
+.interactive-element:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.05); /* Very subtle structural focus */
+}
+
+.btn-dismiss:hover {
+  background-color: var(--color-slate);
+  color: #ffffff;
+}
+.btn-dismiss:focus-visible {
+  outline: 2px solid var(--color-slate);
+  outline-offset: 2px;
+}

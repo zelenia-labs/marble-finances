@@ -1,0 +1,92 @@
+<div
+  class="bg-labelYellowMuted/60 backdrop-blur-sm rounded-[32px] border border-labelYellow/30 p-8 w-full max-w-sm mb-12 shadow-sm select-none">
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-2">
+      <span class="text-xl" aria-hidden="true">💡</span>
+      <h2 class="text-[14px] font-black uppercase text-slate/90 tracking-wide">Action Items</h2>
+    </div>
+    <button (click)="addAction()"
+      class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element"
+      aria-label="Add action item">+ Add</button>
+  </div>
+
+  <div class="space-y-4">
+    <!-- INCOMPLETE ITEMS -->
+    <div class="space-y-4">
+      @for (item of sortedActionItems().incomplete; track item.id) {
+      <div class="flex items-start gap-3 relative">
+        <button (click)="store.toggleActionItem(monthIndex(), item.id)"
+          [attr.aria-label]="'Status: ' + item.label"
+          class="-m-2 p-2 shrink-0 flex items-center justify-center mt-0.5 interactive-element transition-all group/check">
+          <span
+            class="w-6 h-6 rounded border-2 border-actionIndicator flex items-center justify-center transition-all group-hover/check:border-labelYellow bg-white"></span>
+        </button>
+
+        <div class="flex-1 min-w-0 relative">
+          <span #todoLabel contenteditable="true"
+            class="text-[13px] font-bold text-slate/80 leading-relaxed outline-none border-b border-transparent focus:border-slate/30 block w-full interactive-element"
+            [innerText]="item.label" (click)="openMenu($event, item.id)" (blur)="updateLabel(item.id, $event)"
+            (keydown.enter)="$event.preventDefault(); blurElement($event)"
+            (mousedown)="$event.stopPropagation()"></span>
+
+          <!-- Delete menu anchored below the row, at click's X position -->
+          @if (menuItemId() === item.id) {
+          <div
+            class="absolute top-full mt-1 bg-white border border-gray-100 rounded-lg shadow-md px-1 py-0.5 z-999 interactive-element"
+            tabindex="-1"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+            [style.left.px]="menuOffsetX()">
+            <button (click)="deleteItem()"
+              class="text-xs font-bold text-red-500 hover:text-red-700 interactive-element px-2 py-1 whitespace-nowrap">Delete</button>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- DIVIDER -->
+    @if (sortedActionItems().completed.length > 0 && sortedActionItems().incomplete.length > 0) {
+    <div class="h-px bg-slate-200/50 my-4"></div>
+    }
+
+    <!-- COMPLETED ITEMS -->
+    <div class="space-y-4 opacity-60">
+      @for (item of sortedActionItems().completed; track item.id) {
+      <div class="flex items-start gap-3 relative">
+        <button (click)="store.toggleActionItem(monthIndex(), item.id)"
+          [attr.aria-label]="'Status: ' + item.label"
+          class="-m-2 p-2 shrink-0 flex items-center justify-center mt-0.5 interactive-element transition-all">
+          <span class="w-6 h-6 rounded border-2 border-actionIndicator bg-labelYellow/10 flex items-center justify-center">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-actionIndicator" stroke-width="4"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+        </button>
+
+        <div class="flex-1 min-w-0 relative">
+          <span contenteditable="true"
+            class="text-[13px] font-bold text-slate/50 leading-relaxed outline-none border-b border-transparent focus:border-slate/30 block w-full line-through interactive-element"
+            [innerText]="item.label" (click)="openMenu($event, item.id)" (blur)="updateLabel(item.id, $event)"
+            (keydown.enter)="$event.preventDefault(); blurElement($event)"
+            (mousedown)="$event.stopPropagation()"></span>
+
+          @if (menuItemId() === item.id) {
+          <div
+            class="absolute top-full mt-1 bg-white border border-gray-100 rounded-lg shadow-md px-1 py-0.5 z-999 interactive-element"
+            tabindex="-1"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+            [style.left.px]="menuOffsetX()">
+            <button (click)="deleteItem()"
+              class="text-xs font-bold text-red-500 hover:text-red-700 interactive-element px-2 py-1 whitespace-nowrap">Delete</button>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,193 @@
+<!-- src/app/components/asset-category/asset-category.component.html -->
+<div class="flex flex-col gap-1 items-start shrink-0 relative pr-24">
+
+   <!-- Sub Assets Stack: Constrained to subcategories only -->
+   <div class="flex flex-col w-full min-h-[100px] group/list" id="sublist-{{monthIndex()}}-{{index()}}" cdkDropList
+      [cdkDropListData]="index()" [cdkDropListConnectedTo]="connectedLists()" (cdkDropListDropped)="onDrop($event)">
+
+      <!-- Skeleton for EMPTY columns - Only visible when dragging -->
+      <div
+         class="w-full h-32 bg-slate-200/50 border-2 border-dashed border-slate-300 rounded-3xl flex items-center justify-center pointer-events-none mb-10 transition-all duration-300 opacity-0 scale-95 origin-center"
+         [class.opacity-100]="asset().assets.length === 0" [class.scale-100]="asset().assets.length === 0"
+         [class.hidden]="asset().assets.length > 0">
+         <div class="flex flex-col items-center gap-2 opacity-60">
+             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate/50" stroke-width="2.5">
+                <path d="M12 5v14M5 12h14" />
+             </svg>
+             <span class="text-[10px] font-black uppercase tracking-widest text-slate/50">Drop Assets Here</span>
+         </div>
+      </div>
+
+      @for (sub of asset().assets; track sub.id; let subIndex = $index) {
+      <div class="asset-block w-full pb-12 relative" cdkDrag [cdkDragData]="subIndex"
+         [cdkDragPreviewContainer]="'parent'">
+
+         <!-- High-Fidelity Drag Preview: Manually synced with current canvas scale -->
+         <div *cdkDragPreview class="pointer-events-none overflow-visible">
+            <!-- Mirrored card that lifts exactly from the source position -->
+            <div
+               class="bg-white p-6 rounded-2xl shadow-2xl flex flex-row items-end gap-6 border border-gray-100/50 w-fit min-w-[530px] whitespace-nowrap overflow-visible"
+               [style.transform-origin]="'top left'" [style.transform]="currentScaleTransform()">
+
+               <!-- Mirror the dots into the preview locally for visual parity -->
+               <div class="flex gap-[3px] py-3 px-1.5 opacity-60">
+                  <div class="flex flex-col gap-[3px]">
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  </div>
+                  <div class="flex flex-col gap-[3px]">
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                     <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  </div>
+               </div>
+
+               <!-- Spine -->
+               <div class="flex flex-col items-end w-48 shrink-0">
+                  <span class="text-3xl font-black text-slate leading-none tracking-tighter whitespace-nowrap">{{
+                     formatUSD(sub.val) }}</span>
+                  <div class="bg-labelYellow/50 px-3 py-1 mt-1.5 rounded-sm">
+                     <span class="text-xs font-bold tracking-wide text-slate whitespace-nowrap">{{ sub.label }}</span>
+                  </div>
+               </div>
+               <!-- Bento Blocks -->
+               <app-marble-stack [val]="sub.val" [color]="asset().color"></app-marble-stack>
+            </div>
+         </div>
+
+         <!-- Inner layout container for the actual asset to restrict handle offset strictly to the asset body -->
+         <div class="flex flex-col w-full group relative inner-asset-content">
+            <!-- Drag handle dots: explicit target for dragging - Expanded hit area -->
+            <div
+               class="absolute -left-12 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-60 transition-opacity duration-150 flex gap-[3px] p-8 -ml-4"
+               cdkDragHandle>
+               <div class="flex flex-col gap-[3px]">
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+               </div>
+               <div class="flex flex-col gap-[3px]">
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+                  <span class="w-[3px] h-[3px] rounded-full bg-gray-400"></span>
+               </div>
+            </div>
+
+            <!-- Asset Category Info -->
+            <div class="flex flex-row items-end gap-6 w-full">
+
+               <!-- Flush Right Spine -->
+               <div class="flex flex-col items-end w-48 shrink-0 mb-0">
+                  <!-- Interactive Value Span -->
+                  <span contenteditable="true" [innerText]="formatUSD(sub.val)"
+                     (blur)="updateAmountFromInput($event, subIndex, sub.val)" (keydown.enter)="onEnterDown($event)"
+                     (focus)="selectAll($event)" (mousedown)="$event.stopPropagation()"
+                     class="text-3xl font-black text-slate leading-none tracking-tighter outline-none border-b-2 border-transparent focus:border-gray-200 interactive-element">
+                  </span>
+
+                  <!-- Interactive Label Area -->
+                  <div class="bg-labelYellow/50 px-3 py-1 mt-1.5 rounded-sm shadow-sm interactive-element relative"
+                     tabindex="0" role="button" aria-label="Toggle sub-category menu"
+                     (click)="toggleMenu($event, 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex)"
+                     (keydown.enter)="toggleMenu($event, 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex)">
+
+                     <span contenteditable="true" [innerText]="sub.label"
+                        (blur)="updateTitle($event, subIndex, sub.label)" (keydown.enter)="onEnterDown($event)"
+                        (focus)="selectAll($event)" (dblclick)="onDblClick($event)"
+                        (mousedown)="$event.stopPropagation()"
+                        class="text-xs font-bold tracking-wide text-slate outline-none select-none inline-block min-w-[20px]">
+                     </span>
+
+                     <!-- Menu Modal -->
+                     <div
+                        class="absolute top-full mt-2 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex z-60 transition-all duration-200"
+                        tabindex="-1"
+                        [class.opacity-0]="store.activeMenuId() !== 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
+                        [class.pointer-events-none]="store.activeMenuId() !== 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
+                        [class.translate-y-1]="store.activeMenuId() !== 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
+                        [class.opacity-100]="store.activeMenuId() === 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
+                        [class.translate-y-0]="store.activeMenuId() === 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
+                        (click)="$event.stopPropagation()"
+                        (keydown)="$event.stopPropagation()">
+                        @if (sub.note === null || sub.note === undefined) {
+                        <button (click)="addNote(subIndex)"
+                           class="text-xs font-bold text-gray-500 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
+                           Note</button>
+                        <div class="w-px bg-gray-200 my-1"></div>
+                        }
+                        <button (click)="promptDeleteSub(subIndex)"
+                           class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Bento Stack -->
+               <app-marble-stack [val]="sub.val" [color]="asset().color"
+                  (amountChanged)="updateMarbleAmount(subIndex, $event)">
+               </app-marble-stack>
+            </div>
+
+            <!-- Note Field -->
+            @if (sub.note !== null && sub.note !== undefined) {
+            <div class="flex flex-row gap-6 mt-2 w-full">
+               <div class="w-48 shrink-0"></div>
+               <div class="w-full max-w-[316px]">
+                  <input type="text" [value]="sub.note" [id]="'note_' + monthIndex() + '_' + index() + '_' + subIndex"
+                     placeholder="Add optional note..." (mousedown)="$event.stopPropagation()"
+                     (blur)="updateNote($event, subIndex, sub.note)"
+                     (keydown.enter)="$event.preventDefault(); triggerBlur($event)"
+                     class="bg-transparent outline-none w-full text-[11px] font-medium text-gray-500 placeholder-gray-400 border-b border-transparent focus:border-gray-400 interactive-element transition-colors">
+               </div>
+            </div>
+            }
+
+         </div>
+      </div>
+      }
+   </div>
+
+   <!-- Footer Anchor (Total) -->
+   <div class="flex flex-row items-end gap-6 mt-8 pt-6 border-t-[3px] border-border-interactive w-full">
+      <div class="flex flex-col items-end w-48 shrink-0">
+         <span class="text-5xl font-black text-slate leading-none tracking-tighter">{{ formatUSD(grandTotal()) }}</span>
+         <div class="bg-labelYellow px-5 py-2 mb-0.5 mt-1 rounded-sm shadow-sm interactive-element relative"
+            tabindex="0" role="button" aria-label="Toggle category menu"
+            (click)="toggleMenu($event, 'menu_main_' + monthIndex() + '_' + index())"
+            (keydown.enter)="toggleMenu($event, 'menu_main_' + monthIndex() + '_' + index())">
+
+            <span contenteditable="true" [innerText]="asset().label" (blur)="updateTitle($event, null, asset().label)"
+               (keydown.enter)="onEnterDown($event)" (focus)="selectAll($event)" (dblclick)="onDblClick($event)"
+               (mousedown)="$event.stopPropagation()"
+               class="text-base font-bold tracking-wide text-slate outline-none select-none inline-block min-w-[20px]">
+            </span>
+
+            <div
+               class="absolute top-full mt-2 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex gap-2 z-60 transition-all duration-200"
+               tabindex="-1"
+               [class.opacity-0]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
+               [class.pointer-events-none]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
+               [class.translate-y-1]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
+               [class.opacity-100]="store.activeMenuId() === 'menu_main_' + monthIndex() + '_' + index()"
+               [class.translate-y-0]="store.activeMenuId() === 'menu_main_' + monthIndex() + '_' + index()"
+               (click)="$event.stopPropagation()"
+               (keydown)="$event.stopPropagation()">
+               <button (click)="addSubcategory()"
+                  class="text-xs font-bold text-gray-500 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
+                  Add</button>
+               <div class="w-px bg-gray-200 my-1"></div>
+               <button (click)="promptDeleteAsset()"
+                  class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

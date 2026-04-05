@@ -1,0 +1,82 @@
+<!-- Month Frame Container (The template for each month) -->
+<div class="bg-white rounded-[40px] shadow-sm border border-gray-100 flex p-16 h-full w-fit flex-1">
+
+    <!-- Left Column: Report Details -->
+    <div class="w-[340px] flex flex-col justify-between shrink-0 h-full">
+
+        <!-- Month and Year -->
+        <div class="flex-none">
+            <div class="flex items-center gap-4 mb-2">
+                <h1 class="text-[52px] font-black text-slate tracking-tighter outline-none interactive-element select-none leading-none"
+                    contenteditable="true" [innerText]="monthRecord().date"
+                    (blur)="updateOverview($event, 'date', monthRecord().date)"
+                    (keydown.enter)="$event.preventDefault(); blurElement($event)">
+                </h1>
+            </div>
+            <!-- Dynamic Components scoped to Month -->
+            <app-action-items [monthIndex]="monthIndex()"></app-action-items>
+        </div>
+
+        <div class="flex-none mt-12">
+            <app-monthly-cash-flow [monthIndex]="monthIndex()"></app-monthly-cash-flow>
+
+            <div class="mt-20 w-[240px]">
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-6">Marble Finances Summary
+                </p>
+                @defer (on idle) {
+                    <app-summary-panel [monthIndex]="monthIndex()"></app-summary-panel>
+                } @placeholder {
+                    <div class="h-20 bg-slate-50/50 rounded-2xl animate-pulse"></div>
+                }
+
+                <!-- Computations Section -->
+                <div class="mt-6 p-5 rounded-[24px] bg-slate-50 border border-gray-100 shadow-inner flex flex-col gap-3 group">
+                    <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Computations</p>
+                    
+                    <div class="flex justify-between items-center bg-white px-3 py-2 rounded-xl border border-gray-100 shadow-sm">
+                       <span class="text-[11px] text-gray-500 font-medium">Liquid Net Worth</span>
+                       <span class="text-xs font-black text-slate">${{(stats().liquidNetWorth * store.marbleMultiplier()) | number:'1.0-0'}}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center bg-white px-3 py-2 rounded-xl border border-gray-100 shadow-sm transition-all duration-300">
+                       <span class="text-[11px] text-gray-500 font-medium">Month to Month</span>
+                       <span class="text-[11px] font-black px-2.5 py-1 rounded-full" 
+                             [class]="stats().mtm >= 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'">
+                             {{stats().mtm >= 0 ? '+' : ''}}{{stats().mtm | number:'1.2-2'}}%
+                       </span>
+                    </div>
+ 
+                    <div class="flex justify-between items-center bg-white px-3 py-2 rounded-xl border border-gray-100 shadow-sm transition-all duration-300">
+                       <span class="text-[11px] text-gray-500 font-medium">Year to Date</span>
+                       <span class="text-[11px] font-black px-2.5 py-1 rounded-full"
+                             [class]="stats().ytd >= 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'">
+                             {{stats().ytd >= 0 ? '+' : ''}}{{stats().ytd | number:'1.2-2'}}%
+                       </span>
+                    </div>
+
+                    <div class="mt-2">
+                        <app-sparkline [cashPercent]="stats().cashPercent" [invPercent]="stats().investmentsPercent"></app-sparkline>
+                        <div class="flex justify-between mt-1.5 px-1">
+                            <span class="text-[9px] font-black text-violet-700 tracking-wider uppercase">Cash {{stats().cashPercent | number:'1.0-0'}}%</span>
+                            <span class="text-[9px] font-black text-emerald-800 tracking-wider uppercase">Inv {{stats().investmentsPercent | number:'1.0-0'}}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Content: The Asset Category Mountain -->
+    <div id="assetCategories-container" class="flex items-end gap-16 pl-16 transition-all duration-300" cdkDropList
+        cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)" cdkDropListGroup>
+        @for (asset of assetCategories(); track asset.id; let i = $index) {
+        <app-asset-category cdkDrag [cdkDragStartDelay]="200" [cdkDragPreviewContainer]="'parent'"
+            class="cursor-grab active:cursor-grabbing" [asset]="asset" [index]="i" [monthIndex]="monthIndex()">
+
+            <!-- Custom Placeholder for the Column -->
+            <div *cdkDragPlaceholder
+                class="bg-gray-50/30 border-2 border-dashed border-gray-100 rounded-[40px] w-64 h-[600px] mb-16"></div>
+        </app-asset-category>
+        }
+    </div>
+</div>

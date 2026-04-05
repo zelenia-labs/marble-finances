@@ -1,0 +1,96 @@
+@if (isOpen()) {
+  <div class="fixed inset-0 z-200 bg-canvas/95 backdrop-blur-md flex flex-col items-center">
+    <!-- Header -->
+    <div class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-10 pointer-events-none">
+      <h2 class="text-slate text-3xl font-black tracking-tighter">Portfolio Analysis</h2>
+      <button (click)="close()" class="btn-dismiss interactive-element pointer-events-auto" aria-label="Close Portfolio Analysis">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
+      </button>
+    </div>
+
+    <!-- Snap Carousel -->
+    <div #carouselContainer class="w-full h-full flex overflow-x-auto snap-x snap-mandatory scroll-smooth hide-scrollbar transition-transform" (scroll)="onScroll($event)">
+      
+      <!-- Slide 1: Composition Area Chart -->
+      <div class="w-screen h-screen shrink-0 snap-start flex flex-col items-center justify-center p-20 pt-32 relative">
+        <h3 class="text-slate/40 uppercase tracking-[0.3em] font-black text-sm mb-6">Portfolio Composition</h3>
+        <div class="w-full max-w-6xl h-[65vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 flex flex-col">
+          @if (isReady()) {
+             <div class="flex-1 relative min-h-0">
+               <canvas baseChart [data]="compositionData()" [type]="'line'" [options]="stackedOptions"></canvas>
+             </div>
+          }
+        </div>
+      </div>
+
+      <!-- Slide 2: Value & Projections -->
+      <div class="w-screen h-screen shrink-0 snap-start flex flex-col items-center justify-center p-20 pt-32 relative">
+         <div class="flex flex-col items-center gap-4 mb-6">
+            <h3 class="text-slate/40 uppercase tracking-[0.3em] font-black text-sm">Total Value & Projections</h3>
+            <div class="flex gap-4 text-slate text-sm font-bold items-center bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-200">
+              <div class="flex items-center gap-2">
+                <span class="text-xs uppercase tracking-widest text-gray-400">Low</span>
+                <input id="lowerBoundInput" type="number" [value]="lowerBound()" (input)="updateInput('lowerBound', $event)" class="bg-gray-50 border border-gray-200 rounded-lg text-center w-14 py-1 hover:border-gray-300 focus:outline-none focus:border-emerald-400 transition-colors">
+                <span class="text-gray-400">%</span>
+              </div>
+              <div class="w-px h-6 bg-gray-200 mx-1"></div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs uppercase tracking-widest text-gray-400">High</span>
+                <input id="upperBoundInput" type="number" [value]="upperBound()" (input)="updateInput('upperBound', $event)" class="bg-gray-50 border border-gray-200 rounded-lg text-center w-14 py-1 hover:border-gray-300 focus:outline-none focus:border-emerald-400 transition-colors">
+                <span class="text-gray-400">%</span>
+              </div>
+              <div class="w-px h-6 bg-gray-200 mx-1"></div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs uppercase tracking-widest text-gray-400">Months</span>
+                <input id="futureMonthsInput" type="number" [value]="futureMonths()" (input)="updateInput('futureMonths', $event)" class="bg-gray-50 border border-gray-200 rounded-lg text-center w-14 py-1 hover:border-gray-300 focus:outline-none focus:border-emerald-400 transition-colors">
+              </div>
+            </div>
+        </div>
+        <div class="w-full max-w-6xl h-[60vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 flex flex-col">
+          @if (isReady()) {
+             <div class="flex-1 relative min-h-0">
+               <canvas baseChart [data]="projectionDataConfig()" [type]="'line'" [options]="lineOptions"></canvas>
+             </div>
+          }
+        </div>
+      </div>
+    </div>
+    
+    <!-- Navigation Indicators (Dots only) -->
+    <div class="fixed bottom-12 flex gap-4 z-10 pointer-events-auto" role="tablist">
+      <button 
+        (click)="scrollTo(0)" 
+        class="w-2.5 h-2.5 rounded-full transition-all duration-300 interactive-element" 
+        [class.bg-slate-800]="activeIndex() === 0" 
+        [class.bg-slate-200]="activeIndex() !== 0" 
+        [class.scale-125]="activeIndex() === 0"
+        role="tab"
+        [attr.aria-selected]="activeIndex() === 0"
+        aria-label="View Portfolio Composition"></button>
+      <button 
+        (click)="scrollTo(1)" 
+        class="w-2.5 h-2.5 rounded-full transition-all duration-300 interactive-element" 
+        [class.bg-slate-800]="activeIndex() === 1" 
+        [class.bg-slate-200]="activeIndex() !== 1" 
+        [class.scale-125]="activeIndex() === 1"
+        role="tab"
+        [attr.aria-selected]="activeIndex() === 1"
+        aria-label="View Projections"></button>
+    </div>
+
+    <!-- Side Navigation Arrows -->
+    <button 
+      (click)="prev()" 
+      class="fixed left-8 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/60 backdrop-blur-md border border-white/40 flex items-center justify-center text-slate shadow-xl hover:bg-white hover:scale-110 active:scale-95 transition-all z-20 disabled:opacity-0 disabled:pointer-events-none interactive-element pointer-events-auto"
+      [disabled]="activeIndex() === 0">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+
+    <button 
+      (click)="next()" 
+      class="fixed right-8 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/60 backdrop-blur-md border border-white/40 flex items-center justify-center text-slate shadow-xl hover:bg-white hover:scale-110 active:scale-95 transition-all z-20 disabled:opacity-0 disabled:pointer-events-none interactive-element pointer-events-auto"
+      [disabled]="activeIndex() === 1">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"></path></svg>
+    </button>
+  </div>
+}

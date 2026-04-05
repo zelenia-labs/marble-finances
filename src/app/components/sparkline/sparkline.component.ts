@@ -1,0 +1,25 @@
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
+@Component({
+  selector: 'app-sparkline',
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div class="flex h-1.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10 mt-2" 
+         title="Cash: {{ cashPercent() | number:'1.0-0' }}% | Investments: {{ invPercent() | number:'1.0-0' }}%">
+      <div 
+        class="bg-assetPurple transition-all duration-300 h-full" 
+        [style.width.%]="cashPercent()">
+      </div>
+      <div 
+        class="bg-assetGreen transition-all duration-300 h-full" 
+        [style.width.%]="invPercent()">
+      </div>
+    </div>
+  `
+})
+export class SparklineComponent {
+  cashPercent = input.required<number>();
+  invPercent = input.required<number>();
+}

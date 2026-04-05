@@ -1,0 +1,111 @@
+<!-- src/app/components/marble-stack/marble-stack.component.html -->
+<div class="flex flex-col gap-1 items-start marble-mount">
+   
+   <!-- The Remainder Marble Box -->
+   @if (showMarbleBox() || showGrid()) {
+     <div class="flex flex-row flex-wrap-reverse gap-1 content-start" [class.w-[316px]]="stackWidth() === 'wide'" [class.w-[156px]]="stackWidth() === 'narrow'">
+        
+        <!-- Big Blocks (25s) -->
+        @if (!simple()) {
+          @for (b of bigMarbles(); track $index) {
+              <div
+                 class="w-[156px] h-[156px] rounded-[4px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
+                 [class]="colorPropsFull().cls"
+                 [style]="colorPropsFull().stl"
+                 role="button"
+                 tabindex="0"
+                 [attr.aria-label]="'Add 25 marbles'"
+                 (mousedown)="$event.stopPropagation()"
+                 (click)="onBlockClick(currentAccounted() + ($index + 1) * 25 - 1)"
+                 (keydown.enter)="onBlockClick(currentAccounted() + ($index + 1) * 25 - 1)"
+                 (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + ($index + 1) * 25))"
+                 (mouseleave)="hideTooltip()">
+                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none"></div>
+                 
+                 <!-- 🎉 Easter Egg: celebrate when this big block is newly formed -->
+                 @if (celebratingBigBlockIdx() === $index) {
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                       <span class="celebrate-burst text-3xl select-none">🎉</span>
+                    </div>
+                 }
+              </div>
+          }
+        }
+
+        <!-- 5x5 Grid for remaining units -->
+        @if (simple() || showGrid()) {
+           <div class="grid grid-cols-5 gap-1 w-[156px] h-[156px] content-start shrink-0"
+                (mouseleave)="onGridLeave()">
+              @for (slot of gridSlots(); track slot.idx) {
+                 <div
+                    class="w-7 h-7 rounded-[2px] transition-all duration-100 relative overflow-hidden group interactive-element focus-visible:ring-1 focus-visible:ring-accent"
+                    [class]="getSlotClass(slot)"
+                    [style]="getSlotStyle(slot)"
+                    role="button"
+                    tabindex="0"
+                    [attr.aria-label]="'Set value to ' + (slot.baseValue + slot.idx + 1)"
+                    (mouseenter)="onSlotEnter($event, slot); showTooltip($event, formatUSD(getHoverValue($event, slot)))"
+                    (mousemove)="onSlotMouseMove($event, slot)"
+                    (mousedown)="$event.stopPropagation()"
+                    (click)="onSlotClick($event, slot)"
+                    (keydown.enter)="onSlotClick($event, slot)"
+                    (mouseleave)="onGridLeave(); hideTooltip()">
+                    
+                    @if (isHalf(slot)) {
+                        <div class="absolute inset-0 bg-gray-50/50"></div>
+                        <div class="absolute left-0 top-0 w-1/2 h-full"
+                           [class]="colorPropsFull().cls"
+                           [style]="colorPropsFull().stl"></div>
+                    }
+
+                    <!-- Hover-preview: 40% intermediate, 70% hovered -->
+                    @if (isGhostInHoverRange(slot)) {
+                       <div class="absolute top-0 left-0 h-full transition-all duration-75 pointer-events-none"
+                            [style]="slot.idx === hoveredSlotIdx() ? previewStyleStrong() : previewStyle()"
+                            [class.w-full]="slot.idx < hoveredSlotIdx()! || !hoveredIsHalf()"
+                            [class.w-1/2]="hoveredIsHalf() && slot.idx === hoveredSlotIdx()"></div>
+                    }
+
+                    <!-- Split darkening: filled/half slots only -->
+                    @if (!isGhost(slot)) {
+                       <div class="absolute inset-0 z-20 flex opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div class="w-1/2 h-full hover:bg-black/10 border-r border-white/10 z-10"></div>
+                          <div class="w-1/2 h-full group/right z-10">
+                             <div class="absolute inset-0 -left-full w-[200%] h-full bg-black/20 opacity-0 group-hover/right:opacity-100 pointer-events-none -z-10"></div>
+                          </div>
+                       </div>
+                    }
+                 </div>
+              }
+           </div>
+        }
+     </div>
+   }
+
+   <!-- Hundreds (Huge Blocks) -->
+   @if (!simple()) {
+     @for (h of hugeMarbles(); track $index) {
+        <div
+           class="w-[316px] h-[316px] rounded-[6px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
+           [class]="colorPropsFull().cls"
+           [style]="colorPropsFull().stl"
+           role="button"
+           tabindex="0"
+           [attr.aria-label]="'Add 100 marbles'"
+           (mousedown)="$event.stopPropagation()"
+           (click)="onBlockClick(100 * ($index + 1) - 1)"
+           (keydown.enter)="onBlockClick(100 * ($index + 1) - 1)"
+           (mouseenter)="showTooltip($event, formatUSD(100 * (hundredsCount() - $index)))"
+           (mouseleave)="hideTooltip()">
+           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none"></div>
+  
+           <!-- 💯 Easter Egg: celebrate when this huge block is newly formed -->
+           @if (celebratingHugeBlockIdx() === $index) {
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                 <span class="celebrate-burst text-5xl select-none">💯</span>
+              </div>
+           }
+        </div>
+     }
+   }
+</div>
