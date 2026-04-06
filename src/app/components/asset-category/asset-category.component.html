@@ -159,7 +159,7 @@
    <div class="flex flex-row items-end gap-6 mt-8 pt-6 border-t-[3px] border-border-interactive w-full">
       <div class="flex flex-col items-end w-48 shrink-0">
          <span class="text-5xl font-black text-slate leading-none tracking-tighter">{{ formatUSD(grandTotal()) }}</span>
-         <div class="bg-label-yellow px-5 py-2 mb-0.5 mt-1 rounded-sm shadow-sm interactive-element relative"
+         <div class="bg-label-yellow px-5 py-2 mb-0.5 mt-2 rounded-sm shadow-sm interactive-element relative"
             tabindex="0" role="button" aria-label="Toggle category menu"
             (click)="toggleMenu($event, 'menu_main_' + monthIndex() + '_' + index())"
             (keydown.enter)="toggleMenu($event, 'menu_main_' + monthIndex() + '_' + index())">

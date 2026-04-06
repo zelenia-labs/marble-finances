@@ -42,7 +42,10 @@
             <li>
                 <button (click)="openAddModal($event)"
                     class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
-                    <span class="text-lg leading-none mt-[-2px]">+</span> Add Asset
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg>
+                    Add Asset
                 </button>
             </li>
             <li>
@@ -233,13 +236,13 @@
         (mousedown)="onMouseDown($event)">
 
         <div id="canvas-wrapper" #canvasWrapper
-            class="absolute top-0 left-0 flex flex-col gap-48 items-start p-32 pt-48 transition-opacity duration-300"
+            class="absolute top-0 left-0 flex flex-col gap-96 items-start p-64 pt-96 transition-opacity duration-300"
             [class.opacity-0]="!isCanvasReady()" [class.opacity-100]="isCanvasReady()"
             [class.transition-transform]="isAnimatingPan()" [class.duration-500]="isAnimatingPan()"
             [class.ease-out]="isAnimatingPan()" [style.transform]="canvasTransform()">
 
             <!-- Refactored Canvas: High-Performance CSS Grid Layout (Multi-Year Matrix) -->
-            <div id="canvas-grid" class="grid gap-x-48 gap-y-48 items-start auto-cols-min"
+            <div id="canvas-grid" class="grid gap-x-96 gap-y-96 items-start auto-cols-min"
                 [style.grid-template-columns]="'auto repeat(12, min-content)'"
                 [style.grid-template-rows]="'repeat(' + store.monthsByYear().length + ', auto)'">
 

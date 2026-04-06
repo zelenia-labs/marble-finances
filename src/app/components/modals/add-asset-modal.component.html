@@ -24,14 +24,14 @@
             {{ store.addModalType() === 'breakdown' ? 'Add Subcategory' : (store.addModalType().startsWith('flow') ?
             'Add Item' : 'Add Asset') }}
          </h3>
-         <label for="add-asset-name" class="text-[14px] font-bold text-gray-600 uppercase tracking-wider mb-2 block">Name</label>
+         <label for="add-asset-name" class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Name</label>
          <input #nameInput id="add-asset-name" type="text" [(ngModel)]="assetName"
-            class="w-full border-b-2 border-border-interactive focus:border-slate outline-none text-2xl font-bold text-slate pb-2 mb-6 transition-colors interactive-element"
+            class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pb-2 mb-6 transition-colors interactive-element"
             autocomplete="off">
  
-         <label for="add-asset-amount" class="text-[14px] font-bold text-gray-600 uppercase tracking-wider mb-2 block">Amount</label>
+         <label for="add-asset-amount" class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Amount</label>
          <input id="add-asset-amount" type="number" [(ngModel)]="assetAmount"
-            class="w-full border-b-2 border-border-interactive focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
+            class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
             autocomplete="off">
          <div class="mt-2 mb-8 min-h-[1.2em]">
             @if (assetAmount !== null && assetAmount !== undefined) {
@@ -40,7 +40,7 @@
          </div>
 
          @if (store.addModalType() === 'asset') {
-         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3">Block Color</p>
+         <p class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-3">Block Color</p>
 
          <!-- Palette View -->
          @if (store.addModalMode() === 'palette') {

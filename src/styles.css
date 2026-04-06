@@ -100,17 +100,28 @@ body {
 }
 
 /* Clean Underlined Inputs — System Level Styling */
-input {
-    border: none;
-    border-bottom: 2px solid var(--color-border-interactive);
-    background: transparent;
-    border-radius: 0;
-    outline: none;
-    box-shadow: none;
+input:not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable] {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom-width: 2px !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: var(--color-border-interactive) !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    appearance: none !important;
     transition: border-color 0.2s ease;
 }
-input:focus {
-    border-bottom-color: var(--color-slate);
+
+input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, [contenteditable]:focus {
+    border-bottom-color: var(--color-slate) !important;
+}
+
+/* For fields that should be completely invisible until focus (e.g. Action Items labels) */
+[contenteditable] {
+    border-bottom-color: transparent;
 }
 
 /* Specific class for inputs that should only show the line when focused (like notes) */

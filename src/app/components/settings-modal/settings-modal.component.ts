@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FinanceStore } from '../../store/finance.store';
 
 @Component({
@@ -16,19 +16,19 @@ import { FinanceStore } from '../../store/finance.store';
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
         </button>
 
-        <h2 class="text-2xl font-black text-slate mb-2 tracking-normal">Financial Scale</h2>
-        <p class="text-sm text-gray-500 mb-8 font-medium tracking-normal">How each weight of marble translates to currency</p>
+        <h2 class="text-2xl font-black text-slate mb-3 tracking-normal">Financial Scale</h2>
+        <p class="text-[16px] text-gray-500 mb-10 font-medium tracking-normal leading-relaxed">How each weight of marble translates to currency</p>
  
         <div class="space-y-6">
-            <!-- Setting: Marble Value Input -->
-            <div class="p-6 bg-slate-50 border border-slate-100 rounded-[28px] pb-8">
-                <label for="marbleValueInput" class="block text-[12px] font-black uppercase text-gray-500 tracking-normal mb-1">Marble Value</label>
+            <!-- Setting: Marble Value Input (Underlined Style) -->
+            <div class="mb-8">
+                <label for="marbleValueInput" class="block text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2">Marble Value</label>
                 <div class="relative flex items-center mb-0">
-                    <span class="absolute left-0 text-slate font-black">$</span>
-                    <input id="marbleValueInput" type="number" 
+                    <span class="absolute left-0 text-slate font-black text-2xl pb-2">$</span>
+                    <input #marbleInput id="marbleValueInput" type="number" 
                         [value]="getMarbleValue()" 
                         (input)="onMarbleInput($event)"
-                        class="w-full h-12 pl-6 pr-0 text-xl font-black text-slate text-right tracking-tight">
+                        class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pl-6 pb-2 transition-colors interactive-element">
                 </div>
             </div>
  
@@ -96,8 +96,18 @@ import { FinanceStore } from '../../store/finance.store';
     </div>
   `
 })
-export class SettingsModalComponent {
+export class SettingsModalComponent implements AfterViewInit {
   store = inject(FinanceStore);
+  
+  @ViewChild('marbleInput') marbleInput!: ElementRef<HTMLInputElement>;
+
+  ngAfterViewInit() {
+    // Small timeout to ensure the modal animation hasn't blocked the focus
+    setTimeout(() => {
+        this.marbleInput.nativeElement.focus();
+        this.marbleInput.nativeElement.select();
+    }, 150);
+  }
 
   close() {
     this.store.setSettingsOpen(false);

@@ -1,5 +1,5 @@
 <!-- Month Frame Container (The template for each month) -->
-<div class="bg-white rounded-[40px] shadow-md border border-gray-100 flex p-16 h-full w-fit">
+<div class="bg-white rounded-[40px] shadow-[0px_2px_6px_rgba(0,0,0,0.08)] border border-gray-100 flex p-32 h-full w-fit">
 
     <!-- Left Column: Report Details -->
     <div class="w-[340px] flex flex-col justify-start shrink-0 h-full">
@@ -18,7 +18,7 @@
         </div>
 
         <!-- Singular Sidebar Module: Monthly Flow + Monthly Metrics -->
-        <div class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] p-8 border border-blue-50/50 shadow-md flex flex-col h-fit">
+        <div class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] p-8 border border-blue-50/50 shadow-[0px_2px_6px_rgba(0,0,0,0.08)] flex flex-col h-fit">
             
             <!-- Monthly Flow Section -->
             <app-monthly-cash-flow [monthIndex]="monthIndex()"></app-monthly-cash-flow>
@@ -41,11 +41,10 @@
                                     <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">Expenses</h4>
                                 </div>
                                 <!-- Middle: The Visual Hero with 2px White Pivot Line -->
-                                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-1 relative bg-flow-orange/80">
-                                    <div class="bg-flow-blue/80 h-full relative" [style.width.%]="expenseSavingsRatio().savingsPct">
-                                        <!-- White Pivot Line (2px) -->
-                                        <div class="absolute right-0 top-0 w-[2px] h-full bg-white z-10"></div>
-                                    </div>
+                                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-2 relative">
+                                    <div class="bg-flow-blue/80 h-full shrink-0" [style.width.%]="expenseSavingsRatio().savingsPct"></div>
+                                    <div class="bg-white h-full w-1 shrink-0"></div>
+                                    <div class="bg-flow-orange/80 h-full flex-1"></div>
                                 </div>
                                 <!-- Bottom: Percentages (Flow Value Standard) -->
                                 <div class="flex justify-between w-full">
@@ -62,11 +61,10 @@
                                     <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">Investments</h4>
                                 </div>
                                 <!-- Middle: The Visual Hero with 2px White Pivot Line -->
-                                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-1 relative bg-emerald-600/80">
-                                    <div class="bg-violet-500/80 h-full relative" [style.width.%]="cashInvRatio().cashPct">
-                                        <!-- White Pivot Line (2px) -->
-                                        <div class="absolute right-0 top-0 w-[2px] h-full bg-white z-10"></div>
-                                    </div>
+                                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-2 relative">
+                                    <div class="bg-violet-500/80 h-full shrink-0" [style.width.%]="cashInvRatio().cashPct"></div>
+                                    <div class="bg-white h-full w-1 shrink-0"></div>
+                                    <div class="bg-emerald-600/80 h-full flex-1"></div>
                                 </div>
                                 <!-- Bottom: Percentages (Flow Value Standard) -->
                                 <div class="flex justify-between w-full">
@@ -94,7 +92,7 @@
     </div>
 
     <!-- Right Content: The Asset Category Mountain -->
-    <div id="assetCategories-container" class="flex items-end gap-16 pl-16 transition-all duration-300" cdkDropList
+    <div id="assetCategories-container" class="flex items-end gap-32 pl-32 transition-all duration-300" cdkDropList
         cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)" cdkDropListGroup>
         @for (asset of assetCategories(); track asset.id; let i = $index) {
         <app-asset-category cdkDrag [cdkDragStartDelay]="200" [cdkDragPreviewContainer]="'parent'"

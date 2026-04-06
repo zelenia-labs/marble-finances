@@ -10,23 +10,21 @@
      <div class="grid grid-cols-2">
        
        <!-- UNIT: YTD -->
-       <div class="flex flex-col items-start px-1">
-         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1">YTD</h4>
-         <span class="text-[13px] font-black text-[#314158] leading-none">{{ rows().startOfYear !== null ? fmt(rows().startOfYear!) : '—' }}</span>
-         <span class="text-[11px] font-bold mt-1" 
-               [class.text-emerald-700]="pcts().todayVsStartOfYear !== null && isPositive(pcts().todayVsStartOfYear!)" 
-               [class.text-rose-700]="pcts().todayVsStartOfYear !== null && !isPositive(pcts().todayVsStartOfYear!)">
+       <div class="flex flex-col items-start pr-1">
+         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1.5">YTD</h4>
+         <span class="text-[18px] font-black text-[#314158] leading-none mb-2.5">{{ rows().startOfYear !== null ? fmt(rows().startOfYear!) : '—' }}</span>
+         <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full inline-block" 
+               [class]="pcts().todayVsStartOfYear !== null && isPositive(pcts().todayVsStartOfYear!) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
            {{ pcts().todayVsStartOfYear !== null ? (pcts().todayVsStartOfYear! >= 0 ? '+' : '') + (pcts().todayVsStartOfYear! | number:'1.2-2') + '%' : '—' }}
          </span>
        </div>
 
        <!-- UNIT: Previous -->
        <div class="flex flex-col items-start px-1">
-         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1">Previous</h4>
-         <span class="text-[13px] font-black text-[#314158] leading-none">{{ rows().previous !== null ? fmt(rows().previous!) : '—' }}</span>
-         <span class="text-[11px] font-bold mt-1" 
-               [class.text-emerald-700]="pcts().previousVsStartOfYear !== null && isPositive(pcts().previousVsStartOfYear!)" 
-               [class.text-rose-700]="pcts().previousVsStartOfYear !== null && !isPositive(pcts().previousVsStartOfYear!)">
+         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1.5">Previous</h4>
+         <span class="text-[18px] font-black text-[#314158] leading-none mb-2.5">{{ rows().previous !== null ? fmt(rows().previous!) : '—' }}</span>
+         <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full inline-block" 
+               [class]="pcts().previousVsStartOfYear !== null && isPositive(pcts().previousVsStartOfYear!) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
            {{ pcts().previousVsStartOfYear !== null ? (pcts().previousVsStartOfYear! >= 0 ? '+' : '') + (pcts().previousVsStartOfYear! | number:'1.2-2') + '%' : '—' }}
          </span>
        </div>
@@ -40,30 +38,25 @@
      <div class="grid grid-cols-2">
        
        <!-- UNIT: Today -->
-       <div class="flex flex-col items-start px-1">
-         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1">Today</h4>
-         <span class="text-[13px] font-black text-[#314158] leading-none">{{ fmt(rows().today) }}</span>
-         <span class="text-[11px] font-bold mt-1" 
-               [class.text-emerald-700]="pcts().todayVsPrevious !== null && isPositive(pcts().todayVsPrevious!)" 
-               [class.text-rose-700]="pcts().todayVsPrevious !== null && !isPositive(pcts().todayVsPrevious!)">
+       <div class="flex flex-col items-start pr-1">
+         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1.5">Today</h4>
+         <span class="text-[18px] font-black text-[#314158] leading-none mb-2.5">{{ fmt(rows().today) }}</span>
+         <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full inline-block" 
+               [class]="pcts().todayVsPrevious !== null && isPositive(pcts().todayVsPrevious!) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
            {{ pcts().todayVsPrevious !== null ? (pcts().todayVsPrevious! >= 0 ? '+' : '') + (pcts().todayVsPrevious! | number:'1.2-2') + '%' : '—' }}
          </span>
        </div>
 
        <!-- UNIT: Liquid -->
        <div class="flex flex-col items-start px-1">
-         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1">LIQUID</h4>
-         <span class="text-[13px] font-black text-[#314158] leading-none">${{(liquidNetWorth() * store.marbleMultiplier()) | number:'1.0-0'}}</span>
-         <span class="text-[11px] font-bold mt-1" [class.text-emerald-700]="isPositive(mtm())" [class.text-rose-700]="!isPositive(mtm())">
+         <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1.5">LIQUID</h4>
+         <span class="text-[18px] font-black text-[#314158] leading-none mb-2.5">${{(liquidNetWorth() * store.marbleMultiplier()) | number:'1.0-0'}}</span>
+         <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full inline-block" [class]="isPositive(mtm()) ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
            {{mtm() >= 0 ? '+' : ''}}{{mtm() | number:'1.2-2'}}%
          </span>
        </div>
 
      </div>
-
-
-
-
 
 
 

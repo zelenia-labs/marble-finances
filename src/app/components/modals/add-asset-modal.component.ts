@@ -23,7 +23,7 @@ export class AddAssetModalComponent {
   assetAmount: number | null = null;
   flowCategory = 'fixed';
   customFlowCategory = '';
-  availableColors = ['bg-assetGreen', 'bg-assetPurple', 'bg-assetBlue', 'bg-assetSand', 'bg-assetRose', 'bg-assetTeal', 'bg-assetStone'];
+  availableColors = ['bg-asset-green', 'bg-asset-purple', 'bg-asset-blue', 'bg-asset-sand', 'bg-asset-rose', 'bg-asset-teal', 'bg-asset-stone'];
   
   @ViewChild('colorCanvas') colorCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('wheelContainer') wheelContainer!: ElementRef<HTMLDivElement>;

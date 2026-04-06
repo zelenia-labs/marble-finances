@@ -26,9 +26,26 @@
       <p class="text-[16px] text-gray-600 font-medium mb-10 leading-relaxed">Would you like this modification applied to all upcoming months in the timeline as well?</p>
       
       <label class="flex items-center gap-3 mb-10 cursor-pointer group py-2">
-         <input type="checkbox" [checked]="store.autoApplyForward()" (change)="toggleAutoApply($event)" 
-                class="w-5 h-5 text-slate bg-gray-50 border-gray-200 rounded-lg focus:ring-slate focus:ring-2 cursor-pointer transition-all">
-         <span class="text-[12px] font-black uppercase tracking-wider text-gray-600 group-hover:text-slate transition-colors">Session Auto-Apply</span>
+         <div class="relative w-6 h-6 flex items-center justify-center shrink-0">
+            <input type="checkbox" [checked]="store.autoApplyForward()" (change)="toggleAutoApply($event)" 
+                   class="sr-only">
+            <!-- Full Opacity Toggle Face (No fading for settings) -->
+            <div class="w-6 h-6 rounded border-2 transition-all duration-200 flex items-center justify-center bg-white"
+                 [class.border-sky-600]="store.autoApplyForward() || !store.autoApplyForward()" 
+                 [class.bg-sky-500/10]="store.autoApplyForward()">
+               <!-- Checkmark Icon (Full Opacity) -->
+               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" 
+                    stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                    class="text-sky-600 transition-all duration-200"
+                    [class.opacity-100]="store.autoApplyForward()"
+                    [class.scale-100]="store.autoApplyForward()"
+                    [class.opacity-0]="!store.autoApplyForward()"
+                    [class.scale-50]="!store.autoApplyForward()">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+               </svg>
+            </div>
+         </div>
+         <span class="text-xs font-bold text-gray-500 group-hover:text-slate transition-colors">Always auto-apply adjustments forward this session</span>
       </label>
 
       <div class="flex justify-end gap-3">
