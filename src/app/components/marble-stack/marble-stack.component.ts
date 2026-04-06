@@ -17,6 +17,17 @@ export interface GridSlot {
   value: number; // For rendering 1 to 25
   activeRemaining: number;
   baseValue: number; // Value representing what's below this grid
+  x: number; // Relative to the dynamic grid group
+  y: number; // Relative to the dynamic grid group
+}
+
+export interface RenderElement {
+  type: 'huge' | 'large' | 'grid';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  id: string;
 }
 
 @Component({
@@ -63,9 +74,6 @@ export class MarbleStackComponent {
     effect(() => {
       const current = this.hugeMarbleBlocksCount();
       if (current > this.prevHugeBlocksCount) {
-        // A 100-unit huge marble block was just formed — celebrate it!
-        // Always target index 0: the topmost huge block, directly below the ghost grid,
-        // which is where the user just completed the consolidation.
         if (this.celebrateHugeTimer) clearTimeout(this.celebrateHugeTimer);
         this.celebratingHugeBlockIdx.set(0);
         this.celebrateHugeTimer = setTimeout(() => this.celebratingHugeBlockIdx.set(null), 1080);
@@ -101,9 +109,6 @@ export class MarbleStackComponent {
 
     if (fract < 0.0001) return whole;
 
-    // RULE:
-    // If number is UNDER half the block's amount (0.5), fill until half.
-    // If number is OVER half the block's amount (0.5), fill entire block.
     if (fract <= 0.5001) return whole + 0.5;
     return whole + 1;
   });
@@ -112,10 +117,8 @@ export class MarbleStackComponent {
   marbleRows = computed(() => {
     if (this.simple()) {
       const active = this.activeRemaining();
-      // Always provide an empty row if the current one is full
       return Math.floor(active / this.size()) + 1;
     }
-    // Asset Categories always show the full square context
     return this.size();
   });
 
@@ -126,7 +129,6 @@ export class MarbleStackComponent {
     const size = this.size();
     const rows = this.marbleRows();
 
-    // Render only the rows we need
     for (let row = rows - 1; row >= 0; row--) {
       for (let col = 0; col < size; col++) {
         const slotIdx = row * size + col;
@@ -135,20 +137,16 @@ export class MarbleStackComponent {
           value: slotIdx + 1,
           activeRemaining: active,
           baseValue: base,
+          x: col * 32,
+          y: (rows - 1 - row) * 32,
         });
       }
     }
     return slots;
   });
 
-  getSlotClass(slot: GridSlot): string {
-    if (slot.activeRemaining >= slot.value) {
-      return this.colorPropsFull().cls;
-    } else if (slot.activeRemaining === slot.value - 0.5) {
-      return this.colorPropsShadow().cls;
-    } else {
-      return this.colorPropsShadow().cls;
-    }
+  getSlotFill(slot: GridSlot): string {
+    return this.getColorStyleVal(slot);
   }
 
   getColorStyleVal(slot: GridSlot): string {
@@ -166,21 +164,15 @@ export class MarbleStackComponent {
     return slot.activeRemaining < slot.value;
   }
 
-  /** Returns true when this ghost slot is between the last active slot and the hovered slot. */
   isGhostInHoverRange(slot: GridSlot): boolean {
     if (!this.isGhost(slot)) return false;
     const hovered = this.hoveredSlotIdx();
     if (hovered === null) return false;
-    // The hover range starts at the very first index that is NOT fully filled.
-    // slot.activeRemaining represents the solid count. idx 5 is marble 6.
     const firstNonFullIdx = Math.floor(slot.activeRemaining);
     return slot.idx >= firstNonFullIdx && slot.idx <= hovered;
   }
 
-  /** Returns an inline rgba background at 40% opacity for this category's colour. */
   previewStyle = computed(() => getPreviewStyle(this.color()));
-
-  /** Returns an inline rgba background at 70% opacity for the hovered ghost slot. */
   previewStyleStrong = computed(() => getPreviewStyle(this.color(), 0.7));
 
   formatUSD(val: number): string {
@@ -220,8 +212,6 @@ export class MarbleStackComponent {
       this.hoveredSlotIdx.set(slot.idx);
       this.hoveredIsHalf.set(isHalfPos);
     }
-
-    // Update tooltip as well
     this.showTooltip(evt, this.formatUSD(this.getHoverValue(evt, slot)));
   }
 
@@ -240,28 +230,75 @@ export class MarbleStackComponent {
       const rect = target.getBoundingClientRect();
       isHalfClick = evt.clientX - rect.left < rect.width / 2;
     }
-
-    // Value equals base blocks total + slot index + (half or full addition)
     const updatedVal = slot.baseValue + slot.idx + (isHalfClick ? 0.5 : 1);
     this.amountChanged.emit(updatedVal);
   }
 
-  getBigBlockStyle = computed(() => {
-    const size = this.size();
-    const marbleRows = size;
-    return {
-      'width.px': size * 32 - 4,
-      'height.px': marbleRows * 32 - 4,
+  allElements = computed(() => {
+    const list: RenderElement[] = [];
+    const sizeValue = this.size();
+    const blockSide = sizeValue * 32 - 4;
+    const hugeSide = 316;
+    const gap = 4;
+    const isWide = this.stackWidth() === 'wide';
+    const rowMax = isWide ? 2 : 1;
+    
+    let currentX = 0;
+    let currentY = 0;
+    let itemsInCurrentRow = 0;
+    let maxRowH = 0;
+
+    const addItem = (type: 'huge' | 'large' | 'grid', w: number, h: number, id: string) => {
+      if ((type === 'huge' && currentX > 0) || (itemsInCurrentRow >= rowMax && type !== 'huge')) {
+        currentX = 0;
+        currentY += maxRowH + gap;
+        itemsInCurrentRow = 0;
+        maxRowH = 0;
+      }
+
+      list.push({ type, x: currentX, y: currentY, width: w, height: h, id });
+      
+      maxRowH = Math.max(maxRowH, h);
+      currentX += w + gap;
+      
+      if (type === 'huge') {
+        itemsInCurrentRow = rowMax; // Force wrap after huge
+      } else {
+        itemsInCurrentRow++;
+      }
     };
+
+    // 1. Huge Blocks (Foundation)
+    this.hugeMarbleBlocks().forEach((_, i) => addItem('huge', hugeSide, hugeSide, `huge-${i}`));
+
+    // 2. Large Blocks
+    this.largeMarbleBlocks().forEach((_, i) => addItem('large', blockSide, blockSide, `large-${i}`));
+
+    // 3. Grid
+    if (this.showGrid() || this.simple()) {
+      const rows = this.marbleRows();
+      addItem('grid', blockSide, rows * 32 - 4, 'grid');
+    }
+
+    const totalH = Math.max(...list.map(e => e.y + e.height));
+    return list.map(el => ({ ...el, y: totalH - el.y - el.height }));
   });
 
-  getGridStyle = computed(() => {
-    const size = this.size();
-    const rows = this.marbleRows();
-    return {
-      'grid-template-columns': `repeat(${size}, minmax(0, 1fr))`,
-      'width.px': size * 32 - 4,
-      'height.px': rows * 32 - 4,
-    };
+  totalSvgWidth = computed(() => {
+    const isWide = this.stackWidth() === 'wide';
+    return isWide ? this.size() * 64 - 4 : Math.max(this.size() * 32 - 4, 316);
   });
+
+  totalSvgHeight = computed(() => {
+    const els = this.allElements();
+    if (els.length === 0) return 0;
+    return Math.max(...els.map(e => e.y + e.height));
+  });
+
+  getGridStyle() {
+    return {
+      width: `${this.totalSvgWidth()}px`,
+      height: `${this.totalSvgHeight()}px`,
+    };
+  }
 }

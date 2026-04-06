@@ -317,6 +317,16 @@ The `.btn-dismiss` CSS utility class is the **single, canonical implementation**
 | **Large Marble block** | Full opacity `marble-` variant · 4px radius (`rounded-[4px]`) · Light shadow |
 | **Huge Marble Block** | Full opacity `marble-` variant · 6px radius (`rounded-[6px]`) · Standard shadow |
 
+### Marble Growth & Progression
+
+Marbles and blocks follow a **Bottom-Left Progression** model. As a balance grows, new units are added in a way that grounds the component at its bottom edge and expands upwards.
+
+- **Stack Order (Vertical)**: Huge blocks (100s) form the base at the bottom. Large blocks (25s) stack above them. The active dynamic grid (remainder) always sits at the very top of the stack.
+- **Internal Direction**: 
+  - Within a row of blocks, items fill from **Left to Right**. 
+  - Within the dynamic grid, individual marbles fill from the **Bottom Row upwards**, starting from the Left.
+- **Wrapping**: When the component is "wide", blocks wrap upwards to form new rows.
+
 ---
 
 ## 9. Animations & Transitions

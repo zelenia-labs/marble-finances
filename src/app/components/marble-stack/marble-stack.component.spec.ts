@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MarbleStackComponent } from './marble-stack.component';
-import { FinanceStore } from '../../store/finance.store';
-import { TooltipService } from '../../services/tooltip.service';
-import { By } from '@angular/platform-browser';
 import { signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { TooltipService } from '../../services/tooltip.service';
+import { FinanceStore } from '../../store/finance.store';
+import { MarbleStackComponent } from './marble-stack.component';
 
-import { vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('MarbleStackComponent — Regression Tests', () => {
   let fixture: ComponentFixture<MarbleStackComponent>;
@@ -40,11 +40,11 @@ describe('MarbleStackComponent — Regression Tests', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(MarbleStackComponent);
-    
+
     // Set required inputs
     fixture.componentRef.setInput('val', 0);
     fixture.componentRef.setInput('color', 'bg-assetBlue');
-    
+
     fixture.detectChanges();
   });
 
@@ -53,16 +53,16 @@ describe('MarbleStackComponent — Regression Tests', () => {
     fixture.componentRef.setInput('val', 25);
     fixture.componentRef.setInput('size', 5);
     fixture.detectChanges();
-    
-    // The large marble blocks are in the first @for loop
-    const allLargeBlocks = fixture.debugElement.queryAll(By.css('.rounded-\\[4px\\]')); 
+
+    // The large marble blocks have data-type="large"
+    const allLargeBlocks = fixture.debugElement.queryAll(By.css('[data-type="large"]'));
     expect(allLargeBlocks.length).toBe(1);
-    
-    // REGRESSION PROTECTION: Verify styles are merged and NOT overwritten
-    const element = allLargeBlocks[0].nativeElement;
-    expect(element.style.width).toBe('156px'); // (5 * 32) - 4
-    expect(element.style.height).toBe('156px');
-    expect(element.style.backgroundColor).toContain('var(--color-marble-asset-blue)');
+
+    const rect = allLargeBlocks[0].nativeElement.querySelector('rect');
+    expect(rect).toBeTruthy();
+    expect(rect!.getAttribute('width')).toBe('156'); // (5 * 32) - 4
+    expect(rect!.getAttribute('height')).toBe('156');
+    expect(rect!.getAttribute('fill')).toContain('var(--color-marble-asset-blue)');
   });
 
   it('should render 2 Large Marble Blocks when value reaches 50', () => {
@@ -70,7 +70,7 @@ describe('MarbleStackComponent — Regression Tests', () => {
     fixture.componentRef.setInput('size', 5);
     fixture.detectChanges();
 
-    const allLargeBlocks = fixture.debugElement.queryAll(By.css('.rounded-\\[4px\\]')); 
+    const allLargeBlocks = fixture.debugElement.queryAll(By.css('[data-type="large"]'));
     expect(allLargeBlocks.length).toBe(2);
   });
 
@@ -78,10 +78,13 @@ describe('MarbleStackComponent — Regression Tests', () => {
     fixture.componentRef.setInput('val', 100);
     fixture.detectChanges();
 
-    // Huge marble blocks are w-[316px] h-[316px]
-    const hugeBlock = fixture.debugElement.query(By.css('[class*="w-[316px]"]'));
+    const hugeBlock = fixture.debugElement.query(By.css('[data-type="huge"]'));
     expect(hugeBlock).toBeTruthy();
-    expect(hugeBlock.nativeElement.style.backgroundColor).toContain('var(--color-marble-asset-blue)');
+
+    const rect = hugeBlock.nativeElement.querySelector('rect');
+    expect(rect).toBeTruthy();
+    expect(rect!.getAttribute('width')).toBe('316');
+    expect(rect!.getAttribute('fill')).toContain('var(--color-marble-asset-blue)');
   });
 
   it('should handle non-asset colors (flow blocks)', () => {
@@ -89,7 +92,21 @@ describe('MarbleStackComponent — Regression Tests', () => {
     fixture.componentRef.setInput('color', 'bg-flow-orange');
     fixture.detectChanges();
 
-    const largeBlock = fixture.debugElement.query(By.css('.rounded-\\[4px\\]'));
-    expect(largeBlock.nativeElement.style.backgroundColor).toContain('var(--color-flow-orange)');
+    const largeBlock = fixture.debugElement.query(By.css('[data-type="large"]'));
+    const rect = largeBlock.nativeElement.querySelector('rect');
+    expect(rect!.getAttribute('fill')).toContain('var(--color-flow-orange)');
+  });
+
+  it('should render dynamic grid when value is not a clean multiple of page size', () => {
+    // 3 marbles = grid with 3 active slots
+    fixture.componentRef.setInput('val', 3);
+    fixture.detectChanges();
+
+    const grid = fixture.debugElement.query(By.css('[data-type="grid"]'));
+    expect(grid).toBeTruthy();
+
+    const allRects = grid.nativeElement.querySelectorAll('rect');
+    // For size 5, grid is 5x5 = 25 rects
+    expect(allRects.length).toBe(25);
   });
 });

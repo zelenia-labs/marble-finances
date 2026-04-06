@@ -53,3 +53,11 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## Regression Protection
+
+- ALWAYS protect your changes with unit tests.
+- When refactoring existing code, update the relevant spec files to ensure existing functionality is preserved.
+- When adding new features, add comprehensive unit tests that cover core logic and edge cases.
+- Use `By.css` to verify the presence and styling of critical UI elements.
+- For interactive components, simulate user actions (click, hover, keyboard) and verify the expected state changes.

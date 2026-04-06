@@ -1,76 +1,87 @@
 <!-- src/app/components/marble-stack/marble-stack.component.html -->
-<div class="flex flex-col gap-1 items-start marble-mount">
-  <!-- The Remainder Marble Box -->
-  @if (showMarbleBox() || showGrid()) {
-  <div class="flex flex-row flex-wrap-reverse gap-1 content-start"
-    [style.max-width.px]="stackWidth() === 'wide' ? size() * 64 - 4 : size() * 32 - 4">
-    <!-- Large Marble Blocks (Full Rows) -->
-    @for (b of largeMarbleBlocks(); track $index) {
-    <div
-      class="rounded-[4px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
-      [style.width.px]="size() * 32 - 4" [style.height.px]="size() * 32 - 4"
-      [style.background-color]="colorPropsFull().val" role="button" tabindex="0"
-      [attr.aria-label]="'Add ' + pageSize() + ' marbles'" (mousedown)="$event.stopPropagation()"
-      (click)="onBlockClick(currentAccounted() + ($index + 1) * pageSize() - 1)"
-      (keydown.enter)="onBlockClick(currentAccounted() + ($index + 1) * pageSize() - 1)" (mouseenter)="
-            showTooltip($event, formatUSD(currentAccounted() + ($index + 1) * pageSize()))
-          " (mouseleave)="hideTooltip()">
-      <!-- 🎉 Easter Egg: celebrate when this large marble block is newly formed -->
-      @if (celebratingLargeBlockIdx() === $index) {
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
-        <span class="celebrate-burst text-3xl select-none">🎉</span>
-      </div>
+<svg
+  [attr.width]="totalSvgWidth()"
+  [attr.height]="totalSvgHeight()"
+  class="marble-mount overflow-visible"
+  (mouseleave)="onGridLeave()"
+>
+  @for (el of allElements(); track el.id; let idx = $index) {
+    @switch (el.type) {
+      @case ('large') {
+        <g
+          data-type="large"
+          class="interactive-element cursor-pointer group transition-transform active:scale-95"
+          role="button"
+          tabindex="0"
+          (mousedown)="$event.stopPropagation()"
+          (click)="onBlockClick(currentAccounted() + (el.id.split('-')[1] ? (+el.id.split('-')[1] + 1) : 1) * pageSize() - 1)"
+          (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + (el.id.split('-')[1] ? (+el.id.split('-')[1] + 1) : 1) * pageSize()))"
+          (mouseleave)="hideTooltip()"
+        >
+          <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="4"
+            [attr.fill]="colorPropsFull().val" />
+
+          @if (celebratingLargeBlockIdx() !== null && 'large-' + celebratingLargeBlockIdx() === el.id) {
+            <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
+              <div class="w-full h-full flex items-center justify-center pointer-events-none z-30" xmlns="http://www.w3.org/1999/xhtml">
+                <span class="celebrate-burst text-3xl select-none">🎉</span>
+              </div>
+            </foreignObject>
+          }
+        </g>
       }
-    </div>
-    }
+      @case ('grid') {
+        <g data-type="grid" (mouseleave)="onGridLeave()">
+          @for (slot of gridSlots(); track slot.idx) {
+            <g class="interactive-element cursor-pointer group" [attr.transform]="'translate(' + el.x + ',' + el.y + ')'"
+              (mouseenter)="
+                        onSlotEnter($event, slot);
+                        showTooltip($event, formatUSD(getHoverValue($event, slot)))
+                      " (mousemove)="onSlotMouseMove($event, slot)" (mousedown)="$event.stopPropagation()"
+              (click)="onSlotClick($event, slot)" (keydown.enter)="onSlotClick($event, slot)"
+              (mouseleave)="onGridLeave(); hideTooltip()">
+              <rect [attr.x]="slot.x" [attr.y]="slot.y" width="28" height="28" rx="2" [attr.fill]="getSlotFill(slot)"
+                class="transition-all duration-100" />
 
-    <!-- Dynamic Grid for remaining units -->
-    @if (simple() || showGrid()) {
-    <div class="grid gap-1 content-start shrink-0" [style]="getGridStyle()" (mouseleave)="onGridLeave()">
-      @for (slot of gridSlots(); track slot.idx) {
-      <div
-        class="w-7 h-7 rounded-[2px] transition-all duration-100 relative overflow-hidden group interactive-element focus-visible:ring-1 focus-visible:ring-accent"
-        [class]="getSlotClass(slot)" [style.background-color]="getColorStyleVal(slot)" role="button" tabindex="0"
-        [attr.aria-label]="'Set value to ' + (slot.baseValue + slot.idx + 1)" (mouseenter)="
-                onSlotEnter($event, slot);
-                showTooltip($event, formatUSD(getHoverValue($event, slot)))
-              " (mousemove)="onSlotMouseMove($event, slot)" (mousedown)="$event.stopPropagation()"
-        (click)="onSlotClick($event, slot)" (keydown.enter)="onSlotClick($event, slot)"
-        (mouseleave)="onGridLeave(); hideTooltip()">
-        @if (isHalf(slot)) {
-        <div class="absolute inset-0 bg-gray-50/50"></div>
-        <div class="absolute left-0 top-0 w-1/2 h-full" [style.background-color]="colorPropsFull().val"></div>
-        }
+              @if (isHalf(slot)) {
+                <rect [attr.x]="slot.x" [attr.y]="slot.y" width="28" height="28" rx="2" fill="rgba(249, 250, 251, 0.5)" />
+                <path [attr.d]="'M ' + slot.x + ' ' + slot.y + ' h 14 v 28 h -14 Z'" [attr.fill]="colorPropsFull().val" />
+              }
 
-        <!-- Hover-preview: 40% intermediate, 70% hovered -->
-        @if (isGhostInHoverRange(slot)) {
-        <div class="absolute top-0 left-0 h-full transition-all duration-75 pointer-events-none"
-          [style]="slot.idx === hoveredSlotIdx() ? previewStyleStrong() : previewStyle()"
-          [class.w-full]="slot.idx < hoveredSlotIdx()! || !hoveredIsHalf()"
-          [class.w-1/2]="hoveredIsHalf() && slot.idx === hoveredSlotIdx()"></div>
-        }
-      </div>
+              @if (isGhostInHoverRange(slot)) {
+                @let isPrimary = slot.idx === hoveredSlotIdx();
+                <rect [attr.x]="slot.x" [attr.y]="slot.y"
+                  [attr.width]="(hoveredIsHalf() && slot.idx === hoveredSlotIdx()) ? 14 : 28" height="28" rx="2"
+                  [attr.fill]="colorPropsFull().val" [attr.fill-opacity]="isPrimary ? 0.7 : 0.4"
+                  class="pointer-events-none" />
+              }
+            </g>
+          }
+        </g>
       }
-    </div>
-    }
-  </div>
-  }
+      @case ('huge') {
+        <g
+          data-type="huge"
+          class="interactive-element cursor-pointer group transition-transform active:scale-95"
+          role="button"
+          tabindex="0"
+          (mousedown)="$event.stopPropagation()"
+          (click)="onBlockClick(100 * (el.id.split('-')[1] ? (+el.id.split('-')[1] + 1) : 1) - 1)"
+          (mouseenter)="showTooltip($event, formatUSD(100 * (hugeMarbleBlocksCount() - (el.id.split('-')[1] ? +el.id.split('-')[1] : 0))))"
+          (mouseleave)="hideTooltip()"
+        >
+          <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="6"
+            [attr.fill]="colorPropsFull().val" />
 
-  <!-- Hundreds (Huge Marble Blocks) -->
-  @for (h of hugeMarbleBlocks(); track $index) {
-  <div
-    class="w-[316px] h-[316px] rounded-[6px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
-    [style.background-color]="colorPropsFull().val" role="button" tabindex="0" [attr.aria-label]="'Add 100 marbles'"
-    (mousedown)="$event.stopPropagation()" (click)="onBlockClick(100 * ($index + 1) - 1)"
-    (keydown.enter)="onBlockClick(100 * ($index + 1) - 1)"
-    (mouseenter)="showTooltip($event, formatUSD(100 * (hugeMarbleBlocksCount() - $index)))"
-    (mouseleave)="hideTooltip()">
-    <!-- 💎 Easter Egg: celebrate when this huge marble block is newly formed -->
-    @if (celebratingHugeBlockIdx() === $index) {
-    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
-      <span class="celebrate-burst text-5xl select-none">💯</span>
-    </div>
+          @if (celebratingHugeBlockIdx() !== null && 'huge-' + celebratingHugeBlockIdx() === el.id) {
+            <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
+              <div class="w-full h-full flex items-center justify-center pointer-events-none z-30" xmlns="http://www.w3.org/1999/xhtml">
+                <span class="celebrate-burst text-5xl select-none">💯</span>
+              </div>
+            </foreignObject>
+          }
+        </g>
+      }
     }
-  </div>
   }
-</div>
+</svg>
