@@ -14,7 +14,6 @@ import { FinanceStore } from '../../store/finance.store';
 
 @Component({
   selector: 'app-portfolio-charts-modal',
-  standalone: true,
   imports: [BaseChartDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './portfolio-charts-modal.component.html',

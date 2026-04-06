@@ -11,7 +11,6 @@ import { FinanceStore } from '../../store/finance.store';
 
 @Component({
   selector: 'app-compare-select-modal',
-  standalone: true,
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
