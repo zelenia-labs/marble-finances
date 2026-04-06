@@ -13,10 +13,11 @@ import {
 import { FormsModule } from '@angular/forms';
 import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
 import { hslToHex } from '../../utils/color.util';
+import { ModalComponent, ModalButton } from './modal.component';
 
 @Component({
   selector: 'app-add-asset-modal',
-  imports: [FormsModule],
+  imports: [FormsModule, ModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './add-asset-modal.component.html',
   host: {
@@ -42,6 +43,20 @@ export class AddAssetModalComponent {
     'bg-asset-teal',
     'bg-asset-stone',
   ];
+
+  modalTitle = computed(() => {
+    const type = this.store.addModalType();
+    if (type === 'breakdown') return 'Add Subcategory';
+    if (type.startsWith('flow')) return 'Add Item';
+    return 'Add Asset';
+  });
+
+  addButtons = computed<ModalButton[]>(() => {
+    const label = this.modalTitle();
+    return [
+      { label: label, type: 'slate', action: () => this.confirmCreate() }
+    ];
+  });
 
   readonly colorCanvas = viewChild.required<ElementRef<HTMLCanvasElement>>('colorCanvas');
   readonly wheelContainer = viewChild.required<ElementRef<HTMLDivElement>>('wheelContainer');

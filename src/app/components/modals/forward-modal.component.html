@@ -1,56 +1,31 @@
-<!-- src/app/components/modals/forward-modal.component.html -->
-<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-200 flex items-center justify-center p-4 animate-fade-in"
-     tabindex="-1"
-     role="dialog"
-     aria-modal="true"
-     aria-labelledby="forward-title"
-     (click)="close()"
-     (keydown.enter)="close()">
-   <div class="bg-white p-8 rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] w-[400px] border border-gray-100 transition-all duration-300 relative"
-        tabindex="-1"
-        (click)="$event.stopPropagation()"
-        (keydown)="$event.stopPropagation()"
-        [class.scale-95]="!store.forwardTarget()"
-        [class.scale-100]="store.forwardTarget()"
-        [class.translate-y-0]="store.forwardTarget()"
-        [class.opacity-0]="!store.forwardTarget()"
-        [class.opacity-100]="store.forwardTarget()">
-
-      <button (click)="close()" (keydown.enter)="close()" class="btn-dismiss absolute top-8 right-8 interactive-element" aria-label="Close apply forward modal">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-         </svg>
-      </button>
-
-      <h3 class="text-2xl font-black text-slate mb-6">Apply Forward?</h3>
-      <p class="text-[16px] text-gray-600 font-medium mb-10 leading-relaxed">Would you like this modification applied to all upcoming months in the timeline as well?</p>
-      
-      <label class="flex items-center gap-3 mb-10 cursor-pointer group py-2">
-         <div class="relative w-6 h-6 flex items-center justify-center shrink-0">
-            <input type="checkbox" [checked]="store.autoApplyForward()" (change)="toggleAutoApply($event)" 
-                   class="sr-only">
-            <!-- Full Opacity Toggle Face (No fading for settings) -->
-            <div class="w-6 h-6 rounded border-2 transition-all duration-200 flex items-center justify-center bg-white"
-                 [class.border-sky-600]="store.autoApplyForward() || !store.autoApplyForward()" 
-                 [class.bg-sky-500/10]="store.autoApplyForward()">
-               <!-- Checkmark Icon (Full Opacity) -->
-               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" 
-                    stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
-                    class="text-sky-600 transition-all duration-200"
-                    [class.opacity-100]="store.autoApplyForward()"
-                    [class.scale-100]="store.autoApplyForward()"
-                    [class.opacity-0]="!store.autoApplyForward()"
-                    [class.scale-50]="!store.autoApplyForward()">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-               </svg>
-            </div>
+<app-modal
+   [isOpen]="!!store.forwardTarget()"
+   [title]="'Apply Forward?'"
+   [description]="'Would you like this modification applied to all upcoming months in the timeline as well?'"
+   [buttons]="forwardButtons()"
+   (dismiss)="close()">
+   
+   <label class="flex items-center gap-3 mb-2 cursor-pointer group py-2">
+      <div class="relative w-6 h-6 flex items-center justify-center shrink-0">
+         <input type="checkbox" [checked]="store.autoApplyForward()" (change)="toggleAutoApply($event)" 
+                class="sr-only">
+         <!-- Full Opacity Toggle Face -->
+         <div class="w-6 h-6 rounded border-2 transition-all duration-200 flex items-center justify-center bg-white"
+              [class.border-sky-600]="store.autoApplyForward() || !store.autoApplyForward()" 
+              [class.bg-sky-500/10]="store.autoApplyForward()">
+            <!-- Checkmark Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                 class="text-sky-600 transition-all duration-200"
+                 [class.opacity-100]="store.autoApplyForward()"
+                 [class.scale-100]="store.autoApplyForward()"
+                 [class.opacity-0]="!store.autoApplyForward()"
+                 [class.scale-50]="!store.autoApplyForward()">
+               <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
          </div>
-         <span class="text-xs font-bold text-gray-500 group-hover:text-slate transition-colors">Always auto-apply adjustments forward this session</span>
-      </label>
-
-      <div class="flex justify-end gap-3">
-         <button (click)="store.executeForwardAction(undefined, false)" class="px-5 py-2.5 rounded-md text-[16px] font-bold text-gray-600 hover:text-gray-800 transition-colors interactive-element">Just Here</button>
-         <button (click)="store.executeForwardAction(undefined, true)" class="px-6 py-2.5 rounded-md text-[16px] font-bold bg-slate text-white hover:bg-black transition-colors shadow-sm interactive-element">Apply Forward</button>
       </div>
-   </div>
-</div>
+      <span class="text-xs font-bold text-gray-400 group-hover:text-slate transition-colors">Always auto-apply adjustments forward this session</span>
+   </label>
+
+</app-modal>

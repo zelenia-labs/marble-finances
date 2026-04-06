@@ -9,6 +9,7 @@ import {
   signal,
   untracked,
   viewChild,
+  computed,
 } from '@angular/core';
 import { ComparisonOverlayComponent } from './components/comparison-overlay/comparison-overlay.component';
 import { AddAssetModalComponent } from './components/modals/add-asset-modal.component';
@@ -18,6 +19,7 @@ import { ForwardModalComponent } from './components/modals/forward-modal.compone
 import { MonthBoardComponent } from './components/month-board/month-board.component';
 import { PortfolioChartsModalComponent } from './components/portfolio-charts-modal/portfolio-charts-modal.component';
 import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
+import { ModalComponent, ModalButton } from './components/modals/modal.component';
 import { TimelineSidebarComponent } from './components/timeline-sidebar/timeline-sidebar.component';
 import { TooltipService } from './services/tooltip.service';
 import { FinanceStore } from './store/finance.store';
@@ -36,6 +38,7 @@ import { calculateCenteringCoordinates } from './utils/geometry.utils';
     SettingsModalComponent,
     CompareSelectModalComponent,
     ComparisonOverlayComponent,
+    ModalComponent,
     DecimalPipe,
     DatePipe,
   ],
@@ -51,6 +54,11 @@ export class App implements OnDestroy {
 
   readonly mainArea = viewChild.required<ElementRef<HTMLElement>>('mainArea');
   readonly chartsModal = viewChild.required(PortfolioChartsModalComponent);
+
+  revertButtons = computed<ModalButton[]>(() => [
+    { label: 'Cancel', type: 'secondary', action: () => this.store.closeRevertModal() },
+    { label: 'Revert', type: 'slate', action: () => this.store.confirmRevert() }
+  ]);
 
   constructor() {
     effect(() => {

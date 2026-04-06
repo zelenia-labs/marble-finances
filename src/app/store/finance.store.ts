@@ -1,5 +1,5 @@
 import { computed, effect } from '@angular/core';
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState, withHooks } from '@ngrx/signals';
 import { TAILWIND_COLOR_MAP } from '../utils/color.util';
 import { DEMO_DATA } from '../data/demo.data';
 
@@ -370,11 +370,7 @@ export const FinanceStore = signalStore(
       return { labels, compositionDatasets, totalValueData, totalValueDataset };
     }),
     changelogInverse: computed(() => {
-      const all = store.changelog();
-      if (all.length === 0) return [];
-      // The most recent change is the current live state.
-      // We skip the very last entry because you can't "revert" to the current state.
-      return [...all].reverse().slice(1);
+      return [...store.changelog()].reverse();
     })
   })),
   withMethods((store) => ({
@@ -647,7 +643,29 @@ export const FinanceStore = signalStore(
 
         let details = itemName ? `Updated "${itemName}" in ${monthDate}` : `${label} in ${monthDate}`;
         
-        if (action.type === 'overview') {
+        // Enhance details for deletions
+        if (action.type.startsWith('delete') && itemName) {
+          let extraInfo = '';
+          const month = store.months()[action.monthIdx];
+          if (month) {
+            if (action.type === 'deleteFlow') {
+              const flowItem = month.flow.find(f => f.id === action.targetId);
+              if (flowItem) extraInfo = ` (${formatHumanUSD(flowItem.val, store.marbleMultiplier())})`;
+            } else if (action.type === 'deleteAsset') {
+              const cat = month.assetCategories.find(c => c.id === action.parentId);
+              const asset = cat?.assets.find(a => a.id === action.targetId);
+              if (asset) extraInfo = ` (${formatHumanUSD(asset.val, store.marbleMultiplier())})`;
+            } else if (action.type === 'deleteCategory') {
+              const cat = month.assetCategories.find(c => c.id === action.targetId);
+              if (cat) {
+                const total = cat.assets.reduce((sum, a) => sum + a.val, 0);
+                extraInfo = ` (Total: ${formatHumanUSD(total, store.marbleMultiplier())})`;
+              }
+            }
+          }
+          details = `Removed "${itemName}"${extraInfo} from ${monthDate}`;
+        }
+        else if (action.type === 'overview') {
             details = `Changed ${action.field} to "${action.value}" in ${monthDate}`;
         } else if (typeof action.value === 'object' && action.value !== null && 'label' in action.value) {
             details = `${label}: ${(action.value as {label: string}).label} in ${monthDate}`;
@@ -740,13 +758,19 @@ export const FinanceStore = signalStore(
     },
 
     toggleActionItem(monthIdx: number, id: string) {
+      let itemLabel = '';
+      let isCompleted = false;
       patchState(store, (state) => {
         const months = structuredClone(state.months);
         const item = months[monthIdx].actionItems.find(i => i.id === id);
-        if (item) item.completed = !item.completed;
+        if (item) {
+          item.completed = !item.completed;
+          itemLabel = item.label;
+          isCompleted = item.completed;
+        }
         return { months };
       });
-      this.recordChange('Toggled Checklist Item');
+      this.recordChange('Toggled Checklist Item', `"${itemLabel || 'Untitled'}" is now ${isCompleted ? 'completed' : 'active'}`);
     },
 
     addActionItem(monthIdx: number) {
@@ -771,34 +795,47 @@ export const FinanceStore = signalStore(
     },
 
     deleteActionItem(monthIdx: number, id: string) {
+      let removedLabel = '';
       patchState(store, (state) => {
         const months = structuredClone(state.months);
+        const item = months[monthIdx].actionItems.find(i => i.id === id);
+        if (item) removedLabel = item.label;
         months[monthIdx].actionItems = months[monthIdx].actionItems.filter(i => i.id !== id);
         return { months };
       });
-      this.recordChange('Deleted Checklist Item');
+      this.recordChange('Deleted Checklist Item', `Removed "${removedLabel || 'Untitled'}"`);
     },
 
 
 
     reorderAssets(monthIdx: number, fromIndex: number, toIndex: number) {
+      let catLabel = '';
       patchState(store, (state) => {
         const months = structuredClone(state.months);
+        catLabel = months[monthIdx].assetCategories[fromIndex].label;
         const [moved] = months[monthIdx].assetCategories.splice(fromIndex, 1);
         months[monthIdx].assetCategories.splice(toIndex, 0, moved);
         return { months };
       });
-      this.recordChange('Reordered Categories');
+      const monthDate = store.months()[monthIdx].date;
+      this.recordChange('Reordered Categories', `Moved "${catLabel}" in ${monthDate}`);
     },
 
     moveSubAsset(monthIdx: number, fromAssetIndex: number, fromSubIndex: number, toAssetIndex: number, toSubIndex: number) {
+      let assetName = '';
+      let fromCat = '';
+      let toCat = '';
       patchState(store, (state) => {
         const months = structuredClone(state.months);
+        fromCat = months[monthIdx].assetCategories[fromAssetIndex].label;
+        toCat = months[monthIdx].assetCategories[toAssetIndex].label;
+        assetName = months[monthIdx].assetCategories[fromAssetIndex].assets[fromSubIndex].label;
         const [moved] = months[monthIdx].assetCategories[fromAssetIndex].assets.splice(fromSubIndex, 1);
         months[monthIdx].assetCategories[toAssetIndex].assets.splice(toSubIndex, 0, moved);
         return { months };
       });
-      this.recordChange('Moved Asset');
+      const monthDate = store.months()[monthIdx].date;
+      this.recordChange('Moved Asset', `Moved "${assetName}" from ${fromCat} to ${toCat} in ${monthDate}`);
     },
 
     promptDelete(monthIdx: number, type: 'asset' | 'flow', index: number, subIndex: number | null = null) {
@@ -1088,5 +1125,13 @@ export const FinanceStore = signalStore(
       }
     }
 
+  })),
+  withHooks((store) => ({
+    onInit() {
+      // Record an initial baseline if history is brand new
+      if (store.changelog().length === 0) {
+        store.recordChange('Initial Portfolio Snapshot', 'Baseline point for the current session');
+      }
+    }
   }))
 );

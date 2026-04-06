@@ -1,57 +1,29 @@
 <!-- src/app/app.component.html -->
-<div
-  class="bg-canvas text-slate flex h-screen antialiased overflow-hidden relative no-select"
-  tabindex="-1"
-  (click)="onDocumentClick()"
-  (keydown)="onDocumentClick()"
->
+<div class="bg-canvas text-slate flex h-screen antialiased overflow-hidden relative no-select" tabindex="-1"
+  (click)="onDocumentClick()" (keydown)="onDocumentClick()">
   <!-- Screen-reader page title anchors the heading hierarchy (h2/h3 in children are valid descendants) -->
   <h1 class="sr-only">Marble Finances</h1>
 
   <!-- Primary Application Navigation -->
-  <nav
-    class="fixed top-8 left-8 z-110 flex items-center animate-slide-in-left"
-    aria-label="Timeline navigation"
-    [class.hidden]="store.months().length === 0"
-  >
+  <nav class="fixed top-8 left-8 z-110 flex items-center animate-slide-in-left" aria-label="Timeline navigation"
+    [class.hidden]="store.months().length === 0">
     <ul
-      class="flex items-center m-0 p-0 list-none border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden"
-    >
+      class="flex items-center m-0 p-0 list-none border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden">
       <li>
-        <button
-          #timelineTrigger
-          (click)="toggleTimeline($event)"
-          class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
-            />
+        <button #timelineTrigger (click)="toggleTimeline($event)"
+          class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
           </svg>
           Timeline
         </button>
       </li>
       <li>
-        <button
-          (click)="jumpToLatestMonth()"
-          (mouseenter)="tooltipService.show($event, 'Jump to latest month')"
+        <button (click)="jumpToLatestMonth()" (mouseenter)="tooltipService.show($event, 'Jump to latest month')"
           (mouseleave)="tooltipService.hide()"
-          class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
+          class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
             <circle cx="8" cy="8" r="2.5" />
           </svg>
@@ -64,307 +36,147 @@
   <nav class="fixed top-8 right-8 z-110 animate-slide-in-right" aria-label="Application actions">
     <ul class="flex items-center gap-4 m-0 p-0 list-none">
       @if (store.months().length > 0) {
-        <li>
-          <button
-            (click)="openAddModal($event)"
-            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-              />
+      <li>
+        <button (click)="openAddModal($event)"
+          class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+          </svg>
+          Add Asset
+        </button>
+      </li>
+      <li>
+        <button (click)="openCompareModal($event)"
+          class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z" />
+          </svg>
+          Compare
+        </button>
+      </li>
+      <li>
+        <button #chartsTrigger (click)="openChartsModal($event)"
+          class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z" />
+          </svg>
+          Analysis
+        </button>
+      </li>
+      <li>
+        <button (click)="exportData()"
+          class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+            <path
+              d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+          </svg>
+          Save Backup
+        </button>
+      </li>
+      <li>
+        <button (click)="unloadData()" (mouseenter)="tooltipService.show($event, 'Unload portfolio')"
+          (mouseleave)="tooltipService.hide()"
+          class="p-2.5 rounded-full tooltip-left border border-red-200 bg-white/90 backdrop-blur shadow-sm text-red-400 hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors flex items-center justify-center interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path
+              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button (click)="openSettings()" (mouseenter)="tooltipService.show($event, 'Settings & theme')"
+          (mouseleave)="tooltipService.hide()"
+          class="p-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+            <path
+              d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.902 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+          </svg>
+        </button>
+      </li>
+      <li>
+        <div
+          class="flex items-center border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden">
+          <button (click)="store.toggleChangelog()" #changelogTrigger
+            class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
             </svg>
-            Add Asset
+            Changelog
           </button>
-        </li>
-        <li>
-          <button
-            (click)="openCompareModal($event)"
-            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
+
+          <!-- Undo Button -->
+          <button (click)="store.undo()" [disabled]="store.changelog().length < 2"
+            class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
+            (mouseenter)="tooltipService.show($event, 'Undo last change')" (mouseleave)="tooltipService.hide()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
               <path
-                fill-rule="evenodd"
-                d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"
-              />
-            </svg>
-            Compare
-          </button>
-        </li>
-        <li>
-          <button
-            #chartsTrigger
-            (click)="openChartsModal($event)"
-            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"
-              />
-            </svg>
-            Analysis
-          </button>
-        </li>
-        <li>
-          <button
-            (click)="exportData()"
-            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-              />
-              <path
-                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
-              />
-            </svg>
-            Save Backup
-          </button>
-        </li>
-        <li>
-          <button
-            (click)="unloadData()"
-            (mouseenter)="tooltipService.show($event, 'Unload portfolio')"
-            (mouseleave)="tooltipService.hide()"
-            class="p-2.5 rounded-full tooltip-left border border-red-200 bg-white/90 backdrop-blur shadow-sm text-red-400 hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors flex items-center justify-center interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-              <path
-                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-              />
+                d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966a.25.25 0 0 0 .41-.192z" />
             </svg>
           </button>
-        </li>
-        <li>
-          <button
-            (click)="openSettings()"
-            (mouseenter)="tooltipService.show($event, 'Settings & theme')"
-            (mouseleave)="tooltipService.hide()"
-            class="p-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
-              />
-              <path
-                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.902 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
-              />
-            </svg>
-          </button>
-        </li>
-        <li>
-          <div
-            class="flex items-center border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden"
-          >
-            <button
-              (click)="store.toggleChangelog()"
-              #changelogTrigger
-              class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
-                />
-              </svg>
-              Changelog
-            </button>
-            
-            <!-- Undo Button -->
-            <button
-              (click)="store.undo()"
-              [disabled]="store.changelog().length < 2"
-              class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
-              (mouseenter)="tooltipService.show($event, 'Undo last change')"
-              (mouseleave)="tooltipService.hide()"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"
-                />
-                <path
-                  d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966a.25.25 0 0 0 .41-.192z"
-                />
-              </svg>
-            </button>
-          </div>
-        </li>
+        </div>
+      </li>
       }
     </ul>
   </nav>
 
   <!-- Left Sidebar: High-Performance History Tracking -->
   @if (store.isTimelineOpen()) {
-    @defer (on interaction(timelineTrigger); on idle) {
-      <app-timeline-sidebar (jumpTo)="jumpToTimelineIndex($event)" />
-    } @placeholder {
-      <div
-        class="fixed top-0 left-0 bottom-0 w-[240px] bg-surface-timeline flex items-center justify-center border-r border-border-timeline"
-      >
-        <div
-          class="w-8 h-8 rounded-full border-4 border-slate/10 border-t-slate animate-spin"
-        ></div>
-      </div>
-    }
+  @defer (on interaction(timelineTrigger); on idle) {
+  <app-timeline-sidebar (jumpTo)="jumpToTimelineIndex($event)" />
+  } @placeholder {
+  <div
+    class="fixed top-0 left-0 bottom-0 w-[240px] bg-surface-timeline flex items-center justify-center border-r border-border-timeline">
+    <div class="w-8 h-8 rounded-full border-4 border-slate/10 border-t-slate animate-spin"></div>
+  </div>
+  }
   }
 
   <!-- Modals: Lazy-Loaded & Signal-Synchronized DOM Presence -->
   @if (store.isAddModalOpen()) {
-    <app-add-asset-modal />
+  <app-add-asset-modal />
   }
 
   @if (store.isDeleteModalOpen()) {
-    <app-delete-modal />
+  <app-delete-modal />
   }
   @if (store.isCompareModalOpen()) {
-    <app-compare-select-modal />
+  <app-compare-select-modal />
   }
 
   @if (store.forwardTarget()) {
-    <app-forward-modal />
+  <app-forward-modal />
   }
 
   @if (store.isSettingsOpen()) {
-    <app-settings-modal />
+  <app-settings-modal />
   }
 
 
 
   <!-- Revert Confirmation Modal -->
-  @if (store.isRevertModalOpen()) {
-    <div
-      class="fixed inset-0 z-300 flex items-center justify-center p-8"
-      (keydown.escape)="store.closeRevertModal()"
-      tabindex="-1"
-    >
-      <!-- Backdrop -->
-      <button
-        class="absolute inset-0 bg-slate/20 backdrop-blur-md animate-fade-in w-full h-full border-none cursor-default"
-        (click)="store.closeRevertModal()"
-        aria-label="Close modal"
-        tabindex="-1"
-      ></button>
-
-      <!-- Modal Content -->
-      <div
-        class="relative w-full max-w-sm bg-white rounded-[40px] shadow-2xl p-8 border border-white border-b-gray-100 animate-scale-up"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="revert-title"
-      >
-        <div class="flex flex-col items-center gap-6 text-center">
-          <div class="w-20 h-20 rounded-full bg-amber-50 flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              fill="currentColor"
-              class="text-amber-500"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
-              />
-            </svg>
-          </div>
-
-          <div>
-            <h3 id="revert-title" class="text-xl font-black text-slate mb-2">
-              Revert to earlier state?
-            </h3>
-            <p class="text-[14px] text-slate/50 font-medium">
-              You're about to revert the portfolio to
-              <span class="text-slate font-bold">"{{ store.revertTarget()?.label }}"</span>.
-              @if (store.revertTarget()?.details) {
-                <br />
-                <span class="text-[12px] opacity-70 italic">{{ store.revertTarget()?.details }}</span>
-              }
-              <br />
-              This will discard all changes made after that time.
-            </p>
-          </div>
-
-          <div class="flex items-center gap-4 w-full">
-            <button
-              (click)="store.closeRevertModal()"
-              class="flex-1 px-6 py-4 rounded-3xl bg-gray-50 text-slate font-black transition-all hover:bg-gray-100 text-[13px] tracking-wide interactive-element"
-            >
-              Cancel
-            </button>
-            <button
-              (click)="store.confirmRevert()"
-              class="flex-1 px-6 py-4 rounded-3xl bg-slate text-white font-black transition-all hover:bg-slate-700 text-[13px] tracking-wide shadow-lg shadow-slate/20 interactive-element"
-            >
-              Revert
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
+  <app-modal [isOpen]="store.isRevertModalOpen()" [title]="'Revert Portfolio?'"
+    [description]="'You are about to revert to the selected state. This will discard all changes made after that time.'"
+    widthClass="w-full max-w-sm" [buttons]="revertButtons()" (dismiss)="store.closeRevertModal()">
+  </app-modal>
 
   <!-- Global Popover Tooltip (Latest HTML Popover API) -->
-  <div
-    #tooltipPopover
-    popover="manual"
+  <div #tooltipPopover popover="manual"
     class="fixed z-9999 pointer-events-none bg-[color-mix(in_srgb,var(--color-slate)_88%,transparent)] backdrop-blur-xl px-4 py-2 rounded-[14px] border border-white/10 shadow-2xl flex items-center gap-2"
-    style="position: fixed; top: 0; left: 0; margin: 0; width: max-content"
-  >
+    style="position: fixed; top: 0; left: 0; margin: 0; width: max-content">
     <!-- Typical Tooltip Arrow -->
     <div
       class="tooltip-arrow absolute w-[18px] h-[18px] bg-[color-mix(in_srgb,var(--color-slate)_88%,transparent)] rotate-45 z-[-1] pointer-events-none border-white/10"
-      style="box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2)"
-    ></div>
+      style="box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2)"></div>
 
     <span class="text-[11px] font-bold text-white leading-none">
       {{ tooltipService.getTooltipLabel()() }}
@@ -396,318 +208,251 @@
 
   <!-- Empty State / Initial Load -->
   @if (store.months().length === 0) {
-    <div class="absolute inset-0 flex items-center justify-center bg-canvas z-100">
-      <div
-        class="flex flex-col items-center gap-8 px-12 py-10 bg-white/50 backdrop-blur border border-white/60 shadow-xl rounded-[40px] max-w-lg w-full"
-      >
-        <img ngSrc="favicon.png" alt="Marble Finances" width="80" height="80" />
-        <div class="text-center">
-          <h2 class="text-2xl font-black text-slate mb-1">Welcome to Marble Finances</h2>
-          <p class="text-sm text-slate/60 font-medium">
-            Start a new portfolio or load an existing backup
-          </p>
-        </div>
-
-        <!-- Action Cards -->
-        <div class="grid grid-cols-2 gap-4 w-full">
-          <!-- New Portfolio -->
-          <button
-            (click)="createFreshPortfolio()"
-            class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-white text-slate hover:bg-gray-50 transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-gray-100"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              class="text-slate/70"
-            >
-              <path
-                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z"
-              />
-            </svg>
-            <div class="text-center">
-              <div class="font-black text-base tracking-tight">New Portfolio</div>
-              <div class="text-xs text-slate/50 mt-0.5 font-medium">Start fresh</div>
-            </div>
-          </button>
-
-          <!-- Load from file -->
-          <button
-            (click)="fileImporter.click()"
-            class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-slate text-white hover:bg-slate/90 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-transparent"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              class="opacity-90"
-            >
-              <path
-                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-              />
-              <path
-                d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"
-              />
-            </svg>
-            <div class="text-center">
-              <div class="font-black text-base tracking-tight">Load Portfolio</div>
-              <div class="text-xs opacity-70 mt-0.5 font-medium">Import from JSON</div>
-            </div>
-          </button>
-        </div>
-
-        <input
-          type="file"
-          #fileImporter
-          accept=".json"
-          class="hidden"
-          (change)="importData($event)"
-        />
+  <div class="absolute inset-0 flex items-center justify-center bg-canvas z-100">
+    <div
+      class="flex flex-col items-center gap-8 px-12 py-10 bg-white/50 backdrop-blur border border-white/60 shadow-xl rounded-[40px] max-w-lg w-full">
+      <img ngSrc="favicon.png" alt="Marble Finances" width="80" height="80" />
+      <div class="text-center">
+        <h2 class="text-2xl font-black text-slate mb-1">Welcome to Marble Finances</h2>
+        <p class="text-sm text-slate/60 font-medium">
+          Start a new portfolio or load an existing backup
+        </p>
       </div>
+
+      <!-- Action Cards -->
+      <div class="grid grid-cols-2 gap-4 w-full">
+        <!-- New Portfolio -->
+        <button (click)="createFreshPortfolio()"
+          class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-white text-slate hover:bg-gray-50 transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16"
+            class="text-slate/70">
+            <path
+              d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z" />
+          </svg>
+          <div class="text-center">
+            <div class="font-black text-base tracking-tight">New Portfolio</div>
+            <div class="text-xs text-slate/50 mt-0.5 font-medium">Start fresh</div>
+          </div>
+        </button>
+
+        <!-- Load from file -->
+        <button (click)="fileImporter.click()"
+          class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-slate text-white hover:bg-slate/90 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-transparent">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16"
+            class="opacity-90">
+            <path
+              d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+            <path
+              d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+          </svg>
+          <div class="text-center">
+            <div class="font-black text-base tracking-tight">Load Portfolio</div>
+            <div class="text-xs opacity-70 mt-0.5 font-medium">Import from JSON</div>
+          </div>
+        </button>
+      </div>
+
+      <input type="file" #fileImporter accept=".json" class="hidden" (change)="importData($event)" />
     </div>
+  </div>
   }
 
   <!-- Main Canvas Area -->
-  <main
-    #mainArea
-    id="main-area"
-    class="flex-1 h-full relative overflow-hidden"
-    [class.cursor-grab]="!isPanningCanvas()"
-    [class.cursor-grabbing]="isPanningCanvas()"
-    (wheel)="onWheel($event)"
-    (mousedown)="onMouseDown($event)"
-  >
-    <div
-      id="canvas-wrapper"
-      #canvasWrapper
+  <main #mainArea id="main-area" class="flex-1 h-full relative overflow-hidden" [class.cursor-grab]="!isPanningCanvas()"
+    [class.cursor-grabbing]="isPanningCanvas()" (wheel)="onWheel($event)" (mousedown)="onMouseDown($event)">
+    <div id="canvas-wrapper" #canvasWrapper
       class="absolute top-0 left-0 flex flex-col gap-96 items-start p-64 pt-96 transition-opacity duration-300"
-      [class.opacity-0]="!isCanvasReady()"
-      [class.opacity-100]="isCanvasReady()"
-      [class.transition-transform]="isAnimatingPan()"
-      [class.duration-500]="isAnimatingPan()"
-      [class.ease-out]="isAnimatingPan()"
-      [style.transform]="canvasTransform()"
-    >
+      [class.opacity-0]="!isCanvasReady()" [class.opacity-100]="isCanvasReady()"
+      [class.transition-transform]="isAnimatingPan()" [class.duration-500]="isAnimatingPan()"
+      [class.ease-out]="isAnimatingPan()" [style.transform]="canvasTransform()">
       <!-- Refactored Canvas: High-Performance CSS Grid Layout (Multi-Year Matrix) -->
-      <div
-        id="canvas-grid"
-        class="grid gap-x-96 gap-y-96 items-start auto-cols-min"
+      <div id="canvas-grid" class="grid gap-x-96 gap-y-96 items-start auto-cols-min"
         [style.grid-template-columns]="'auto repeat(12, min-content)'"
-        [style.grid-template-rows]="'repeat(' + store.monthsByYear().length + ', auto)'"
-      >
+        [style.grid-template-rows]="'repeat(' + store.monthsByYear().length + ', auto)'">
         @for (
-          group of store.monthsByYear();
-          track group.year;
-          let yearIdx = $index;
-          let lastYear = $last
+        group of store.monthsByYear();
+        track group.year;
+        let yearIdx = $index;
+        let lastYear = $last
         ) {
-          <!-- Year Identifier Column (Always Column 1 of its Row) -->
-          <div class="col-start-1 select-none self-end h-fit pb-16" [style.grid-row]="yearIdx + 1">
+        <!-- Year Identifier Column (Always Column 1 of its Row) -->
+        <div class="col-start-1 select-none self-end h-fit pb-16" [style.grid-row]="yearIdx + 1">
+          <div
+            class="flex flex-col items-center justify-center bg-white/80 backdrop-blur-md p-10 rounded-[60px] shadow-sm border border-gray-200/50 min-w-[450px] h-[320px]">
+            <span class="text-[200px] font-black text-slate tracking-[-0.05em] leading-none select-none">{{ group.year
+              }}</span>
+            @if (group.items.length > 1) {
             <div
-              class="flex flex-col items-center justify-center bg-white/80 backdrop-blur-md p-10 rounded-[60px] shadow-sm border border-gray-200/50 min-w-[450px] h-[320px]"
-            >
-              <span
-                class="text-[200px] font-black text-slate tracking-[-0.05em] leading-none select-none"
-                >{{ group.year }}</span
-              >
-              @if (group.items.length > 1) {
-                <div
-                  class="flex items-center gap-4 mt-6 px-8 py-3 rounded-full border border-gray-100 bg-white shadow-md overflow-hidden relative"
-                >
-                  <!-- Functional Background Tonal Wash -->
-                  <div
-                    class="absolute inset-0 opacity-20"
-                    [class.bg-emerald-400]="group.ytd >= 0"
-                    [class.bg-rose-400]="group.ytd < 0"
-                  ></div>
+              class="flex items-center gap-4 mt-6 px-8 py-3 rounded-full border border-gray-100 bg-white shadow-md overflow-hidden relative">
+              <!-- Functional Background Tonal Wash -->
+              <div class="absolute inset-0 opacity-20" [class.bg-emerald-400]="group.ytd >= 0"
+                [class.bg-rose-400]="group.ytd < 0"></div>
 
-                  <span
-                    class="text-[12px] font-black tracking-[0.15em] uppercase opacity-40 relative z-10"
-                    >YTD</span
-                  >
-                  <span
-                    class="text-[11px] font-black px-2.5 py-1 rounded-full"
-                    [class]="
+              <span class="text-[12px] font-black tracking-[0.15em] uppercase opacity-40 relative z-10">YTD</span>
+              <span class="text-[11px] font-black px-2.5 py-1 rounded-full" [class]="
                       group.ytd >= 0
                         ? 'bg-emerald-100 text-emerald-800'
                         : 'bg-rose-100 text-rose-800'
-                    "
-                  >
-                    {{ group.ytd >= 0 ? '+' : '' }}{{ group.ytd | number: '1.2-2' }}%
-                  </span>
-                </div>
-              }
+                    ">
+                {{ group.ytd >= 0 ? '+' : '' }}{{ group.ytd | number: '1.2-2' }}%
+              </span>
             </div>
+            }
           </div>
+        </div>
 
-          <!-- Month Boards (Columns mapped to exact month index for vertical alignment) -->
-          @for (item of group.items; track item.month.id) {
-            <!-- Calculate fixed column based on actual month name to align Aprils with Aprils, etc. -->
-            <div
-              class="relative h-full"
-              [style.grid-row]="yearIdx + 1"
-              [style.grid-column]="getMonthColumn(item.month.date)"
-            >
-              <app-month-board [monthIndex]="item.index" />
+        <!-- Month Boards (Columns mapped to exact month index for vertical alignment) -->
+        @for (item of group.items; track item.month.id) {
+        <!-- Calculate fixed column based on actual month name to align Aprils with Aprils, etc. -->
+        <div class="relative h-full" [style.grid-row]="yearIdx + 1"
+          [style.grid-column]="getMonthColumn(item.month.date)">
+          <app-month-board [monthIndex]="item.index" />
 
-              @if (
-                store.compareState()?.baseMonthId === item.month.id &&
-                store.isCompareRibbonVisible()
-              ) {
-                <app-comparison-overlay
-                  [baseId]="item.month.id"
-                  [targetId]="store.compareState()!.targetMonthId"
-                />
-              }
-            </div>
+          @if (
+          store.compareState()?.baseMonthId === item.month.id &&
+          store.isCompareRibbonVisible()
+          ) {
+          <app-comparison-overlay [baseId]="item.month.id" [targetId]="store.compareState()!.targetMonthId" />
           }
+        </div>
+        }
 
-          <!-- Month Skeletons-->
-          @for (mIdx of getMissingMonthIndices(group); track mIdx) {
-            <div
-              class="w-full h-full min-w-5xl min-h-5xl border-2 border-gray-200 rounded-[48px] bg-slate/3 backdrop-blur-[2px] flex flex-col items-center justify-center gap-8 z-0 shadow-inner group transition-all duration-300"
-              [style.grid-row]="yearIdx + 1"
-              [style.grid-column]="mIdx + 1"
-            >
-              <button
-                class="w-24 h-24 rounded-full bg-slate shadow-lg border-2 border-slate/10 flex items-center justify-center transition-all duration-300 opacity-20 text-white hover:opacity-100 hover:scale-110 cursor-pointer"
-                (click)="addSpecificMonth(+group.year, mIdx)"
-              >
-                <span class="text-5xl font-black pointer-events-none">+</span>
-              </button>
+        <!-- Month Skeletons-->
+        @for (mIdx of getMissingMonthIndices(group); track mIdx) {
+        <div
+          class="w-full h-full min-w-5xl min-h-5xl border-2 border-gray-200 rounded-[48px] bg-slate/3 backdrop-blur-[2px] flex flex-col items-center justify-center gap-8 z-0 shadow-inner group transition-all duration-300"
+          [style.grid-row]="yearIdx + 1" [style.grid-column]="mIdx + 1">
+          <button
+            class="w-24 h-24 rounded-full bg-slate shadow-lg border-2 border-slate/10 flex items-center justify-center transition-all duration-300 opacity-20 text-white hover:opacity-100 hover:scale-110 cursor-pointer"
+            (click)="addSpecificMonth(+group.year, mIdx)">
+            <span class="text-5xl font-black pointer-events-none">+</span>
+          </button>
 
-              <div
-                class="flex flex-col items-center gap-2 opacity-100 group-hover:scale-105 transition-all duration-700"
-              >
-                <span class="text-6xl font-black text-slate-600 leading-none select-none">{{
-                  getMonthNameFromIndex(mIdx) || 'Unknown'
-                }}</span>
-                <span
-                  class="text-4xl font-black text-slate-400 tracking-[0.2em] leading-none select-none ml-[0.2em] uppercase"
-                  >{{ group.year }}</span
-                >
-              </div>
-            </div>
-          }
+          <div class="flex flex-col items-center gap-2 opacity-100 group-hover:scale-105 transition-all duration-700">
+            <span class="text-6xl font-black text-slate-600 leading-none select-none">{{
+              getMonthNameFromIndex(mIdx) || 'Unknown'
+              }}</span>
+            <span
+              class="text-4xl font-black text-slate-400 tracking-[0.2em] leading-none select-none ml-[0.2em] uppercase">{{
+              group.year }}</span>
+          </div>
+        </div>
+        }
         }
       </div>
     </div>
   </main>
   @defer (when store.isChartsModalOpen(); on idle) {
-    <app-portfolio-charts-modal #chartsModal />
+  <app-portfolio-charts-modal #chartsModal />
   }
 
   <!-- History Sidebar: Inverse Chronological Interaction Feed -->
   @if (store.isChangelogOpen()) {
-    <nav
-      class="fixed top-0 right-0 bottom-0 w-[420px] bg-white/94 backdrop-blur-xl flex flex-col px-10 pt-[120px] pb-8 overflow-y-auto z-100 custom-scrollbar border-l border-border-timeline shadow-[-20px_0_40px_rgba(0,0,0,0.05)] animate-slide-in-right"
-      tabindex="-1"
-      aria-label="Portfolio Changelog"
-      (click)="$event.stopPropagation()"
-      (keydown)="$event.stopPropagation()"
-    >
-      <ul class="relative list-none p-0 m-0 pl-6">
-        <!-- Vertical Timeline Line -->
-        @if (store.changelogInverse().length > 0) {
-          <div class="absolute left-[7px] top-8 bottom-12 w-[1.5px] bg-slate/10 rounded-full"></div>
-        }
+  <nav
+    class="fixed top-0 right-0 bottom-0 w-[420px] bg-white/94 backdrop-blur-xl flex flex-col px-10 pt-[120px] pb-8 overflow-y-auto z-100 custom-scrollbar border-l border-border-timeline shadow-[-20px_0_40px_rgba(0,0,0,0.05)] animate-slide-in-right"
+    tabindex="-1" aria-label="Portfolio Changelog" (click)="$event.stopPropagation()"
+    (keydown)="$event.stopPropagation()">
+    <ul class="relative list-none p-0 m-0 pr-6">
+      <!-- Vertical Timeline Line (Mirrored to the Right) -->
+      @if (store.changelogInverse().length > 0) {
+      <div class="absolute right-[7px] top-8 bottom-12 w-[1.5px] bg-slate/10 rounded-full"></div>
+      }
 
-        @for (item of store.changelogInverse(); track item.id; let first = $first) {
-          <li class="relative mb-6 last:mb-0 group">
-            <!-- Timeline Dot -->
-            <div class="absolute left-[-21px] top-[26px] w-[9px] h-[9px] rounded-full border-2 border-white bg-slate/20 shadow-sm z-10 transition-all duration-300 group-hover:bg-accent group-hover:scale-125 group-hover:border-accent/20"></div>
+      @for (item of store.changelogInverse(); track item.id; let first = $first) {
+      <li class="relative mb-6 last:mb-0 group">
+        <!-- Timeline Dot (Mirrored to the Right) -->
+        <div
+          class="absolute right-[-21px] top-[26px] w-[9px] h-[9px] rounded-full border-2 border-white bg-slate/20 shadow-sm z-10 transition-all duration-300 group-hover:bg-accent group-hover:scale-125 group-hover:border-accent/20">
+        </div>
 
-            <button
-              (click)="store.promptRevert(item)"
-              class="w-full text-left px-6 py-5 rounded-[24px] transition-all flex items-start gap-5 group interactive-element hover:bg-gray-50 cursor-pointer"
-            >
-              <div class="flex flex-col flex-1">
-                <div class="flex items-center justify-between mb-1.5">
-                  <span class="text-[15px] font-black text-slate leading-tight">
-                    {{ item.label }}
-                  </span>
-                </div>
-                
+        <div
+          class="w-full text-left px-7 py-6 rounded-[32px] flex items-start gap-5 group relative border border-transparent overflow-visible transition-colors"
+        >
+          <div class="flex flex-col flex-1">
+            <div class="flex items-start justify-between mb-2">
+              <div class="flex flex-col gap-1">
+                <span class="text-[17px] font-black text-slate">
+                  {{ item.label }}
+                </span>
                 @if (item.details) {
-                  <p class="text-[12px] font-medium text-slate/50 mb-2 leading-relaxed">
-                    {{ item.details }}
-                  </p>
+                <p class="text-[13px] font-medium text-slate/55 leading-relaxed tracking-tight">
+                  {{ item.details }}
+                </p>
                 }
-
-                <div class="flex items-center gap-2.5">
-                  <span class="text-[10px] font-bold text-slate/30">
-                    {{ item.timestamp | date: 'shortTime' }}
-                  </span>
-                  <span class="text-[10px] font-bold text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                    Revert Portfolio →
-                  </span>
-                </div>
               </div>
-            </button>
-          </li>
-        } @empty {
-          <div class="flex flex-col items-center justify-center py-32 px-12 text-center">
-            <div class="w-16 h-16 rounded-full bg-slate/5 flex items-center justify-center mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-slate/20" viewBox="0 0 16 16">
-                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-              </svg>
-            </div>
-            <h3 class="text-[14px] font-black text-slate tracking-tight mb-2">No Changes Yet</h3>
-            <p class="text-[12px] font-medium text-slate/40 leading-relaxed max-w-[200px]">
-              Every modification you make to the portfolio will be tracked here for this session.
-            </p>
-          </div>
-        }
-      </ul>
 
-      <div class="mt-auto pt-8 border-t border-gray-100 italic text-[11px] text-slate/30 font-medium">
-        Changelog is temporary and will be cleared if you refresh the page or close this tab.
+              <div class="flex items-center gap-3">
+                <button (click)="store.promptRevert(item)"
+                  class="flex items-center justify-center w-8 h-8 rounded-full bg-slate text-white hover:bg-black hover:shadow-lg transition-all opacity-0 group-hover:opacity-100 interactive-element"
+                  data-tooltip="Reset the portfolio to this point">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                    <path
+                      d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966a.25.25 0 0 0 .41-.192z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-3">
+              <div class="flex items-center gap-1.5 min-h-[1.5em]">
+                <span class="text-[11px] font-bold text-slate/40">
+                  {{ item.timestamp | date: 'h:mm a' }}
+                </span>
+                <span
+                  class="text-[11px] font-bold text-slate/30 hidden group-hover:block transition-all whitespace-nowrap">
+                  • {{ item.timestamp | date: 'MMM d, y' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      } @empty {
+      <div class="flex flex-col items-center justify-center py-32 px-12 text-center">
+        <div class="w-16 h-16 rounded-full bg-slate/5 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-slate/20"
+            viewBox="0 0 16 16">
+            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+          </svg>
+        </div>
+        <h3 class="text-[14px] font-black text-slate tracking-tight mb-2">No Changes Yet</h3>
+        <p class="text-[12px] font-medium text-slate/40 leading-relaxed max-w-[200px]">
+          Every modification you make to the portfolio will be tracked here for this session.
+        </p>
       </div>
-    </nav>
+      }
+    </ul>
+
+    <div class="mt-auto pt-8 border-t border-gray-100 italic text-[11px] text-slate/30 font-medium">
+      Changelog is temporary and will be cleared if you refresh the page or close this tab.
+    </div>
+  </nav>
   }
 
   <!-- Zoom Controls (Google Maps Style) -->
   @if (isZoomControlsVisible()) {
-    <div
-      class="fixed bottom-8 right-8 z-110 flex flex-col border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden animate-slide-up"
-    >
-      <button
-        (click)="zoomIn($event)"
-        class="p-4 hover:bg-gray-50 text-slate transition-colors border-b border-gray-100 flex items-center justify-center interactive-element"
-        aria-label="Zoom in"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          fill="currentColor"
-          class="bi bi-plus-lg"
-          viewBox="0 0 16 16"
-        >
-          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-        </svg>
-      </button>
-      <button
-        (click)="zoomOut($event)"
-        class="p-4 hover:bg-gray-50 text-slate transition-colors flex items-center justify-center interactive-element"
-        aria-label="Zoom out"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          fill="currentColor"
-          class="bi bi-dash-lg"
-          viewBox="0 0 16 16"
-        >
-          <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8Z"/>
-        </svg>
-      </button>
-    </div>
+  <div
+    class="fixed bottom-8 right-8 z-110 flex flex-col border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden animate-slide-up">
+    <button (click)="zoomIn($event)"
+      class="p-4 hover:bg-gray-50 text-slate transition-colors border-b border-gray-100 flex items-center justify-center interactive-element"
+      aria-label="Zoom in">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus-lg"
+        viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+          d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+      </svg>
+    </button>
+    <button (click)="zoomOut($event)"
+      class="p-4 hover:bg-gray-50 text-slate transition-colors flex items-center justify-center interactive-element"
+      aria-label="Zoom out">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-dash-lg"
+        viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8Z" />
+      </svg>
+    </button>
+  </div>
   }
 </div>

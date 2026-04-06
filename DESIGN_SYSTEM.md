@@ -221,15 +221,24 @@ Used sparingly for floating UI elements above the canvas.
 
 ### Modals & Dialogs
 
-All modals must follow a strictly unified layout to maintain a professional, "app-like" experience.
+All modals must follow a strictly unified layout to maintain a professional, "app-like" experience. The standard for this layout is derived from the primary data-entry interfaces.
 
 | Property | Spec |
 |---|---|
-| **Alignment** | **Strictly Left-Aligned.** Headers, body text, and primary actions must start from the left margin. Never use `text-center`. |
-| **Headers** | `text-2xl font-black text-slate mb-6` (or `mb-2` if followed by secondary text). |
-| **Padding** | Minimum `p-8` (32px) for primary containers. |
-| **Width** | Typically `w-96` (384px) for standard inputs, `max-w-md` for settings. |
-| **Primary Action** | Positioned in a `flex justify-end gap-3` row at the bottom. Primary confirm button must be on the far right, with secondary/cancel on its left. |
+| **Backdrop** | `fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-200 flex items-center justify-center` |
+| **Container** | Centered via parent Flexbox. Avoid `absolute` positioning for the main container if possible to ensure robust centering across all viewports. |
+| **Background** | Pure white (`#FFFFFF`) |
+| **Radius** | `rounded-[32px]` (32px) |
+| **Shadow** | `shadow-2xl` (Deep and soft) |
+| **Border** | `border border-gray-100` (1px) |
+| **Width** | Standard: `w-[400px]` (25rem). Settings: `max-w-md` (28rem). **Viewport Constraint:** `max-w-[80vw]` (enforced globally by ModalComponent). |
+| **Padding** | `p-8` (32px) all sides. |
+| **Alignment** | **Strictly Left-Aligned.** Headers, body text, and labels must start from the left margin. Never use `text-center` for primary content. |
+| **Typography** | Title: `text-2xl font-black text-slate mb-6`. Labels: `text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block`. |
+| **Animations** | **Closed:** `scale-95 translate-y-4 opacity-0`. **Open:** `scale-100 translate-y-0 opacity-100`. Transition: `duration-300`. |
+| **Actions** | Positioned in a `flex justify-end gap-3 pt-4` row at the bottom. |
+| **Primary Button** | Far right. `px-6 py-2.5 rounded-md text-[16px] font-bold bg-slate text-white`. |
+| **Secondary Button** | Left of primary. `px-5 py-2.5 rounded-md text-[16px] font-bold text-gray-600`. |
 
 ### Performance Badges (Gains/Losses)
 
@@ -260,12 +269,13 @@ All percentage-based performance indicators must follow the Tonal Badge pattern 
 | **Secondary** | 20px/10px padding (`px-5 py-2.5`) · 6px radius (`rounded-md`) · Transparent fill · Gray 600 text · **16px Bold** → Hover: Gray 800 text |
 | **Danger** | 24px/10px padding (`px-6 py-2.5`) · 6px radius (`rounded-md`) · Red 500 fill · White text · **16px Bold** → Hover: Red 600 fill · Light shadow |
 
-### Dismiss Button
+#### Dismiss Button
 
 The `.btn-dismiss` CSS utility class is the **single, canonical implementation** for all modal/overlay close buttons.
 
 | Property | Value |
 |---|---|
+| **Position** | `absolute top-8 right-8` |
 | **Shape** | Pill (fully rounded, `border-radius: 9999px`) |
 | **Padding** | Centralized in CSS (`width/height: 32px`) |
 | **Resting fill** | Slate at 8% opacity (`color-mix`) |

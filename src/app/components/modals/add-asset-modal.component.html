@@ -1,172 +1,131 @@
-<!-- src/app/components/modals/add-asset-modal.component.html -->
-<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-200 flex transition-all duration-300"
-    [class.opacity-0]="!store.isAddModalOpen()" [class.pointer-events-none]="!store.isAddModalOpen()"
-    [class.opacity-100]="store.isAddModalOpen()"
-    role="dialog" aria-modal="true">
+<app-modal
+   [isOpen]="store.isAddModalOpen()"
+   [title]="modalTitle()"
+   [buttons]="addButtons()"
+   (dismiss)="store.closeAddModal()">
 
-   <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-      tabindex="-1"
-      (keydown.enter)="confirmCreate()">
+   <div (keydown.enter)="confirmCreate()" tabindex="-1" class="outline-none">
+      <label for="add-asset-name" class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Name</label>
+      <input #nameInput id="add-asset-name" type="text" [(ngModel)]="assetName"
+         class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pb-2 mb-6 transition-colors interactive-element"
+         autocomplete="off">
 
-      <div
-         class="bg-white rounded-[32px] shadow-2xl p-8 w-[400px] border border-gray-100 flex flex-col relative transition-all duration-300"
-         [class.scale-95]="!store.isAddModalOpen()" [class.scale-100]="store.isAddModalOpen()"
-         [class.translate-y-4]="!store.isAddModalOpen()" [class.translate-y-0]="store.isAddModalOpen()"
-         [class.opacity-0]="!store.isAddModalOpen()" [class.opacity-100]="store.isAddModalOpen()">
-         
-         <button (click)="store.closeAddModal()" (keydown.enter)="store.closeAddModal()" class="btn-dismiss absolute top-8 right-8 interactive-element" aria-label="Close add modal">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-               <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-            </svg>
-         </button>
-
-         <h3 class="text-2xl font-black text-slate mb-6">
-            {{ store.addModalType() === 'breakdown' ? 'Add Subcategory' : (store.addModalType().startsWith('flow') ?
-            'Add Item' : 'Add Asset') }}
-         </h3>
-         <label for="add-asset-name" class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Name</label>
-         <input #nameInput id="add-asset-name" type="text" [(ngModel)]="assetName"
-            class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pb-2 mb-6 transition-colors interactive-element"
-            autocomplete="off">
- 
-         <label for="add-asset-amount" class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Amount</label>
-         <input id="add-asset-amount" type="number" [(ngModel)]="assetAmount"
-            class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
-            autocomplete="off">
-         <div class="mt-2 mb-8 min-h-[1.2em]">
-            @if (assetAmount !== null && assetAmount !== undefined) {
-               <span class="text-[14px] font-black text-gray-600/70">{{ formatUSD(assetAmount) }}</span>
-            }
-         </div>
-
-         @if (store.addModalType() === 'asset') {
-         <p class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-3">Block Color</p>
-
-         <!-- Palette View -->
-         @if (store.addModalMode() === 'palette') {
-         <div class="flex flex-wrap gap-3 mb-10 items-center transition-all duration-300">
-
-            @for (col of availableColors; track col) {
-            <button (click)="store.selectColorRef(col)" (keydown.enter)="store.selectColorRef(col)"
-               class="w-8 h-8 rounded-full flex items-center justify-center interactive-element"
-               [attr.aria-label]="'Select color ' + col"
-               [class]="getPaletteClass(col)">
-            </button>
-            }
-
-            @for (col of store.customColors(); track col) {
-            <button (click)="store.selectColorRef(col)" (keydown.enter)="store.selectColorRef(col)"
-               class="w-8 h-8 rounded-full flex items-center justify-center interactive-element"
-               [attr.aria-label]="'Select custom color ' + col"
-               [class]="getPaletteClass(col)" [style.background-color]="col">
-            </button>
-            }
-
-            <button (click)="openCustom()" (keydown.enter)="openCustom()"
-               class="relative w-8 h-8 rounded-full flex items-center justify-center interactive-element hover:scale-110 opacity-80 hover:opacity-100"
-               aria-label="Open custom color picker"
-               [class]="store.newAssetColor().startsWith('#') && !store.customColors().includes(store.newAssetColor()) ? 'ring-4 ring-offset-2 ring-slate scale-110 shadow-md' : ''"
-               style="background: conic-gradient(from 90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);">
-            </button>
-
-         </div>
+      <label for="add-asset-amount" class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Amount</label>
+      <input id="add-asset-amount" type="number" [(ngModel)]="assetAmount"
+         class="w-full border-b-2 border-slate/10 focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
+         autocomplete="off">
+      <div class="mt-2 mb-8 min-h-[1.2em]">
+         @if (assetAmount !== null && assetAmount !== undefined) {
+            <span class="text-[14px] font-black text-gray-600/70">{{ formatUSD(assetAmount) }}</span>
          }
-
-         <!-- Custom Color View -->
-         @if (store.addModalMode() === 'custom') {
-         <div
-            class="flex flex-col items-center gap-4 mb-8 transition-all duration-300 bg-gray-50/50 p-4 rounded-xl border border-gray-100">
-
-            <div #wheelContainer
-               class="relative w-[160px] h-[160px] rounded-full shadow-sm cursor-crosshair touch-none interactive-element"
-               (mousedown)="handleInteract($event)" (mousemove)="handleInteract($event)"
-               (touchstart)="handleInteract($event)" (touchmove)="handleInteract($event)">
-
-               <canvas #colorCanvas width="160" height="160" class="rounded-full"></canvas>
-
-               <div #colorTarget
-                  class="absolute w-4 h-4 rounded-full border-2 border-white shadow-[0_1px_3px_rgba(0,0,0,0.3)] pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
-                  [style.left.px]="targetX()" [style.top.px]="targetY()"
-                  [style.background-color]="store.tempCustomColor()">
-               </div>
-            </div>
-
-            <div class="flex items-center w-full justify-between mt-2 px-2">
-               <div class="flex flex-col">
-                  <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Custom Hex</p>
-                  <p [style.color]="store.tempCustomColor()" class="text-base font-mono font-bold">{{
-                     store.tempCustomColor() }}</p>
-               </div>
-               <button (click)="store.confirmCustomColor()"
-                  (keydown.enter)="store.confirmCustomColor()"
-                  class="w-7 h-7 rounded-[2px] shadow-sm cursor-pointer transition-transform hover:scale-105 border border-black/10 interactive-element"
-                  [style.background-color]="store.tempCustomColor()" 
-                  aria-label="Confirm Custom Color"
-                  title="Select Color & Return">
-               </button>
-            </div>
-
-         </div>
-         }
-         }
-
-         @if (store.addModalType().startsWith('flow')) {
-         <p class="text-[12px] font-black uppercase text-gray-500 tracking-normal mb-3">Subcategory</p>
-         <div class="flex gap-2 mb-4 w-full flex-wrap">
- 
-            @if (store.addModalType() === 'flow-expense') {
-            <button (click)="selectFlowCategory('fixed')"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
-               [class]="flowCategory === 'fixed' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Fixed</button>
-            <button (click)="selectFlowCategory('flexible')"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
-               [class]="flowCategory === 'flexible' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Flexible</button>
-            @for (cat of customExpenseCategories(); track cat) {
-            <button (click)="selectFlowCategory(cat)"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none capitalize interactive-element whitespace-nowrap"
-               [class]="flowCategory === cat ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">{{
-               cat }}</button>
-            }
-            <button (click)="selectFlowCategory('other')"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
-               [class]="flowCategory === 'other' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Other</button>
-            }
- 
-            @if (store.addModalType() === 'flow-savings') {
-            <button (click)="selectFlowCategory('general')"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
-               [class]="flowCategory === 'general' ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">General</button>
-            @for (cat of customSavingsCategories(); track cat) {
-            <button (click)="selectFlowCategory(cat)"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none capitalize interactive-element whitespace-nowrap"
-               [class]="flowCategory === cat ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">{{
-               cat }}</button>
-            }
-            <button (click)="selectFlowCategory('other')"
-               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
-               [class]="flowCategory === 'other' ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Other</button>
-            }
-         </div>
-
-         @if (flowCategory === 'other') {
-         <div class="mt-8 mb-8">
-            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Subcategory Name</p>
-            <input #otherInput type="text" [(ngModel)]="customFlowCategory"
-               class="w-full border-b-2 border-border-interactive focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
-               autocomplete="off">
-         </div>
-         } @else {
-         <div class="mb-10"></div>
-         }
-         }
-
-         <div class="flex justify-end gap-3 pt-4">
-            <button (click)="confirmCreate()"
-               class="px-6 py-2.5 rounded-md text-[16px] font-bold bg-slate text-white hover:bg-black transition-colors shadow-sm interactive-element">{{
-               store.addModalType() === 'breakdown' ? 'Add Subcategory' : (store.addModalType().startsWith('flow') ?
-               'Add Item' : 'Add Asset') }}</button>
-         </div>
-
       </div>
+
+      @if (store.addModalType() === 'asset') {
+      <p class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-3">Block Color</p>
+
+      <!-- Palette View -->
+      @if (store.addModalMode() === 'palette') {
+      <div class="flex flex-wrap gap-3 mb-10 items-center transition-all duration-300">
+         @for (col of availableColors; track col) {
+         <button (click)="store.selectColorRef(col)"
+            class="w-8 h-8 rounded-full flex items-center justify-center interactive-element"
+            [attr.aria-label]="'Select color ' + col"
+            [class]="getPaletteClass(col)">
+         </button>
+         }
+
+         @for (col of store.customColors(); track col) {
+         <button (click)="store.selectColorRef(col)"
+            class="w-8 h-8 rounded-full flex items-center justify-center interactive-element"
+            [attr.aria-label]="'Select custom color ' + col"
+            [class]="getPaletteClass(col)" [style.background-color]="col">
+         </button>
+         }
+
+         <button (click)="openCustom()"
+            class="relative w-8 h-8 rounded-full flex items-center justify-center interactive-element hover:scale-110 opacity-80 hover:opacity-100"
+            aria-label="Open custom color picker"
+            [class]="store.newAssetColor().startsWith('#') && !store.customColors().includes(store.newAssetColor()) ? 'ring-4 ring-offset-2 ring-slate scale-110 shadow-md' : ''"
+            style="background: conic-gradient(from 90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);">
+         </button>
+      </div>
+      }
+
+      <!-- Custom Color View -->
+      @if (store.addModalMode() === 'custom') {
+      <div class="flex flex-col items-center gap-4 mb-4 transition-all duration-300 bg-gray-50/50 p-4 rounded-xl border border-gray-100">
+         <div #wheelContainer
+            class="relative w-[160px] h-[160px] rounded-full shadow-sm cursor-crosshair touch-none interactive-element"
+            (mousedown)="handleInteract($event)" (mousemove)="handleInteract($event)"
+            (touchstart)="handleInteract($event)" (touchmove)="handleInteract($event)">
+            <canvas #colorCanvas width="160" height="160" class="rounded-full"></canvas>
+            <div #colorTarget
+               class="absolute w-4 h-4 rounded-full border-2 border-white shadow-[0_1px_3px_rgba(0,0,0,0.3)] pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
+               [style.left.px]="targetX()" [style.top.px]="targetY()"
+               [style.background-color]="store.tempCustomColor()">
+            </div>
+         </div>
+
+         <div class="flex items-center w-full justify-between mt-2 px-2">
+            <div class="flex flex-col">
+               <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Custom Hex</p>
+               <p [style.color]="store.tempCustomColor()" class="text-base font-mono font-bold">{{ store.tempCustomColor() }}</p>
+            </div>
+            <button (click)="store.confirmCustomColor()"
+               class="w-7 h-7 rounded-[2px] shadow-sm cursor-pointer transition-transform hover:scale-105 border border-black/10 interactive-element"
+               [style.background-color]="store.tempCustomColor()" 
+               aria-label="Confirm Custom Color"
+               title="Select Color & Return">
+            </button>
+         </div>
+      </div>
+      }
+      }
+
+      @if (store.addModalType().startsWith('flow')) {
+      <p class="text-[12px] font-black uppercase text-gray-500 tracking-normal mb-3">Subcategory</p>
+      <div class="flex gap-2 mb-4 w-full flex-wrap">
+         @if (store.addModalType() === 'flow-expense') {
+         <button (click)="selectFlowCategory('fixed')"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+            [class]="flowCategory === 'fixed' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Fixed</button>
+         <button (click)="selectFlowCategory('flexible')"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+            [class]="flowCategory === 'flexible' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Flexible</button>
+         @for (cat of customExpenseCategories(); track cat) {
+         <button (click)="selectFlowCategory(cat)"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none capitalize interactive-element whitespace-nowrap"
+            [class]="flowCategory === cat ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">{{ cat }}</button>
+         }
+         <button (click)="selectFlowCategory('other')"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+            [class]="flowCategory === 'other' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Other</button>
+         }
+
+         @if (store.addModalType() === 'flow-savings') {
+         <button (click)="selectFlowCategory('general')"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+            [class]="flowCategory === 'general' ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">General</button>
+         @for (cat of customSavingsCategories(); track cat) {
+         <button (click)="selectFlowCategory(cat)"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none capitalize interactive-element whitespace-nowrap"
+            [class]="flowCategory === cat ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">{{ cat }}</button>
+         }
+         <button (click)="selectFlowCategory('other')"
+            class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+            [class]="flowCategory === 'other' ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Other</button>
+         }
+      </div>
+
+      @if (flowCategory === 'other') {
+      <div class="mt-8 mb-4">
+         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Subcategory Name</p>
+         <input #otherInput type="text" [(ngModel)]="customFlowCategory"
+            class="w-full border-b-2 border-border-interactive focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
+            autocomplete="off">
+      </div>
+      }
+      }
    </div>
-</div>
+
+</app-modal>
