@@ -1,12 +1,14 @@
 <div
   class="bg-label-yellow-muted/60 backdrop-blur-sm rounded-[32px] border border-label-yellow/30 p-8 w-full max-w-sm mb-10 shadow-md select-none">
+  
+  <!-- HEADER: Blueprint-Synced (Matches Monthly Flow/Metrics) -->
   <div class="flex items-center justify-between mb-8">
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 w-full justify-start">
       <span class="text-xl" aria-hidden="true">💡</span>
-      <h2 class="text-[14px] font-black uppercase text-slate/90 tracking-wide">Action Items</h2>
+      <h2 class="text-[20px] font-black text-slate tracking-normal">Action Items</h2>
     </div>
     <button (click)="addAction()"
-      class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element"
+      class="px-3 py-1.5 absolute right-8 top-8 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element"
       aria-label="Add action item">+ Add</button>
   </div>
 
@@ -19,12 +21,12 @@
           [attr.aria-label]="'Status: ' + item.label"
           class="-m-2 p-2 shrink-0 flex items-center justify-center interactive-element transition-all group/check">
           <span
-            class="w-6 h-6 rounded border-2 border-actionIndicator flex items-center justify-center transition-all group-hover/check:border-label-yellow bg-white"></span>
+            class="w-6 h-6 rounded border-2 border-sky-600 flex items-center justify-center transition-all group-hover/check:border-sky-700 bg-white"></span>
         </button>
 
         <div class="flex-1 min-w-0 relative">
           <span #todoLabel contenteditable="true"
-            class="text-[13px] font-bold text-slate/80 leading-relaxed outline-none border-b border-transparent focus:border-slate/30 block w-full interactive-element"
+            class="text-[13px] font-medium text-[#314158] leading-relaxed outline-none border-b border-transparent focus:border-slate/30 block w-full interactive-element"
             [innerText]="item.label" (click)="openMenu($event, item.id)" (blur)="updateLabel(item.id, $event)"
             (keydown.enter)="$event.preventDefault(); blurElement($event)"
             (mousedown)="$event.stopPropagation()"></span>
@@ -58,8 +60,8 @@
         <button (click)="store.toggleActionItem(monthIndex(), item.id)"
           [attr.aria-label]="'Status: ' + item.label"
           class="-m-2 p-2 shrink-0 flex items-center justify-center interactive-element transition-all">
-          <span class="w-6 h-6 rounded border-2 border-actionIndicator bg-label-yellow/10 flex items-center justify-center">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-actionIndicator" stroke-width="4"
+          <span class="w-6 h-6 rounded border-2 border-sky-600/40 bg-sky-500/5 flex items-center justify-center">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-sky-600/60" stroke-width="4"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
@@ -68,7 +70,7 @@
 
         <div class="flex-1 min-w-0 relative">
           <span contenteditable="true"
-            class="text-[13px] font-bold text-slate/50 leading-relaxed outline-none border-b border-transparent focus:border-slate/30 block w-full line-through interactive-element"
+            class="text-[13px] font-medium text-[#314158]/60 leading-relaxed outline-none border-b border-transparent focus:border-slate/30 block w-full line-through interactive-element"
             [innerText]="item.label" (click)="openMenu($event, item.id)" (blur)="updateLabel(item.id, $event)"
             (keydown.enter)="$event.preventDefault(); blurElement($event)"
             (mousedown)="$event.stopPropagation()"></span>

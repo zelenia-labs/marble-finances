@@ -4,7 +4,7 @@
   <!-- ═══════════════════════════════════════════════ -->
   <!-- Table 1: ⌛ 2025 | Yesterday | 🎁 Today        -->
   <!-- ═══════════════════════════════════════════════ -->
-  <div class="bg-white rounded-[32px] flex flex-col space-y-10 pb-0 w-full">
+  <div class="bg-white rounded-[32px] flex flex-col w-full">
  
      <!-- ROW 1: YEARLY BASELINE (YTD & PREVIOUS) -->
      <div class="grid grid-cols-2">
@@ -33,7 +33,10 @@
 
      </div>
 
-     <!-- ROW 2: MONTHLY REALITY (TODAY & LIQUID WORTH) -->
+     <!-- Structural Divider with identical rhythm to the main island separator -->
+     <div class="my-8 border-t-2 border-gray-100"></div>
+
+     <!-- ROW 2: MONTHLY REALITY (TODAY & LIQUID) -->
      <div class="grid grid-cols-2">
        
        <!-- UNIT: Today -->
@@ -47,7 +50,7 @@
          </span>
        </div>
 
-       <!-- UNIT: Liquid Worth -->
+       <!-- UNIT: Liquid -->
        <div class="flex flex-col items-start px-1">
          <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-1">LIQUID</h4>
          <span class="text-[13px] font-black text-[#314158] leading-none">${{(liquidNetWorth() * store.marbleMultiplier()) | number:'1.0-0'}}</span>
@@ -57,6 +60,7 @@
        </div>
 
      </div>
+
 
 
 
