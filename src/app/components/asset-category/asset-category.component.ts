@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 
-import { FinanceStore, AssetCategory, formatHumanUSD } from '../../store/finance.store';
-import { MarbleStackComponent } from '../marble-stack/marble-stack.component';
-import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { App } from '../../app';
+import { AssetCategory, FinanceStore, formatHumanUSD } from '../../store/finance.store';
+import { MarbleStackComponent } from '../marble-stack/marble-stack.component';
 
 @Component({
   selector: 'app-asset-category',
@@ -36,8 +36,7 @@ export class AssetCategoryComponent {
   connectedLists = computed(() => {
     // Collect all sub-product list IDs across the whole asset board for this month
     return this.store
-      .months()
-      [this.monthIndex()].assetCategories.map((_, i) => `sublist-${this.monthIndex()}-${i}`);
+      .months()[this.monthIndex()].assetCategories.map((_, i) => `sublist-${this.monthIndex()}-${i}`);
   });
 
   onDrop(event: CdkDragDrop<number>) {
