@@ -60,6 +60,16 @@ export interface ForwardAction {
   staged?: boolean;
 }
 
+export interface ChangelogEntry {
+  id: string;
+  label: string;
+  details?: string;
+  timestamp: number;
+  months: MonthRecord[];
+  multiplier: number;
+  customColors: string[];
+}
+
 export interface MarbleFinancesState {
   months: MonthRecord[];
 
@@ -92,6 +102,12 @@ export interface MarbleFinancesState {
   // Tooltip State
   assetsGridSize: number;
   flowGridSize: number;
+
+  // Changelog State
+  changelog: ChangelogEntry[];
+  isChangelogOpen: boolean;
+  revertTarget: ChangelogEntry | null;
+  isRevertModalOpen: boolean;
 }
 
 
@@ -122,9 +138,14 @@ const initialState: MarbleFinancesState = {
   isCompareRibbonVisible: false,
   assetsGridSize: 5,
   flowGridSize: 5,
+  changelog: [],
+  isChangelogOpen: false,
+  revertTarget: null,
+  isRevertModalOpen: false,
 };
 
 const STORAGE_KEY = 'marble_finance_multi_data';
+
 
 function getInitialState(): MarbleFinancesState {
   // Safe check for localStorage (prevents ReferenceError in headless/SSR environments)
@@ -147,13 +168,27 @@ function getInitialState(): MarbleFinancesState {
     }
   }
   
+  // Initialize changelog from sessionStorage
+  const sessionStored = typeof window !== 'undefined' ? window.sessionStorage : null;
+  const savedChangelog = sessionStored?.getItem('marble_changelog');
+  let changelog: ChangelogEntry[] = [];
+  if (savedChangelog) {
+    try {
+      changelog = JSON.parse(savedChangelog);
+    } catch (e) {
+      console.error('Failed to parse changelog', e);
+    }
+  }
+
   // Fallback to demo data if nothing in localStorage
+  // Restore changelog if available (though withHooks usually handles this better)
   return { 
     ...initialState, 
     months: DEMO_DATA.months,
     marbleMultiplier: DEMO_DATA.marbleMultiplier,
     snapshots: DEMO_DATA.snapshots,
-    customColors: DEMO_DATA.customColors
+    customColors: DEMO_DATA.customColors,
+    changelog
   };
 }
 
@@ -212,6 +247,11 @@ export const FinanceStore = signalStore(
         customColors: store.customColors()
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    });
+
+    effect(() => {
+      const changelog = store.changelog();
+      sessionStorage.setItem('marble_changelog', JSON.stringify(changelog));
     });
     return {};
   }),
@@ -328,6 +368,13 @@ export const FinanceStore = signalStore(
       }];
 
       return { labels, compositionDatasets, totalValueData, totalValueDataset };
+    }),
+    changelogInverse: computed(() => {
+      const all = store.changelog();
+      if (all.length === 0) return [];
+      // The most recent change is the current live state.
+      // We skip the very last entry because you can't "revert" to the current state.
+      return [...all].reverse().slice(1);
     })
   })),
   withMethods((store) => ({
@@ -358,6 +405,68 @@ export const FinanceStore = signalStore(
     setActiveTimelineIndex(idx: number) {
       patchState(store, { activeTimelineIndex: idx });
     },
+
+    toggleChangelog() {
+      patchState(store, (state) => ({ isChangelogOpen: !state.isChangelogOpen }));
+    },
+
+    closeRevertModal() {
+      patchState(store, { isRevertModalOpen: false, revertTarget: null });
+    },
+
+    promptRevert(item: ChangelogEntry) {
+      patchState(store, { revertTarget: item, isRevertModalOpen: true, isChangelogOpen: false });
+    },
+
+    undo() {
+      const changelog = store.changelog();
+      if (changelog.length < 2) return; 
+
+      const previous = changelog[changelog.length - 2];
+      
+      patchState(store, {
+        months: structuredClone(previous.months),
+        marbleMultiplier: previous.multiplier,
+        customColors: [...previous.customColors],
+        changelog: changelog.slice(0, -1)
+      });
+    },
+
+    confirmRevert() {
+      const target = store.revertTarget();
+      if (!target) return;
+
+      const changelog = store.changelog();
+      const targetIdx = changelog.findIndex(h => h.id === target.id);
+      if (targetIdx === -1) return;
+
+      patchState(store, {
+        months: structuredClone(target.months),
+        marbleMultiplier: target.multiplier,
+        customColors: [...target.customColors],
+        changelog: changelog.slice(0, targetIdx + 1),
+        isRevertModalOpen: false,
+        revertTarget: null
+      });
+    },
+
+    recordChange(label: string, details?: string) {
+      const entry: ChangelogEntry = {
+        id: 'cl_' + Date.now() + Math.random().toString(36).substring(2, 9),
+        label,
+        details,
+        timestamp: Date.now(),
+        months: structuredClone(store.months()),
+        multiplier: store.marbleMultiplier(),
+        customColors: [...store.customColors()],
+      };
+
+      patchState(store, (state) => {
+        const changelog = [...state.changelog, entry];
+        return { changelog: changelog.slice(-50) };
+      });
+    }
+,
 
     // Comparison Logic
     openCompareModal() {
@@ -434,6 +543,8 @@ export const FinanceStore = signalStore(
 
         return { months: updatedMonths };
       });
+      const monthDate = store.months()[sourceIdx].date;
+      this.recordChange('Duplicated Month', `Created a copy of ${monthDate}`);
     },
 
     applyLocalUpdate(action: ForwardAction) {
@@ -476,6 +587,8 @@ export const FinanceStore = signalStore(
     },
 
     executeForwardAction(targetAction?: ForwardAction, cascade = false) {
+
+
       patchState(store, (state) => {
         const action = targetAction || state.forwardTarget;
         if (!action) return state;
@@ -495,6 +608,57 @@ export const FinanceStore = signalStore(
 
         return { months, forwardTarget: null };
       });
+
+      const action = targetAction || store.forwardTarget();
+      if (action) {
+        const actionLabels: Record<string, string> = {
+          'flowAmount': 'Updated flow amount',
+          'flowLabel': 'Updated flow label',
+          'assetAmount': 'Updated asset balance',
+          'categoryLabel': 'Updated category name',
+          'assetLabel': 'Updated asset name',
+          'assetNote': 'Updated asset note',
+          'overview': 'Updated overview',
+          'addCategory': 'Added category',
+          'addAsset': 'Added asset',
+          'addFlow': 'Added cash flow',
+          'deleteCategory': 'Deleted category',
+          'deleteAsset': 'Deleted asset',
+          'deleteFlow': 'Deleted cash flow',
+          'toggleActionItem': 'Toggled Task'
+        };
+        const monthDate = store.months()[action.monthIdx]?.date || '';
+        const label = actionLabels[action.type] || 'Updated Portfolio';
+        
+        // Try to find the specific label for more descriptive changelog
+        let itemName = '';
+        const month = store.months()[action.monthIdx];
+        if (month) {
+          if (action.type.includes('flow') && action.targetId) {
+            itemName = month.flow.find(f => f.id === action.targetId)?.label || '';
+          } else if (action.type.includes('asset') && action.targetId) {
+            const cat = action.parentId ? month.assetCategories.find(c => c.id === action.parentId) : null;
+            if (cat) itemName = cat.assets.find(a => a.id === action.targetId)?.label || '';
+            else itemName = month.assetCategories.find(c => c.id === action.targetId)?.label || '';
+          } else if (action.type.includes('category') && action.targetId) {
+            itemName = month.assetCategories.find(c => c.id === action.targetId)?.label || '';
+          }
+        }
+
+        let details = itemName ? `Updated "${itemName}" in ${monthDate}` : `${label} in ${monthDate}`;
+        
+        if (action.type === 'overview') {
+            details = `Changed ${action.field} to "${action.value}" in ${monthDate}`;
+        } else if (typeof action.value === 'object' && action.value !== null && 'label' in action.value) {
+            details = `${label}: ${(action.value as {label: string}).label} in ${monthDate}`;
+        } else if (typeof action.value === 'number' || typeof action.value === 'string') {
+            details = itemName 
+              ? `Changed "${itemName}" to ${action.value} in ${monthDate}`
+              : `${label} to ${action.value} in ${monthDate}`;
+        }
+
+        this.recordChange(label, details);
+      }
     },
 
     // Internal helper to keep mutation logic DRY and strictly mapped to IDs
@@ -582,6 +746,7 @@ export const FinanceStore = signalStore(
         if (item) item.completed = !item.completed;
         return { months };
       });
+      this.recordChange('Toggled Checklist Item');
     },
 
     addActionItem(monthIdx: number) {
@@ -590,6 +755,7 @@ export const FinanceStore = signalStore(
         months[monthIdx].actionItems.push({ id: 'todo_' + Date.now(), label: '', completed: false });
         return { months };
       });
+      this.recordChange('Added Checklist Item');
     },
 
     updateActionItem(monthIdx: number, id: string, label: string) {
@@ -599,6 +765,9 @@ export const FinanceStore = signalStore(
         if (item) item.label = label;
         return { months };
       });
+      // We don't record history on every character typed. 
+      // This is usually called on blur or debounced.
+      // But let's record it anyway for now, or maybe only if it changed significantly.
     },
 
     deleteActionItem(monthIdx: number, id: string) {
@@ -607,6 +776,7 @@ export const FinanceStore = signalStore(
         months[monthIdx].actionItems = months[monthIdx].actionItems.filter(i => i.id !== id);
         return { months };
       });
+      this.recordChange('Deleted Checklist Item');
     },
 
 
@@ -618,6 +788,7 @@ export const FinanceStore = signalStore(
         months[monthIdx].assetCategories.splice(toIndex, 0, moved);
         return { months };
       });
+      this.recordChange('Reordered Categories');
     },
 
     moveSubAsset(monthIdx: number, fromAssetIndex: number, fromSubIndex: number, toAssetIndex: number, toSubIndex: number) {
@@ -627,6 +798,7 @@ export const FinanceStore = signalStore(
         months[monthIdx].assetCategories[toAssetIndex].assets.splice(toSubIndex, 0, moved);
         return { months };
       });
+      this.recordChange('Moved Asset');
     },
 
     promptDelete(monthIdx: number, type: 'asset' | 'flow', index: number, subIndex: number | null = null) {
@@ -722,6 +894,8 @@ export const FinanceStore = signalStore(
         months[monthIdx][field] = val;
         return { months };
       });
+      const monthDate = store.months()[monthIdx].date;
+      this.recordChange('Updated Month Overview', `Changed ${field} for ${monthDate} to ${val}`);
     },
 
     setAddModalMode(mode: 'palette' | 'custom') { patchState(store, { addModalMode: mode }); },
@@ -773,6 +947,8 @@ export const FinanceStore = signalStore(
         this.promptForwardUpdate(action);
       }
       patchState(store, { isAddModalOpen: false, addModalMode: 'palette' });
+      const typeLabel = store.addModalType() === 'breakdown' ? 'Added Sub-Asset' : 'Added Asset Category';
+      this.recordChange(typeLabel, `Added "${name || 'New Item'}" with value ${amount}`);
     },
 
     confirmAddFlow(name: string, amount: number, type: string, parentCategory: 'expense' | 'savings') {
@@ -787,6 +963,7 @@ export const FinanceStore = signalStore(
       };
       this.promptForwardUpdate(action);
       patchState(store, { isAddModalOpen: false });
+      this.recordChange('Added Cash Flow', `Added "${name || 'New Flow'}" (${amount}) as ${type} to ${parentCategory}`);
     },
 
     saveSnapshot(key: string, label: string, total: number) {
@@ -833,6 +1010,7 @@ export const FinanceStore = signalStore(
             snapshots: parsed.snapshots || {},
             customColors: parsed.customColors || []
           });
+          this.recordChange('Imported Portfolio', `Restored ${cleanMonths.length} months from backup`);
         } else {
           alert('Invalid file format. Cannot load backup.');
         }
@@ -895,6 +1073,7 @@ export const FinanceStore = signalStore(
         snapshots: {},
         customColors: []
       });
+      this.recordChange('Created Fresh Portfolio');
     },
 
     resetToDemoData() {

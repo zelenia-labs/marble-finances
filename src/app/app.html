@@ -61,7 +61,7 @@
   </nav>
 
   <!-- Main Actions Tools -->
-  <nav class="fixed top-8 right-8 z-50 animate-slide-in-right" aria-label="Application actions">
+  <nav class="fixed top-8 right-8 z-110 animate-slide-in-right" aria-label="Application actions">
     <ul class="flex items-center gap-4 m-0 p-0 list-none">
       @if (store.months().length > 0) {
         <li>
@@ -147,29 +147,6 @@
         </li>
         <li>
           <button
-            (click)="openSettings()"
-            (mouseenter)="tooltipService.show($event, 'Settings & theme')"
-            (mouseleave)="tooltipService.hide()"
-            class="p-2.5 rounded-full tooltip-left border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
-              />
-              <path
-                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.902 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
-              />
-            </svg>
-          </button>
-        </li>
-        <li>
-          <button
             (click)="unloadData()"
             (mouseenter)="tooltipService.show($event, 'Unload portfolio')"
             (mouseleave)="tooltipService.hide()"
@@ -188,6 +165,79 @@
               />
             </svg>
           </button>
+        </li>
+        <li>
+          <button
+            (click)="openSettings()"
+            (mouseenter)="tooltipService.show($event, 'Settings & theme')"
+            (mouseleave)="tooltipService.hide()"
+            class="p-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+              />
+              <path
+                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.902 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
+              />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <div
+            class="flex items-center border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden"
+          >
+            <button
+              (click)="store.toggleChangelog()"
+              #changelogTrigger
+              class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                />
+              </svg>
+              Changelog
+            </button>
+            
+            <!-- Undo Button -->
+            <button
+              (click)="store.undo()"
+              [disabled]="store.changelog().length < 2"
+              class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
+              (mouseenter)="tooltipService.show($event, 'Undo last change')"
+              (mouseleave)="tooltipService.hide()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"
+                />
+                <path
+                  d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966a.25.25 0 0 0 .41-.192z"
+                />
+              </svg>
+            </button>
+          </div>
         </li>
       }
     </ul>
@@ -226,6 +276,81 @@
 
   @if (store.isSettingsOpen()) {
     <app-settings-modal />
+  }
+
+
+
+  <!-- Revert Confirmation Modal -->
+  @if (store.isRevertModalOpen()) {
+    <div
+      class="fixed inset-0 z-300 flex items-center justify-center p-8"
+      (keydown.escape)="store.closeRevertModal()"
+      tabindex="-1"
+    >
+      <!-- Backdrop -->
+      <button
+        class="absolute inset-0 bg-slate/20 backdrop-blur-md animate-fade-in w-full h-full border-none cursor-default"
+        (click)="store.closeRevertModal()"
+        aria-label="Close modal"
+        tabindex="-1"
+      ></button>
+
+      <!-- Modal Content -->
+      <div
+        class="relative w-full max-w-sm bg-white rounded-[40px] shadow-2xl p-8 border border-white border-b-gray-100 animate-scale-up"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="revert-title"
+      >
+        <div class="flex flex-col items-center gap-6 text-center">
+          <div class="w-20 h-20 rounded-full bg-amber-50 flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="40"
+              height="40"
+              fill="currentColor"
+              class="text-amber-500"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+              />
+            </svg>
+          </div>
+
+          <div>
+            <h3 id="revert-title" class="text-xl font-black text-slate mb-2">
+              Revert to earlier state?
+            </h3>
+            <p class="text-[14px] text-slate/50 font-medium">
+              You're about to revert the portfolio to
+              <span class="text-slate font-bold">"{{ store.revertTarget()?.label }}"</span>.
+              @if (store.revertTarget()?.details) {
+                <br />
+                <span class="text-[12px] opacity-70 italic">{{ store.revertTarget()?.details }}</span>
+              }
+              <br />
+              This will discard all changes made after that time.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4 w-full">
+            <button
+              (click)="store.closeRevertModal()"
+              class="flex-1 px-6 py-4 rounded-3xl bg-gray-50 text-slate font-black transition-all hover:bg-gray-100 text-[13px] tracking-wide interactive-element"
+            >
+              Cancel
+            </button>
+            <button
+              (click)="store.confirmRevert()"
+              class="flex-1 px-6 py-4 rounded-3xl bg-slate text-white font-black transition-all hover:bg-slate-700 text-[13px] tracking-wide shadow-lg shadow-slate/20 interactive-element"
+            >
+              Revert
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   }
 
   <!-- Global Popover Tooltip (Latest HTML Popover API) -->
@@ -474,6 +599,76 @@
   </main>
   @defer (when store.isChartsModalOpen(); on idle) {
     <app-portfolio-charts-modal #chartsModal />
+  }
+
+  <!-- History Sidebar: Inverse Chronological Interaction Feed -->
+  @if (store.isChangelogOpen()) {
+    <nav
+      class="fixed top-0 right-0 bottom-0 w-[420px] bg-white/94 backdrop-blur-xl flex flex-col px-10 pt-[120px] pb-8 overflow-y-auto z-100 custom-scrollbar border-l border-border-timeline shadow-[-20px_0_40px_rgba(0,0,0,0.05)] animate-slide-in-right"
+      tabindex="-1"
+      aria-label="Portfolio Changelog"
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()"
+    >
+      <ul class="relative list-none p-0 m-0 pl-6">
+        <!-- Vertical Timeline Line -->
+        @if (store.changelogInverse().length > 0) {
+          <div class="absolute left-[7px] top-8 bottom-12 w-[1.5px] bg-slate/10 rounded-full"></div>
+        }
+
+        @for (item of store.changelogInverse(); track item.id; let first = $first) {
+          <li class="relative mb-6 last:mb-0 group">
+            <!-- Timeline Dot -->
+            <div class="absolute left-[-21px] top-[26px] w-[9px] h-[9px] rounded-full border-2 border-white bg-slate/20 shadow-sm z-10 transition-all duration-300 group-hover:bg-accent group-hover:scale-125 group-hover:border-accent/20"></div>
+
+            <button
+              (click)="store.promptRevert(item)"
+              class="w-full text-left px-6 py-5 rounded-[24px] transition-all flex items-start gap-5 group interactive-element hover:bg-gray-50 cursor-pointer"
+            >
+              <div class="flex flex-col flex-1">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-[15px] font-black text-slate leading-tight">
+                    {{ item.label }}
+                  </span>
+                </div>
+                
+                @if (item.details) {
+                  <p class="text-[12px] font-medium text-slate/50 mb-2 leading-relaxed">
+                    {{ item.details }}
+                  </p>
+                }
+
+                <div class="flex items-center gap-2.5">
+                  <span class="text-[10px] font-bold text-slate/30">
+                    {{ item.timestamp | date: 'shortTime' }}
+                  </span>
+                  <span class="text-[10px] font-bold text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                    Revert Portfolio →
+                  </span>
+                </div>
+              </div>
+            </button>
+          </li>
+        } @empty {
+          <div class="flex flex-col items-center justify-center py-32 px-12 text-center">
+            <div class="w-16 h-16 rounded-full bg-slate/5 flex items-center justify-center mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="text-slate/20" viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-[14px] font-black text-slate tracking-tight mb-2">No Changes Yet</h3>
+            <p class="text-[12px] font-medium text-slate/40 leading-relaxed max-w-[200px]">
+              Every modification you make to the portfolio will be tracked here for this session.
+            </p>
+          </div>
+        }
+      </ul>
+
+      <div class="mt-auto pt-8 border-t border-gray-100 italic text-[11px] text-slate/30 font-medium">
+        Changelog is temporary and will be cleared if you refresh the page or close this tab.
+      </div>
+    </nav>
   }
 
   <!-- Zoom Controls (Google Maps Style) -->

@@ -29,8 +29,18 @@ describe('App Component — Zoom Functionality', () => {
       isChartsModalOpen: signal(false),
       isCompareRibbonVisible: signal(false),
       activeTimelineIndex: signal(0),
+      history: signal([]),
+      historyInverse: signal([]),
+      isChangelogOpen: signal(false),
+      isRevertModalOpen: signal(false),
+      historyTarget: signal(null),
       setActiveTimelineIndex: vi.fn(),
       toggleTimeline: vi.fn(),
+      toggleChangelog: vi.fn(),
+      undo: vi.fn(),
+      promptRevert: vi.fn(),
+      closeRevertModal: vi.fn(),
+      confirmRevert: vi.fn(),
     };
 
     mockTooltip = {

@@ -1,4 +1,4 @@
-import { DecimalPipe, NgOptimizedImage } from '@angular/common';
+import { DatePipe, DecimalPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,6 +37,7 @@ import { calculateCenteringCoordinates } from './utils/geometry.utils';
     CompareSelectModalComponent,
     ComparisonOverlayComponent,
     DecimalPipe,
+    DatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
