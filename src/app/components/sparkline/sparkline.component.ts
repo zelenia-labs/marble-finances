@@ -8,14 +8,18 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   template: `
     <div class="flex h-1.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10 mt-2" 
          title="Cash: {{ cashPercent() | number:'1.0-0' }}% | Investments: {{ invPercent() | number:'1.0-0' }}%">
+      @if (cashPercent() > 0) {
       <div 
-        class="bg-assetPurple transition-all duration-300 h-full" 
+        class="bg-asset-purple transition-all duration-300 h-full" 
         [style.width.%]="cashPercent()">
       </div>
+      }
+      @if (invPercent() > 0) {
       <div 
-        class="bg-assetGreen transition-all duration-300 h-full" 
+        class="bg-asset-green transition-all duration-300 h-full" 
         [style.width.%]="invPercent()">
       </div>
+      }
     </div>
   `
 })

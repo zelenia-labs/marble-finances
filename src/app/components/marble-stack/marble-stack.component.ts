@@ -152,8 +152,10 @@ export class MarbleStackComponent {
     if (!this.isGhost(slot)) return false;
     const hovered = this.hoveredSlotIdx();
     if (hovered === null) return false;
-    const firstGhostIdx = Math.ceil(slot.activeRemaining); // first empty slot index
-    return slot.idx >= firstGhostIdx && slot.idx <= hovered;
+    // The hover range starts at the very first index that is NOT fully filled.
+    // slot.activeRemaining represents the solid count. idx 5 is marble 6.
+    const firstNonFullIdx = Math.floor(slot.activeRemaining);
+    return slot.idx >= firstNonFullIdx && slot.idx <= hovered;
   }
 
   /** Returns an inline rgba background at 40% opacity for this category's colour. */

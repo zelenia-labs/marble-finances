@@ -1,9 +1,9 @@
 <div
-    class="w-[221px] flex flex-col items-start select-none bg-gray-50/60 rounded-[32px] p-8 pb-10 border border-gray-100/40">
-    <h2 class="text-[28px] font-black text-slate tracking-tight mb-12">Monthly Flow</h2>
+    class="w-[280px] flex flex-col items-start select-none bg-[#F5FAFE] rounded-[40px] p-4 border border-blue-50/50 shadow-sm">
+    <h2 class="text-[24px] font-black text-slate tracking-tight mt-6 mb-10 px-4">Monthly Flow</h2>
 
     <!-- EXPENSES SECTION -->
-    <div class="w-full mb-12">
+    <div class="w-full bg-white rounded-[32px] p-6 mb-[14px] border border-blue-100/20">
         <div class="flex items-center justify-between mb-8">
             <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-widest">Expenses</h3>
             <button (click)="store.openAddFlowModal(monthIndex(), 'expense')"
@@ -48,7 +48,7 @@
                         <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val)
                             }}</span>
                     </div>
-                    <app-marble-stack [val]="item.val" [color]="'bg-flowOrange'" [simple]="true"
+                    <app-marble-stack [val]="item.val" [color]="'bg-flow-orange'" [simple]="true"
                         [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
                     </app-marble-stack>
                 </div>
@@ -58,7 +58,7 @@
         }
 
         <!-- TOTAL EXPENSES LINE -->
-        <div class="w-full mt-4 mb-2">
+        <div class="w-full mt-4">
             <div class="flex items-baseline justify-between border-b border-slate/30 pb-1.5">
                 <h4 class="text-[10px] font-black uppercase text-slate/90 tracking-widest">Total Expenses</h4>
                 <span class="text-[14px] font-black text-slate/90">{{ formatUSD(combinedFlowTotal()) }}</span>
@@ -66,10 +66,8 @@
         </div>
     </div>
 
-    <div class="w-full h-px bg-slate-300/40 mb-10 mt-6"></div>
-
     <!-- SAVINGS SECTION -->
-    <div class="w-full mb-6">
+    <div class="w-full bg-white rounded-[32px] p-6 border border-blue-100/20">
         <div class="flex items-center justify-between mb-8">
             <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-widest">Savings</h3>
             <button (click)="store.openAddFlowModal(monthIndex(), 'savings')"
@@ -114,7 +112,7 @@
                         <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val)
                             }}</span>
                     </div>
-                    <app-marble-stack [val]="item.val" [color]="'bg-flowBlue'" [simple]="true"
+                    <app-marble-stack [val]="item.val" [color]="'bg-flow-blue'" [simple]="true"
                         [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
                     </app-marble-stack>
                 </div>
@@ -124,7 +122,7 @@
         }
 
         <!-- TOTAL SAVINGS LINE -->
-        <div class="w-full mt-4 mb-2">
+        <div class="w-full mt-4">
             <div class="flex items-baseline justify-between border-b border-slate/30 pb-1.5">
                 <h4 class="text-[10px] font-black uppercase text-slate/90 tracking-widest">Total Savings</h4>
                 <span class="text-[14px] font-black text-slate/90">{{ formatUSD(savingsTotal()) }}</span>

@@ -1,6 +1,7 @@
 import { computed, effect } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { TAILWIND_COLOR_MAP } from '../utils/color.util';
+import { DEMO_DATA } from '../data/demo.data';
 
 export interface Asset {
   id: string;
@@ -143,7 +144,15 @@ function getInitialState(): MarbleFinancesState {
       console.error('Failed to parse saved state', e);
     }
   }
-  return initialState;
+  
+  // Fallback to demo data if nothing in localStorage
+  return { 
+    ...initialState, 
+    months: DEMO_DATA.months,
+    marbleMultiplier: DEMO_DATA.marbleMultiplier,
+    snapshots: DEMO_DATA.snapshots,
+    customColors: DEMO_DATA.customColors
+  };
 }
 
 export function sumAssets(assetCategories: AssetCategory[]): number {
@@ -884,6 +893,18 @@ export const FinanceStore = signalStore(
         snapshots: {},
         customColors: []
       });
+    },
+
+    resetToDemoData() {
+      if (confirm('Are you sure you want to reset to the original demo data? All local changes will be lost.')) {
+        patchState(store, {
+          months: DEMO_DATA.months,
+          marbleMultiplier: DEMO_DATA.marbleMultiplier,
+          snapshots: DEMO_DATA.snapshots,
+          customColors: DEMO_DATA.customColors
+        });
+        localStorage.removeItem(STORAGE_KEY);
+      }
     }
 
   }))
