@@ -10,7 +10,8 @@ import { FinanceStore } from '../../store/finance.store';
     <div class="fixed inset-0 z-200 flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
       
-      <div class="relative bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] p-8 w-full max-w-md animate-in fade-in zoom-in-95 duration-200">
+      <div class="relative bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] p-8 w-full max-w-md animate-in fade-in zoom-in-95 duration-200"
+           role="dialog" aria-modal="true">
         <!-- Close Button -->
         <button (click)="close()" class="btn-dismiss absolute top-8 right-8 interactive-element" aria-label="Close Settings">
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
@@ -33,51 +34,51 @@ import { FinanceStore } from '../../store/finance.store';
             </div>
  
             <!-- Legend Grid -->
-            <div class="space-y-0 px-2 mt-2">
-                <h3 class="text-[12px] font-black uppercase text-gray-500 tracking-normal px-2 mb-4">Legend</h3>
+            <div class="space-y-0">
+                <h3 class="text-[12px] font-bold uppercase text-gray-500 tracking-wider mt-4 mb-0">Legend</h3>
                 
-                <div class="divide-y divide-gray-100 border-t border-gray-50">
+                <div class="divide-y-2 divide-gray-100">
                     <!-- 1 Marble -->
-                    <div class="flex items-center justify-between py-4 px-2 transition-colors rounded-lg">
-                        <div class="flex items-center gap-4">
-                            <div class="w-6 h-6 rounded-[2px] bg-asset-blue shadow-sm"></div>
-                            <span class="text-xs font-bold text-slate">1 Marble</span>
+                    <div class="flex items-center justify-between py-6 transition-colors">
+                        <div class="flex items-center gap-6">
+                            <div class="w-6 h-6 rounded-[4px] bg-asset-blue shadow-sm"></div>
+                            <span class="text-[16px] font-bold text-slate">1 Marble</span>
                         </div>
-                        <span class="text-sm font-black text-slate">{{ formatUSD(getMarbleValue()) }}</span>
+                        <span class="text-[16px] font-black text-slate">{{ formatUSD(getMarbleValue()) }}</span>
                     </div>
     
                     <!-- 5x5 Block -->
-                    <div class="flex items-center justify-between py-4 px-2 transition-colors rounded-lg">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-[4px] bg-asset-blue shadow-sm relative overflow-hidden flex items-center justify-center p-0.5">
+                    <div class="flex items-center justify-between py-6 transition-colors">
+                        <div class="flex items-center gap-6">
+                            <div class="w-10 h-10 rounded-[6px] bg-asset-blue shadow-sm relative overflow-hidden flex items-center justify-center p-0.5">
                                  <div class="grid grid-cols-2 grid-rows-2 gap-[1px] w-full h-full opacity-30">
                                     <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
                                     <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
                                  </div>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs font-bold text-slate">5x5 Block</span>
-                                <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest mt-1">25 Marbles</span>
+                                <span class="text-[16px] font-bold text-slate">5x5 Block</span>
+                                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-1">25 Marbles</span>
                             </div>
                         </div>
-                        <span class="text-sm font-black text-slate">{{ formatUSD(getMarbleValue() * 25) }}</span>
+                        <span class="text-[16px] font-black text-slate">{{ formatUSD(getMarbleValue() * 25) }}</span>
                     </div>
     
                     <!-- 10x10 Huge Block -->
-                    <div class="flex items-center justify-between py-4 px-2 transition-colors rounded-lg border-b border-gray-50">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 rounded-[6px] bg-asset-blue shadow-sm relative overflow-hidden flex items-center justify-center p-1">
+                    <div class="flex items-center justify-between py-6 transition-colors">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 rounded-[8px] bg-asset-blue shadow-sm relative overflow-hidden flex items-center justify-center p-1">
                                  <div class="grid grid-cols-2 grid-rows-2 gap-[2px] w-full h-full opacity-40">
                                     <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
                                     <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
                                  </div>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs font-bold text-slate">10x10 Block</span>
-                                <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest mt-1">100 Marbles</span>
+                                <span class="text-[16px] font-bold text-slate">10x10 Block</span>
+                                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-1">100 Marbles</span>
                             </div>
                         </div>
-                        <span class="text-base font-black text-slate">{{ formatUSD(getMarbleValue() * 100) }}</span>
+                        <span class="text-[18px] font-black text-slate">{{ formatUSD(getMarbleValue() * 100) }}</span>
                     </div>
                 </div>
             </div>

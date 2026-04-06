@@ -106,13 +106,20 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable] {
     border-right: none !important;
     border-bottom-width: 2px !important;
     border-bottom-style: solid !important;
-    border-bottom-color: var(--color-border-interactive) !important;
+    border-bottom-color: transparent !important; /* System Default: Invisible until focus */
     background: transparent !important;
     border-radius: 0 !important;
     outline: none !important;
     box-shadow: none !important;
     appearance: none !important;
     transition: border-color 0.2s ease;
+}
+
+/* Modal Specific: Show the inactive line for architectural structure in configuration panels */
+[role="dialog"] input:not([type="checkbox"]):not([type="radio"]), 
+[role="dialog"] textarea, 
+[role="dialog"] [contenteditable] {
+    border-bottom-color: var(--color-border-interactive) !important;
 }
 
 input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, [contenteditable]:focus {
