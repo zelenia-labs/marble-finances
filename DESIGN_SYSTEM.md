@@ -161,8 +161,8 @@ The app uses a **heavily rounded** aesthetic. Radius ranges from functional to d
 |---|---|
 | Canvas Board | 40px |
 | Year Card | 60px |
-| Primary Modals (Add, Compare) | 32px |
-| Small Modals (Delete, Forward) | 16px to 24px |
+| Primary Modals (Add, Delete, Forward, Comparison) | 32px |
+| Small Modals (Dismiss prompts) | 16px to 24px |
 | Computation Panel | 24px |
 | Action Cards (welcome) | 24px |
 | Asset Category Card | 16px |
@@ -226,7 +226,7 @@ All modals must follow a strictly unified layout to maintain a professional, "ap
 | **Headers** | `text-2xl font-black text-slate mb-6` (or `mb-2` if followed by secondary text). |
 | **Padding** | Minimum `p-8` (32px) for primary containers. |
 | **Width** | Typically `w-96` (384px) for standard inputs, `max-w-md` for settings. |
-| **Primary Action** | Positioned in a `flex justify-start gap-3/4` row at the bottom. Primary confirm button should generally come first. |
+| **Primary Action** | Positioned in a `flex justify-end gap-3` row at the bottom. Primary confirm button must be on the far right, with secondary/cancel on its left. |
 
 ### Performance Badges (Gains/Losses)
 
@@ -253,9 +253,9 @@ All percentage-based performance indicators must follow the Tonal Badge pattern 
 
 | Variant | Spec |
 |---|---|
-| **Primary** | 24px/10px padding · 6px radius · Slate fill · White text · 12px Bold → Hover: Black fill · Light shadow |
-| **Secondary** | 20px/10px padding · 6px radius · Transparent fill · Gray 500 text · 12px Bold → Hover: Gray 50 fill |
-| **Danger** | 20px/10px padding · 6px radius · Red 500 fill · White text · 12px Bold → Hover: Red 600 fill · Light shadow |
+| **Primary** | 24px/10px padding (`px-6 py-2.5`) · 6px radius (`rounded-md`) · Slate fill (or semantic) · White text · **16px Bold** → Hover: Black fill · Light shadow |
+| **Secondary** | 20px/10px padding (`px-5 py-2.5`) · 6px radius (`rounded-md`) · Transparent fill · Gray 600 text · **16px Bold** → Hover: Gray 800 text |
+| **Danger** | 24px/10px padding (`px-6 py-2.5`) · 6px radius (`rounded-md`) · Red 500 fill · White text · **16px Bold** → Hover: Red 600 fill · Light shadow |
 
 ### Dismiss Button
 
@@ -278,6 +278,11 @@ The `.btn-dismiss` CSS utility class is the **single, canonical implementation**
 **Usage rule:** Use `class="btn-dismiss"` for every dismiss/close button in the app. Do not add ad-hoc dismiss styles — always reference this class. Position the button absolutely inside its modal container.
 
 ```html
+<div class="flex justify-end gap-3">
+  <button (click)="store.executeForwardAction(undefined, false)" class="px-5 py-2.5 rounded-md text-[16px] font-bold text-gray-600 hover:text-gray-800 transition-colors interactive-element">Just Here</button>
+  <button (click)="store.executeForwardAction(undefined, true)" class="px-6 py-2.5 rounded-md text-[16px] font-bold bg-slate text-white hover:bg-black transition-colors shadow-sm interactive-element">Apply Forward</button>
+</div>
+
 <button class="btn-dismiss absolute top-8 right-8 interactive-element" aria-label="Close [Modal Name]">
   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>

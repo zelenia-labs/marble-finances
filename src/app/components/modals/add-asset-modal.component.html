@@ -1,5 +1,5 @@
 <!-- src/app/components/modals/add-asset-modal.component.html -->
-<div class="fixed inset-0 bg-slate/10 backdrop-blur-sm z-200 flex transition-all duration-300"
+<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-200 flex transition-all duration-300"
     [class.opacity-0]="!store.isAddModalOpen()" [class.pointer-events-none]="!store.isAddModalOpen()"
     [class.opacity-100]="store.isAddModalOpen()"
     role="dialog" aria-modal="true">
@@ -24,18 +24,18 @@
             {{ store.addModalType() === 'breakdown' ? 'Add Subcategory' : (store.addModalType().startsWith('flow') ?
             'Add Item' : 'Add Asset') }}
          </h3>
-         <label for="add-asset-name" class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Name</label>
+         <label for="add-asset-name" class="text-[14px] font-bold text-gray-600 uppercase tracking-wider mb-2 block">Name</label>
          <input #nameInput id="add-asset-name" type="text" [(ngModel)]="assetName"
             class="w-full border-b-2 border-border-interactive focus:border-slate outline-none text-2xl font-bold text-slate pb-2 mb-6 transition-colors interactive-element"
             autocomplete="off">
-
-         <label for="add-asset-amount" class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Amount</label>
+ 
+         <label for="add-asset-amount" class="text-[14px] font-bold text-gray-600 uppercase tracking-wider mb-2 block">Amount</label>
          <input id="add-asset-amount" type="number" [(ngModel)]="assetAmount"
             class="w-full border-b-2 border-border-interactive focus:border-slate outline-none text-2xl font-bold text-slate pb-2 transition-colors interactive-element"
             autocomplete="off">
          <div class="mt-2 mb-8 min-h-[1.2em]">
             @if (assetAmount !== null && assetAmount !== undefined) {
-               <span class="text-[13px] font-black text-slate/50">{{ formatUSD(assetAmount) }}</span>
+               <span class="text-[14px] font-black text-gray-600/70">{{ formatUSD(assetAmount) }}</span>
             }
          </div>
 
@@ -111,40 +111,40 @@
          }
 
          @if (store.addModalType().startsWith('flow')) {
-         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3">Subcategory</p>
-         <div class="flex gap-2 mb-2 w-full overflow-hidden flex-wrap">
-
+         <p class="text-[12px] font-black uppercase text-gray-500 tracking-normal mb-3">Subcategory</p>
+         <div class="flex gap-2 mb-4 w-full flex-wrap">
+ 
             @if (store.addModalType() === 'flow-expense') {
             <button (click)="selectFlowCategory('fixed')"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none interactive-element"
-               [class]="flowCategory === 'fixed' ? 'bg-flowOrange border-flowOrange text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">Fixed</button>
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+               [class]="flowCategory === 'fixed' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Fixed</button>
             <button (click)="selectFlowCategory('flexible')"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none interactive-element"
-               [class]="flowCategory === 'flexible' ? 'bg-flowOrange border-flowOrange text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">Flexible</button>
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+               [class]="flowCategory === 'flexible' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Flexible</button>
             @for (cat of customExpenseCategories(); track cat) {
             <button (click)="selectFlowCategory(cat)"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none capitalize interactive-element"
-               [class]="flowCategory === cat ? 'bg-flowOrange border-flowOrange text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">{{
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none capitalize interactive-element whitespace-nowrap"
+               [class]="flowCategory === cat ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">{{
                cat }}</button>
             }
             <button (click)="selectFlowCategory('other')"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none interactive-element"
-               [class]="flowCategory === 'other' ? 'bg-flowOrange border-flowOrange text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">Other</button>
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+               [class]="flowCategory === 'other' ? 'bg-flow-orange border-flow-orange text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Other</button>
             }
-
+ 
             @if (store.addModalType() === 'flow-savings') {
             <button (click)="selectFlowCategory('general')"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none interactive-element"
-               [class]="flowCategory === 'general' ? 'bg-assetBlue border-assetBlue text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">General</button>
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+               [class]="flowCategory === 'general' ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">General</button>
             @for (cat of customSavingsCategories(); track cat) {
             <button (click)="selectFlowCategory(cat)"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none capitalize interactive-element"
-               [class]="flowCategory === cat ? 'bg-assetBlue border-assetBlue text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">{{
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none capitalize interactive-element whitespace-nowrap"
+               [class]="flowCategory === cat ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">{{
                cat }}</button>
             }
             <button (click)="selectFlowCategory('other')"
-               class="flex-1 py-2 px-1 rounded-md text-[10px] font-bold transition-all border outline-none interactive-element"
-               [class]="flowCategory === 'other' ? 'bg-assetBlue border-assetBlue text-white' : 'bg-transparent border-gray-200 text-gray-500 hover:bg-gray-50'">Other</button>
+               class="py-1.5 px-4 rounded-full text-[10px] font-black transition-all border outline-none interactive-element whitespace-nowrap"
+               [class]="flowCategory === 'other' ? 'bg-asset-blue border-asset-blue text-white shadow-sm' : 'bg-transparent border-gray-100 text-slate hover:bg-gray-50'">Other</button>
             }
          </div>
 
@@ -162,7 +162,7 @@
 
          <div class="flex justify-end gap-3 pt-4">
             <button (click)="confirmCreate()"
-               class="px-6 py-2.5 rounded-md text-sm font-bold bg-slate text-white hover:bg-black transition-colors shadow-sm interactive-element">{{
+               class="px-6 py-2.5 rounded-md text-[16px] font-bold bg-slate text-white hover:bg-black transition-colors shadow-sm interactive-element">{{
                store.addModalType() === 'breakdown' ? 'Add Subcategory' : (store.addModalType().startsWith('flow') ?
                'Add Item' : 'Add Asset') }}</button>
          </div>

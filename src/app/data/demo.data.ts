@@ -86,22 +86,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_zcvmsy6qe",
               "label": "Marcus HYSA",
-              "val": 15.140380991742974
+              "val": 23.866203774148374,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_igludf7me",
               "label": "Chase Checking",
-              "val": 4.09
+              "val": 5.6
             },
             {
               "id": "asset_8goie74v2",
               "label": "Betterment Cash Reserve",
-              "val": 8.7
+              "val": 12.26
             },
             {
               "id": "asset_yyw6p9nj1",
               "label": "Amex HYSA",
-              "val": 10.49
+              "val": 15.03
             }
           ]
         },
@@ -113,12 +114,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_3wnipxv9s",
               "label": "E-Commerce Store",
-              "val": 46.4
+              "val": 65.24
             },
             {
               "id": "asset_xb8dnc0pk",
               "label": "Personal Business",
-              "val": 129.69
+              "val": 172.69
             }
           ]
         },
@@ -130,12 +131,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_1idcvle7j",
               "label": "Subaru Outback (Equity)",
-              "val": 18.83
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_pmq1onz1e",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 75.18387439497019
             }
           ]
         },
@@ -147,12 +149,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_january_2024",
               "label": "Fidelity Account",
-              "val": 45
+              "val": 31.569382007572543
             },
             {
               "id": "asset_schwab_january_2024",
               "label": "Charles Schwab Account",
-              "val": 34
+              "val": 24.24428859202236
             }
           ]
         },
@@ -164,27 +166,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qx5log7ms",
               "label": "Fidelity 401k",
-              "val": 81.33
+              "val": 86.8059637794428,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_zdwa1ene3",
               "label": "Fidelity HSA",
-              "val": 9.12
+              "val": 9.076033381487411
             },
             {
               "id": "asset_psw1ggz83",
               "label": "Schwab IRA",
-              "val": 29.1
+              "val": 29.07084969662839
             },
             {
               "id": "asset_czc36huao",
               "label": "Schwab Roth IRA",
-              "val": 22.49
+              "val": 22.801566522710782
             },
             {
               "id": "asset_g27pk9o0y",
               "label": "Inspira Financial HSA",
-              "val": 6.95
+              "val": 7.462807794893548
             }
           ]
         }
@@ -267,22 +270,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_t0iaa1eni",
               "label": "Marcus HYSA",
-              "val": 20.8251574093863
+              "val": 29.466203774148376,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_79dgpl9dn",
               "label": "Chase Checking",
-              "val": 4.19
+              "val": 5.6
             },
             {
               "id": "asset_1kly47xif",
               "label": "Betterment Cash Reserve",
-              "val": 8.89
+              "val": 12.26
             },
             {
               "id": "asset_ogu30fpds",
               "label": "Amex HYSA",
-              "val": 10.4
+              "val": 15.03
             }
           ]
         },
@@ -294,12 +298,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_0ct6ipf8q",
               "label": "E-Commerce Store",
-              "val": 48.24
+              "val": 65.24
             },
             {
               "id": "asset_4ju8le3st",
               "label": "Personal Business",
-              "val": 128.62
+              "val": 172.69
             }
           ]
         },
@@ -311,12 +315,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_zuhgo88j6",
               "label": "Subaru Outback (Equity)",
-              "val": 19.24
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_vp1f9pf80",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 75.2173607412125
             }
           ]
         },
@@ -328,12 +333,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_february_2024",
               "label": "Fidelity Account",
-              "val": 45.19
+              "val": 31.56968565427087
             },
             {
               "id": "asset_schwab_february_2024",
               "label": "Charles Schwab Account",
-              "val": 34.15
+              "val": 24.244521783099163
             }
           ]
         },
@@ -345,27 +350,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_w6e892wua",
               "label": "Fidelity 401k",
-              "val": 84.83
+              "val": 86.80679871324956,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_dj74v3xub",
               "label": "Fidelity HSA",
-              "val": 9.17
+              "val": 9.076120678336286
             },
             {
               "id": "asset_mnejmgb7t",
               "label": "Schwab IRA",
-              "val": 29.07
+              "val": 29.071129311462972
             },
             {
               "id": "asset_8asw5tht0",
               "label": "Schwab Roth IRA",
-              "val": 22.39
+              "val": 22.801785837120853
             },
             {
               "id": "asset_gzk2czn70",
               "label": "Inspira Financial HSA",
-              "val": 7.07
+              "val": 7.46287957510599
             }
           ]
         }
@@ -448,22 +454,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_7gzcvlkf5",
               "label": "Marcus HYSA",
-              "val": 26.81150667519695
+              "val": 35.06620377414838,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_gns3ir02u",
               "label": "Chase Checking",
-              "val": 4.17
+              "val": 5.6
             },
             {
               "id": "asset_1f214lwlw",
               "label": "Betterment Cash Reserve",
-              "val": 8.99
+              "val": 12.26
             },
             {
               "id": "asset_d5zke45xu",
               "label": "Amex HYSA",
-              "val": 10.42
+              "val": 15.03
             }
           ]
         },
@@ -475,12 +482,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_gif24djpb",
               "label": "E-Commerce Store",
-              "val": 48.36
+              "val": 65.24
             },
             {
               "id": "asset_kdt4h9g6g",
               "label": "Personal Business",
-              "val": 133.37
+              "val": 172.69
             }
           ]
         },
@@ -492,12 +499,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_2exn721jp",
               "label": "Subaru Outback (Equity)",
-              "val": 19.5
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_pezgt4oh2",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 75.50041126330245
             }
           ]
         },
@@ -509,12 +517,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_march_2024",
               "label": "Fidelity Account",
-              "val": 45.2
+              "val": 32.43752076769706
             },
             {
               "id": "asset_schwab_march_2024",
               "label": "Charles Schwab Account",
-              "val": 34.15
+              "val": 24.91099174868633
             }
           ]
         },
@@ -526,27 +534,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_uxwm1yfrb",
               "label": "Fidelity 401k",
-              "val": 88.03
+              "val": 89.19307486539383,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_wl1g08s72",
               "label": "Fidelity HSA",
-              "val": 9.21
+              "val": 9.325618766616687
             },
             {
               "id": "asset_97cp04b8i",
               "label": "Schwab IRA",
-              "val": 29.13
+              "val": 29.87028034133798
             },
             {
               "id": "asset_gqo3r589r",
               "label": "Schwab Roth IRA",
-              "val": 22.99
+              "val": 23.428595701969808
             },
             {
               "id": "asset_wqgilx1cl",
               "label": "Inspira Financial HSA",
-              "val": 7.27
+              "val": 7.668030459833661
             }
           ]
         }
@@ -629,22 +638,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_iekxkwct5",
               "label": "Marcus HYSA",
-              "val": 32.560089628226194
+              "val": 40.66620377414838,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_6y6ysxd8m",
               "label": "Chase Checking",
-              "val": 4.16
+              "val": 5.6
             },
             {
               "id": "asset_xbvsziz06",
               "label": "Betterment Cash Reserve",
-              "val": 9.02
+              "val": 12.26
             },
             {
               "id": "asset_oqanty8o0",
               "label": "Amex HYSA",
-              "val": 10.69
+              "val": 15.03
             }
           ]
         },
@@ -656,12 +666,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_uq6zeu0v6",
               "label": "E-Commerce Store",
-              "val": 48.74
+              "val": 65.24
             },
             {
               "id": "asset_da4z7uc6w",
               "label": "Personal Business",
-              "val": 134.74
+              "val": 172.69
             }
           ]
         },
@@ -673,12 +683,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qtzwpanty",
               "label": "Subaru Outback (Equity)",
-              "val": 19.34
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_lg6cuowsm",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 75.78173139534334
             }
           ]
         },
@@ -690,12 +701,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_april_2024",
               "label": "Fidelity Account",
-              "val": 45.36
+              "val": 33.19826209319503
             },
             {
               "id": "asset_schwab_april_2024",
               "label": "Charles Schwab Account",
-              "val": 34.37
+              "val": 25.495217066585376
             }
           ]
         },
@@ -707,27 +718,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qicvhvfik",
               "label": "Fidelity 401k",
-              "val": 90.87
+              "val": 91.28487647021656,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_z2okm796z",
               "label": "Fidelity HSA",
-              "val": 9.17
+              "val": 9.544327947025742
             },
             {
               "id": "asset_b1qi2toby",
               "label": "Schwab IRA",
-              "val": 29.99
+              "val": 30.570813431477678
             },
             {
               "id": "asset_v5o0qr875",
               "label": "Schwab Roth IRA",
-              "val": 23.35
+              "val": 23.97805510968822
             },
             {
               "id": "asset_dtbdj7ed7",
               "label": "Inspira Financial HSA",
-              "val": 7.33
+              "val": 7.847865031586193
             }
           ]
         }
@@ -810,22 +822,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_zi1s431ro",
               "label": "Marcus HYSA",
-              "val": 38.5139751492262
+              "val": 46.26620377414838,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_3e7eka2es",
               "label": "Chase Checking",
-              "val": 4.16
+              "val": 5.6
             },
             {
               "id": "asset_gw9ks0wfb",
               "label": "Betterment Cash Reserve",
-              "val": 9.26
+              "val": 12.26
             },
             {
               "id": "asset_3ttiirt1v",
               "label": "Amex HYSA",
-              "val": 10.79
+              "val": 15.03
             }
           ]
         },
@@ -837,12 +850,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_r2r9ms6an",
               "label": "E-Commerce Store",
-              "val": 49.33
+              "val": 65.24
             },
             {
               "id": "asset_y7kxto0f1",
               "label": "Personal Business",
-              "val": 135.82
+              "val": 172.69
             }
           ]
         },
@@ -854,12 +867,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_3wuthw5bv",
               "label": "Subaru Outback (Equity)",
-              "val": 19.67
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_amd15rx0e",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 75.79456229308114
             }
           ]
         },
@@ -871,12 +885,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_may_2024",
               "label": "Fidelity Account",
-              "val": 45.37
+              "val": 34.08445898204904
             },
             {
               "id": "asset_schwab_may_2024",
               "label": "Charles Schwab Account",
-              "val": 34.63
+              "val": 26.17578829593587
             }
           ]
         },
@@ -888,27 +902,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_83q7xibk4",
               "label": "Fidelity 401k",
-              "val": 94.38
+              "val": 93.72164178341984,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_fg6say5sv",
               "label": "Fidelity HSA",
-              "val": 9.51
+              "val": 9.799104950385518
             },
             {
               "id": "asset_pyx1sg0bc",
               "label": "Schwab IRA",
-              "val": 29.57
+              "val": 31.386873009435682
             },
             {
               "id": "asset_kdx2h318o",
               "label": "Schwab Roth IRA",
-              "val": 23.51
+              "val": 24.618127104400603
             },
             {
               "id": "asset_bsq3hkpma",
               "label": "Inspira Financial HSA",
-              "val": 7.62
+              "val": 8.057356527123348
             }
           ]
         }
@@ -991,22 +1006,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qc2lmct7g",
               "label": "Marcus HYSA",
-              "val": 44.654785747784636
+              "val": 51.86620377414838,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_6okcnc9km",
               "label": "Chase Checking",
-              "val": 4.12
+              "val": 5.6
             },
             {
               "id": "asset_wyf33jauc",
               "label": "Betterment Cash Reserve",
-              "val": 9.43
+              "val": 12.26
             },
             {
               "id": "asset_ymo78i2s0",
               "label": "Amex HYSA",
-              "val": 11.08
+              "val": 15.03
             }
           ]
         },
@@ -1018,12 +1034,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_9g6ido7m5",
               "label": "E-Commerce Store",
-              "val": 51.03
+              "val": 65.24
             },
             {
               "id": "asset_bapjjj3d4",
               "label": "Personal Business",
-              "val": 136.13
+              "val": 172.69
             }
           ]
         },
@@ -1035,12 +1051,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_brz08qryw",
               "label": "Subaru Outback (Equity)",
-              "val": 20.41
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_21h9gurw0",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 75.87420528740503
             }
           ]
         },
@@ -1052,12 +1069,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_june_2024",
               "label": "Fidelity Account",
-              "val": 45.71
+              "val": 34.826540855238036
             },
             {
               "id": "asset_schwab_june_2024",
               "label": "Charles Schwab Account",
-              "val": 34.75
+              "val": 26.74568374362588
             }
           ]
         },
@@ -1069,27 +1086,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_twuz5vagb",
               "label": "Fidelity 401k",
-              "val": 97.82
+              "val": 95.76213570851388,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_t6j49vzc1",
               "label": "Fidelity HSA",
-              "val": 9.54
+              "val": 10.012449635157758
             },
             {
               "id": "asset_8lbv8eepm",
               "label": "Schwab IRA",
-              "val": 30.57
+              "val": 32.07022343399879
             },
             {
               "id": "asset_por8okyhq",
               "label": "Schwab Roth IRA",
-              "val": 23.95
+              "val": 25.15410937965572
             },
             {
               "id": "asset_nqkn92m8z",
               "label": "Inspira Financial HSA",
-              "val": 7.94
+              "val": 8.232780119082026
             }
           ]
         }
@@ -1172,22 +1190,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_x5508nvxe",
               "label": "Marcus HYSA",
-              "val": 50.694506906242424
+              "val": 57.46620377414838,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_rnuoz8siz",
               "label": "Chase Checking",
-              "val": 4.09
+              "val": 5.6
             },
             {
               "id": "asset_zzrf502zc",
               "label": "Betterment Cash Reserve",
-              "val": 9.62
+              "val": 12.26
             },
             {
               "id": "asset_1en8gjd96",
               "label": "Amex HYSA",
-              "val": 11.44
+              "val": 15.03
             }
           ]
         },
@@ -1199,12 +1218,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_bwasalvwi",
               "label": "E-Commerce Store",
-              "val": 50.61
+              "val": 65.24
             },
             {
               "id": "asset_hvpgxyrnu",
               "label": "Personal Business",
-              "val": 138.63
+              "val": 172.69
             }
           ]
         },
@@ -1216,12 +1235,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_dc2122qc3",
               "label": "Subaru Outback (Equity)",
-              "val": 20.31
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_fhfr7qx6g",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 76.08536961101612
             }
           ]
         },
@@ -1233,12 +1253,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_july_2024",
               "label": "Fidelity Account",
-              "val": 46.01
+              "val": 35.687296644795936
             },
             {
               "id": "asset_schwab_july_2024",
               "label": "Charles Schwab Account",
-              "val": 34.65
+              "val": 27.406717012008833
             }
           ]
         },
@@ -1250,27 +1270,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_b70l8f7d2",
               "label": "Fidelity 401k",
-              "val": 99.25
+              "val": 98.1289459258753,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_9ugkgyv5f",
               "label": "Fidelity HSA",
-              "val": 9.53
+              "val": 10.259912454590273
             },
             {
               "id": "asset_cuqtn1obq",
               "label": "Schwab IRA",
-              "val": 31.6
+              "val": 32.862855427166664
             },
             {
               "id": "asset_44ony2mho",
               "label": "Schwab Roth IRA",
-              "val": 23.86
+              "val": 25.775806072695353
             },
             {
               "id": "asset_2s1vuz988",
               "label": "Inspira Financial HSA",
-              "val": 8.08
+              "val": 8.436257495176102
             }
           ]
         }
@@ -1353,22 +1374,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_lzolyq7c2",
               "label": "Marcus HYSA",
-              "val": 56.66306433006537
+              "val": 63.066203774148384,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_8bgtn2wz2",
               "label": "Chase Checking",
-              "val": 4.09
+              "val": 5.6
             },
             {
               "id": "asset_q6sit8ujp",
               "label": "Betterment Cash Reserve",
-              "val": 9.66
+              "val": 12.26
             },
             {
               "id": "asset_j2ekfgn39",
               "label": "Amex HYSA",
-              "val": 11.61
+              "val": 15.03
             }
           ]
         },
@@ -1380,12 +1402,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_dht4woip3",
               "label": "E-Commerce Store",
-              "val": 51.96
+              "val": 65.24
             },
             {
               "id": "asset_0qd9qrvo5",
               "label": "Personal Business",
-              "val": 144.13
+              "val": 172.69
             }
           ]
         },
@@ -1397,12 +1419,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qkfbpma79",
               "label": "Subaru Outback (Equity)",
-              "val": 20.39
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_l4znffecz",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 76.3872152507388
             }
           ]
         },
@@ -1414,12 +1437,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_august_2024",
               "label": "Fidelity Account",
-              "val": 46.39
+              "val": 35.405780106211864
             },
             {
               "id": "asset_schwab_august_2024",
               "label": "Charles Schwab Account",
-              "val": 34.49
+              "val": 27.19052119914109
             }
           ]
         },
@@ -1431,27 +1454,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_7rur6tfhx",
               "label": "Fidelity 401k",
-              "val": 100.06
+              "val": 97.35486316284303,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_9dw1mm7xa",
               "label": "Fidelity HSA",
-              "val": 9.7
+              "val": 10.17897791171525
             },
             {
               "id": "asset_wfr8fge8h",
               "label": "Schwab IRA",
-              "val": 32.51
+              "val": 32.603619279359606
             },
             {
               "id": "asset_0ubsg69az",
               "label": "Schwab Roth IRA",
-              "val": 24.55
+              "val": 25.572475577336647
             },
             {
               "id": "asset_4me6uaand",
               "label": "Inspira Financial HSA",
-              "val": 8.09
+              "val": 8.369708716424821
             }
           ]
         }
@@ -1534,22 +1558,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_sy60w0b1i",
               "label": "Marcus HYSA",
-              "val": 62.63804745618653
+              "val": 68.66620377414839,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_qb1ypwost",
               "label": "Chase Checking",
-              "val": 4.06
+              "val": 5.6
             },
             {
               "id": "asset_fsz6097s6",
               "label": "Betterment Cash Reserve",
-              "val": 9.8
+              "val": 12.26
             },
             {
               "id": "asset_wj4lp533o",
               "label": "Amex HYSA",
-              "val": 11.83
+              "val": 15.03
             }
           ]
         },
@@ -1561,12 +1586,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_bup3p0vcp",
               "label": "E-Commerce Store",
-              "val": 52.86
+              "val": 65.24
             },
             {
               "id": "asset_m3x74wpca",
               "label": "Personal Business",
-              "val": 143.92
+              "val": 172.69
             }
           ]
         },
@@ -1578,12 +1603,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_y4wum1z6b",
               "label": "Subaru Outback (Equity)",
-              "val": 21.16
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_f8z32957h",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 76.43363987086562
             }
           ]
         },
@@ -1595,12 +1621,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_september_2024",
               "label": "Fidelity Account",
-              "val": 46.6
+              "val": 35.99763341221268
             },
             {
               "id": "asset_schwab_september_2024",
               "label": "Charles Schwab Account",
-              "val": 35.14
+              "val": 27.64504585063362
             }
           ]
         },
@@ -1612,27 +1638,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_gn5w5ax4i",
               "label": "Fidelity 401k",
-              "val": 101.72
+              "val": 98.98227533806796,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_ar1km7w0f",
               "label": "Fidelity HSA",
-              "val": 10.11
+              "val": 10.349132663585864
             },
             {
               "id": "asset_0yb9hecge",
               "label": "Schwab IRA",
-              "val": 32.7
+              "val": 33.14863085092205
             },
             {
               "id": "asset_1iik8qtkj",
               "label": "Schwab Roth IRA",
-              "val": 24.96
+              "val": 25.9999525081561
             },
             {
               "id": "asset_a4xwfmcmd",
               "label": "Inspira Financial HSA",
-              "val": 8.18
+              "val": 8.509619198815543
             }
           ]
         }
@@ -1715,22 +1742,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_vdfdqsn0q",
               "label": "Marcus HYSA",
-              "val": 68.05020882010427
+              "val": 74.26620377414838,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_7kfdlsn9l",
               "label": "Chase Checking",
-              "val": 4.17
+              "val": 5.6
             },
             {
               "id": "asset_jo87pumbj",
               "label": "Betterment Cash Reserve",
-              "val": 9.96
+              "val": 12.26
             },
             {
               "id": "asset_wlhdlaf7o",
               "label": "Amex HYSA",
-              "val": 11.93
+              "val": 15.03
             }
           ]
         },
@@ -1742,12 +1770,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_yfxhhiig2",
               "label": "E-Commerce Store",
-              "val": 52.97
+              "val": 65.24
             },
             {
               "id": "asset_9skb4f7gh",
               "label": "Personal Business",
-              "val": 142.9
+              "val": 172.69
             }
           ]
         },
@@ -1759,12 +1787,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_t6e8ll9uf",
               "label": "Subaru Outback (Equity)",
-              "val": 21.22
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_06l74lwep",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 76.5226138184992
             }
           ]
         },
@@ -1776,12 +1805,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_october_2024",
               "label": "Fidelity Account",
-              "val": 46.72
+              "val": 36.47651038402012
             },
             {
               "id": "asset_schwab_october_2024",
               "label": "Charles Schwab Account",
-              "val": 35.31
+              "val": 28.012808244645274
             }
           ]
         },
@@ -1793,27 +1822,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_aw0mjed77",
               "label": "Fidelity 401k",
-              "val": 106.48
+              "val": 100.29903779669179,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_tnybh9xh1",
               "label": "Fidelity HSA",
-              "val": 10.27
+              "val": 10.48680730608306
             },
             {
               "id": "asset_a8ttizht1",
               "label": "Schwab IRA",
-              "val": 33.25
+              "val": 33.58960750568367
             },
             {
               "id": "asset_np2eixfvd",
               "label": "Schwab Roth IRA",
-              "val": 25.49
+              "val": 26.345830204660977
             },
             {
               "id": "asset_wo2coz0o7",
               "label": "Inspira Financial HSA",
-              "val": 8.37
+              "val": 8.622822770464248
             }
           ]
         }
@@ -1896,22 +1926,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_9qzq09kdm",
               "label": "Marcus HYSA",
-              "val": 73.89502266909616
+              "val": 79.86620377414837,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_yxe3k7q1u",
               "label": "Chase Checking",
-              "val": 4.28
+              "val": 5.6
             },
             {
               "id": "asset_egm8ihdwn",
               "label": "Betterment Cash Reserve",
-              "val": 9.86
+              "val": 12.26
             },
             {
               "id": "asset_jo4ty2gos",
               "label": "Amex HYSA",
-              "val": 12.23
+              "val": 15.03
             }
           ]
         },
@@ -1923,12 +1954,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_db5lnxcfc",
               "label": "E-Commerce Store",
-              "val": 54.21
+              "val": 65.24
             },
             {
               "id": "asset_s91n68q83",
               "label": "Personal Business",
-              "val": 145.97
+              "val": 172.69
             }
           ]
         },
@@ -1940,12 +1971,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_f0sbaig2k",
               "label": "Subaru Outback (Equity)",
-              "val": 21.18
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_r0gpoatxf",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 76.78155039274318
             }
           ]
         },
@@ -1957,12 +1989,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_november_2024",
               "label": "Fidelity Account",
-              "val": 46.81
+              "val": 36.2917810981712
             },
             {
               "id": "asset_schwab_november_2024",
               "label": "Charles Schwab Account",
-              "val": 34.72
+              "val": 27.87094198586184
             }
           ]
         },
@@ -1974,27 +2006,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_y3v3exntr",
               "label": "Fidelity 401k",
-              "val": 107
+              "val": 99.7910898206257,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_0oruh5md4",
               "label": "Fidelity HSA",
-              "val": 10.54
+              "val": 10.433698595735136
             },
             {
               "id": "asset_mvpv2dec4",
               "label": "Schwab IRA",
-              "val": 34.06
+              "val": 33.419498464518675
             },
             {
               "id": "asset_4b4d1lny3",
               "label": "Schwab Roth IRA",
-              "val": 25.44
+              "val": 26.212406081915507
             },
             {
               "id": "asset_aub74d7jt",
               "label": "Inspira Financial HSA",
-              "val": 8.55
+              "val": 8.579153903140593
             }
           ]
         }
@@ -2077,22 +2110,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_vny25fq6u",
               "label": "Marcus HYSA",
-              "val": 79.86007785044531
+              "val": 85.46620377414837,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_alv17mfln",
               "label": "Chase Checking",
-              "val": 4.41
+              "val": 5.6
             },
             {
               "id": "asset_29eracvtc",
               "label": "Betterment Cash Reserve",
-              "val": 10.05
+              "val": 12.26
             },
             {
               "id": "asset_j3wqcaw26",
               "label": "Amex HYSA",
-              "val": 12.45
+              "val": 15.03
             }
           ]
         },
@@ -2104,12 +2138,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_hzmv0k94u",
               "label": "E-Commerce Store",
-              "val": 54.48
+              "val": 65.24
             },
             {
               "id": "asset_lt33rcklx",
               "label": "Personal Business",
-              "val": 148.33
+              "val": 172.69
             }
           ]
         },
@@ -2121,12 +2155,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_sf631rlh8",
               "label": "Subaru Outback (Equity)",
-              "val": 21.75
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_sgbnepciy",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 77.01188608514117
             }
           ]
         },
@@ -2138,12 +2173,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_december_2024",
               "label": "Fidelity Account",
-              "val": 46.18
+              "val": 37.006682726803376
             },
             {
               "id": "asset_schwab_december_2024",
               "label": "Charles Schwab Account",
-              "val": 35.64
+              "val": 28.419963863936864
             }
           ]
         },
@@ -2155,27 +2190,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_cjccoqma0",
               "label": "Fidelity 401k",
-              "val": 107.23
+              "val": 101.75684654231331,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_ppo5k3qnp",
               "label": "Fidelity HSA",
-              "val": 10.73
+              "val": 10.639229101349372
             },
             {
               "id": "asset_ws83qc6fw",
               "label": "Schwab IRA",
-              "val": 34.56
+              "val": 34.077819802226706
             },
             {
               "id": "asset_wi41wghab",
               "label": "Schwab Roth IRA",
-              "val": 25.51
+              "val": 26.7287569258611
             },
             {
               "id": "asset_2cn4hsmoz",
               "label": "Inspira Financial HSA",
-              "val": 8.41
+              "val": 8.748152252410103
             }
           ]
         }
@@ -2258,22 +2294,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_jm8ti2a4q",
               "label": "Marcus HYSA",
-              "val": 85.67136625120969
+              "val": 91.06620377414836,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_cyehw2ou2",
               "label": "Chase Checking",
-              "val": 4.47
+              "val": 5.6
             },
             {
               "id": "asset_1mtrfa9rx",
               "label": "Betterment Cash Reserve",
-              "val": 10.07
+              "val": 12.26
             },
             {
               "id": "asset_vkq700vl7",
               "label": "Amex HYSA",
-              "val": 12.65
+              "val": 15.03
             }
           ]
         },
@@ -2285,12 +2322,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_679qs5752",
               "label": "E-Commerce Store",
-              "val": 54.18
+              "val": 65.24
             },
             {
               "id": "asset_pxql45a97",
               "label": "Personal Business",
-              "val": 147.92
+              "val": 172.69
             }
           ]
         },
@@ -2302,12 +2339,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_52hxjy2vk",
               "label": "Subaru Outback (Equity)",
-              "val": 22.45
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_8kcy46e56",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 77.02725302753704
             }
           ]
         },
@@ -2319,12 +2357,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_january_2025",
               "label": "Fidelity Account",
-              "val": 47.08
+              "val": 38.39259380386812
             },
             {
               "id": "asset_schwab_january_2025",
               "label": "Charles Schwab Account",
-              "val": 35.01
+              "val": 29.48429981157051
             }
           ]
         },
@@ -2336,27 +2374,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_unnhw4flz",
               "label": "Fidelity 401k",
-              "val": 108.92
+              "val": 105.56767016655635,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_g4dcmwljw",
               "label": "Fidelity HSA",
-              "val": 10.97
+              "val": 11.037671338710735
             },
             {
               "id": "asset_fmoq188r3",
               "label": "Schwab IRA",
-              "val": 35.03
+              "val": 35.35404410730107
             },
             {
               "id": "asset_muhj3mg3j",
               "label": "Schwab Roth IRA",
-              "val": 26.45
+              "val": 27.729756679694525
             },
             {
               "id": "asset_qsxrpk7el",
               "label": "Inspira Financial HSA",
-              "val": 8.73
+              "val": 9.075773109431225
             }
           ]
         }
@@ -2439,22 +2478,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_0nnyg2lvv",
               "label": "Marcus HYSA",
-              "val": 91.38041056470364
+              "val": 96.66620377414836,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_hbvkplxve",
               "label": "Chase Checking",
-              "val": 4.59
+              "val": 5.6
             },
             {
               "id": "asset_jhgt7hsu6",
               "label": "Betterment Cash Reserve",
-              "val": 10
+              "val": 12.26
             },
             {
               "id": "asset_p0s54rx8v",
               "label": "Amex HYSA",
-              "val": 12.83
+              "val": 15.03
             }
           ]
         },
@@ -2466,12 +2506,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fhdrzabkb",
               "label": "E-Commerce Store",
-              "val": 55.12
+              "val": 65.24
             },
             {
               "id": "asset_5a82i87w9",
               "label": "Personal Business",
-              "val": 149.41
+              "val": 172.69
             }
           ]
         },
@@ -2483,12 +2523,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_hmb0asp50",
               "label": "Subaru Outback (Equity)",
-              "val": 22.73
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_wfwpr55w6",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 77.27627953700053
             }
           ]
         },
@@ -2500,12 +2541,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_february_2025",
               "label": "Fidelity Account",
-              "val": 46.22
+              "val": 39.281965889694675
             },
             {
               "id": "asset_schwab_february_2025",
               "label": "Charles Schwab Account",
-              "val": 35.61
+              "val": 30.167309491940426
             }
           ]
         },
@@ -2517,27 +2558,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_m1rgc6kg1",
               "label": "Fidelity 401k",
-              "val": 107.77
+              "val": 108.01316628207071,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_inom3836v",
               "label": "Fidelity HSA",
-              "val": 10.89
+              "val": 11.293361194710727
             },
             {
               "id": "asset_ryor3y3ae",
               "label": "Schwab IRA",
-              "val": 35.74
+              "val": 36.17302758392532
             },
             {
               "id": "asset_mgau3ylga",
               "label": "Schwab Roth IRA",
-              "val": 25.96
+              "val": 28.37212201879277
             },
             {
               "id": "asset_qwhvn602v",
               "label": "Inspira Financial HSA",
-              "val": 8.73
+              "val": 9.286015202009253
             }
           ]
         }
@@ -2620,22 +2662,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fcfnvhpph",
               "label": "Marcus HYSA",
-              "val": 97.27544011729009
+              "val": 102.26620377414835,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_6h33cgrug",
               "label": "Chase Checking",
-              "val": 4.6
+              "val": 5.6
             },
             {
               "id": "asset_gojvpj87j",
               "label": "Betterment Cash Reserve",
-              "val": 10.31
+              "val": 12.26
             },
             {
               "id": "asset_n4ixsb5qq",
               "label": "Amex HYSA",
-              "val": 13.09
+              "val": 15.03
             }
           ]
         },
@@ -2647,12 +2690,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_5igt9hdto",
               "label": "E-Commerce Store",
-              "val": 55.63
+              "val": 65.24
             },
             {
               "id": "asset_i32lb5zax",
               "label": "Personal Business",
-              "val": 149.1
+              "val": 172.69
             }
           ]
         },
@@ -2664,12 +2707,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_vulplhfu7",
               "label": "Subaru Outback (Equity)",
-              "val": 23.41
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_bjrj5590s",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 77.37830582574277
             }
           ]
         },
@@ -2681,12 +2725,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_march_2025",
               "label": "Fidelity Account",
-              "val": 46.56
+              "val": 40.76459103861087
             },
             {
               "id": "asset_schwab_march_2025",
               "label": "Charles Schwab Account",
-              "val": 35.61
+              "val": 31.305918793050346
             }
           ]
         },
@@ -2698,27 +2742,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_717stmsm9",
               "label": "Fidelity 401k",
-              "val": 110.28
+              "val": 112.08992346865226,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_8gp50gnrz",
               "label": "Fidelity HSA",
-              "val": 10.92
+              "val": 11.719608225475165
             },
             {
               "id": "asset_ttbczqbov",
               "label": "Schwab IRA",
-              "val": 36.75
+              "val": 37.53831160659783
             },
             {
               "id": "asset_nuhjg3cxf",
               "label": "Schwab Roth IRA",
-              "val": 26.68
+              "val": 29.442975289000827
             },
             {
               "id": "asset_d1nnfgukn",
               "label": "Inspira Financial HSA",
-              "val": 8.64
+              "val": 9.636498670947065
             }
           ]
         }
@@ -2801,22 +2846,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_sysl1u1to",
               "label": "Marcus HYSA",
-              "val": 103.25144332437519
+              "val": 107.86620377414835,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_6xh1z8rux",
               "label": "Chase Checking",
-              "val": 4.57
+              "val": 5.6
             },
             {
               "id": "asset_498zuz4gy",
               "label": "Betterment Cash Reserve",
-              "val": 10.48
+              "val": 12.26
             },
             {
               "id": "asset_944mqkd27",
               "label": "Amex HYSA",
-              "val": 12.98
+              "val": 15.03
             }
           ]
         },
@@ -2828,12 +2874,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_6jgx9qf0o",
               "label": "E-Commerce Store",
-              "val": 55.16
+              "val": 65.24
             },
             {
               "id": "asset_rqwmlg0ag",
               "label": "Personal Business",
-              "val": 151.01
+              "val": 172.69
             }
           ]
         },
@@ -2845,12 +2891,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_euxj64yaa",
               "label": "Subaru Outback (Equity)",
-              "val": 24.08
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_v32fdf8nv",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 77.67271468862366
             }
           ]
         },
@@ -2862,12 +2909,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_april_2025",
               "label": "Fidelity Account",
-              "val": 46.49
+              "val": 40.96951465505102
             },
             {
               "id": "asset_schwab_april_2025",
               "label": "Charles Schwab Account",
-              "val": 35.53
+              "val": 31.46329366010046
             }
           ]
         },
@@ -2879,27 +2926,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_zejkmm24l",
               "label": "Fidelity 401k",
-              "val": 111.63
+              "val": 112.6533995614687,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_yr2dkp93s",
               "label": "Fidelity HSA",
-              "val": 10.94
+              "val": 11.778522700995143
             },
             {
               "id": "asset_o22j6subd",
               "label": "Schwab IRA",
-              "val": 37.88
+              "val": 37.727016714964925
             },
             {
               "id": "asset_r63bxm37r",
               "label": "Schwab Roth IRA",
-              "val": 27.19
+              "val": 29.590985138265975
             },
             {
               "id": "asset_l219ytals",
               "label": "Inspira Financial HSA",
-              "val": 8.89
+              "val": 9.684941353852942
             }
           ]
         }
@@ -2982,22 +3030,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_uk0439aau",
               "label": "Marcus HYSA",
-              "val": 109.51798287235576
+              "val": 113.46620377414834,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_qnlm0veme",
               "label": "Chase Checking",
-              "val": 4.54
+              "val": 5.6
             },
             {
               "id": "asset_ip0px4gg0",
               "label": "Betterment Cash Reserve",
-              "val": 10.45
+              "val": 12.26
             },
             {
               "id": "asset_bfdf7woj9",
               "label": "Amex HYSA",
-              "val": 13.25
+              "val": 15.03
             }
           ]
         },
@@ -3009,12 +3058,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_dizpftak0",
               "label": "E-Commerce Store",
-              "val": 56.16
+              "val": 65.24
             },
             {
               "id": "asset_h2ceqdaw7",
               "label": "Personal Business",
-              "val": 150.12
+              "val": 172.69
             }
           ]
         },
@@ -3026,12 +3075,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_t5c3bw0ib",
               "label": "Subaru Outback (Equity)",
-              "val": 24.12
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_y4vr6zcp1",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 77.73943245119061
             }
           ]
         },
@@ -3043,12 +3093,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_may_2025",
               "label": "Fidelity Account",
-              "val": 48.32
+              "val": 40.99803330678326
             },
             {
               "id": "asset_schwab_may_2025",
               "label": "Charles Schwab Account",
-              "val": 36.56
+              "val": 31.48519508416654
             }
           ]
         },
@@ -3060,27 +3110,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_02p5x1gok",
               "label": "Fidelity 401k",
-              "val": 110.19
+              "val": 112.73181696757167,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_jwpung6fj",
               "label": "Fidelity HSA",
-              "val": 11.49
+              "val": 11.786721665265485
             },
             {
               "id": "asset_ku4sddcdz",
               "label": "Schwab IRA",
-              "val": 37.88
+              "val": 37.75327828187997
             },
             {
               "id": "asset_ausp3k3qp",
               "label": "Schwab Roth IRA",
-              "val": 26.75
+              "val": 29.61158325876307
             },
             {
               "id": "asset_s96pynris",
               "label": "Inspira Financial HSA",
-              "val": 9.62
+              "val": 9.691682987768873
             }
           ]
         }
@@ -3163,22 +3214,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qz6zvatya",
               "label": "Marcus HYSA",
-              "val": 115.4943878957201
+              "val": 119.06620377414833,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_qrgh817e1",
               "label": "Chase Checking",
-              "val": 4.61
+              "val": 5.6
             },
             {
               "id": "asset_xdoppo1bk",
               "label": "Betterment Cash Reserve",
-              "val": 10.6
+              "val": 12.26
             },
             {
               "id": "asset_s4vtx4u8q",
               "label": "Amex HYSA",
-              "val": 13.47
+              "val": 15.03
             }
           ]
         },
@@ -3190,12 +3242,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_cb157bapc",
               "label": "E-Commerce Store",
-              "val": 56.1
+              "val": 65.24
             },
             {
               "id": "asset_mefdcc5vj",
               "label": "Personal Business",
-              "val": 153.6
+              "val": 172.69
             }
           ]
         },
@@ -3207,12 +3259,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_wqyq70t8q",
               "label": "Subaru Outback (Equity)",
-              "val": 24.88
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_pztermexr",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 78.11237186184205
             }
           ]
         },
@@ -3224,12 +3277,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_june_2025",
               "label": "Fidelity Account",
-              "val": 48.4
+              "val": 40.82694857632353
             },
             {
               "id": "asset_schwab_june_2025",
               "label": "Charles Schwab Account",
-              "val": 35.84
+              "val": 31.353807413100977
             }
           ]
         },
@@ -3241,27 +3294,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qdpb9i1nb",
               "label": "Fidelity 401k",
-              "val": 114.72
+              "val": 112.26138726730257,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_dnis6vo3q",
               "label": "Fidelity HSA",
-              "val": 11.74
+              "val": 11.737535693733232
             },
             {
               "id": "asset_drh1i8yin",
               "label": "Schwab IRA",
-              "val": 39.01
+              "val": 37.59573390919032
             },
             {
               "id": "asset_55qszcyh2",
               "label": "Schwab Roth IRA",
-              "val": 26.69
+              "val": 29.488014166987316
             },
             {
               "id": "asset_kxei0nk7m",
               "label": "Inspira Financial HSA",
-              "val": 9.77
+              "val": 9.651239609442497
             }
           ]
         }
@@ -3344,22 +3398,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_8okis7q2x",
               "label": "Marcus HYSA",
-              "val": 121.73526694523903
+              "val": 124.66620377414833,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_tmmzc0heq",
               "label": "Chase Checking",
-              "val": 4.78
+              "val": 5.6
             },
             {
               "id": "asset_yofiyb5ui",
               "label": "Betterment Cash Reserve",
-              "val": 10.7
+              "val": 12.26
             },
             {
               "id": "asset_t2xa4soe6",
               "label": "Amex HYSA",
-              "val": 13.35
+              "val": 15.03
             }
           ]
         },
@@ -3371,12 +3426,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_xhumdq23g",
               "label": "E-Commerce Store",
-              "val": 58.12
+              "val": 65.24
             },
             {
               "id": "asset_0cd22c2mh",
               "label": "Personal Business",
-              "val": 157.48
+              "val": 172.69
             }
           ]
         },
@@ -3388,12 +3443,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_phcc3oksz",
               "label": "Subaru Outback (Equity)",
-              "val": 25.15
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_lvbn2v0bw",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 78.27472786670764
             }
           ]
         },
@@ -3405,12 +3461,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_july_2025",
               "label": "Fidelity Account",
-              "val": 48.86
+              "val": 42.12832326951066
             },
             {
               "id": "asset_schwab_july_2025",
               "label": "Charles Schwab Account",
-              "val": 35.99
+              "val": 32.35322208711693
             }
           ]
         },
@@ -3422,27 +3478,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_bo90vbwni",
               "label": "Fidelity 401k",
-              "val": 118.18
+              "val": 115.83976217667481,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_39i12v7le",
               "label": "Fidelity HSA",
-              "val": 11.86
+              "val": 12.111674159742991
             },
             {
               "id": "asset_jdrll4sme",
               "label": "Schwab IRA",
-              "val": 39.41
+              "val": 38.79411239172014
             },
             {
               "id": "asset_moe8e5miy",
               "label": "Schwab Roth IRA",
-              "val": 28.01
+              "val": 30.427955963458366
             },
             {
               "id": "asset_mkzox7pls",
               "label": "Inspira Financial HSA",
-              "val": 10
+              "val": 9.95887658510659
             }
           ]
         }
@@ -3525,22 +3582,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_jpn5ukvxu",
               "label": "Marcus HYSA",
-              "val": 127.54091301851798
+              "val": 130.26620377414832,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_uzfc21pq8",
               "label": "Chase Checking",
-              "val": 4.84
+              "val": 5.6
             },
             {
               "id": "asset_2rcb8hx6m",
               "label": "Betterment Cash Reserve",
-              "val": 11.09
+              "val": 12.26
             },
             {
               "id": "asset_wzjtuesfr",
               "label": "Amex HYSA",
-              "val": 13.4
+              "val": 15.03
             }
           ]
         },
@@ -3552,12 +3610,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_4vnxrnnx9",
               "label": "E-Commerce Store",
-              "val": 59.47
+              "val": 65.24
             },
             {
               "id": "asset_77kqxlzmh",
               "label": "Personal Business",
-              "val": 156.39
+              "val": 172.69
             }
           ]
         },
@@ -3569,12 +3627,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_xjw85l6tj",
               "label": "Subaru Outback (Equity)",
-              "val": 26.07
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_go9f1ot2f",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 78.63724127724761
             }
           ]
         },
@@ -3586,12 +3645,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_august_2025",
               "label": "Fidelity Account",
-              "val": 48.13
+              "val": 42.79551800918341
             },
             {
               "id": "asset_schwab_august_2025",
               "label": "Charles Schwab Account",
-              "val": 35.65
+              "val": 32.86560658079582
             }
           ]
         },
@@ -3603,27 +3662,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_1tucgh1jm",
               "label": "Fidelity 401k",
-              "val": 114.49
+              "val": 117.6743398187704,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_0ng98rxks",
               "label": "Fidelity HSA",
-              "val": 12.61
+              "val": 12.303489182532164
             },
             {
               "id": "asset_yz74gxuqu",
               "label": "Schwab IRA",
-              "val": 38.26
+              "val": 39.40850256225801
             },
             {
               "id": "asset_78mx6sbf0",
               "label": "Schwab Roth IRA",
-              "val": 28.54
+              "val": 30.909849629815273
             },
             {
               "id": "asset_93eez3z06",
               "label": "Inspira Financial HSA",
-              "val": 10.31
+              "val": 10.116597319163008
             }
           ]
         }
@@ -3706,22 +3766,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_m2xims7gw",
               "label": "Marcus HYSA",
-              "val": 133.29545709479157
+              "val": 135.86620377414832,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_qoq2lih95",
               "label": "Chase Checking",
-              "val": 4.91
+              "val": 5.6
             },
             {
               "id": "asset_30hbyd2li",
               "label": "Betterment Cash Reserve",
-              "val": 11.14
+              "val": 12.26
             },
             {
               "id": "asset_8p64urec1",
               "label": "Amex HYSA",
-              "val": 13.37
+              "val": 15.03
             }
           ]
         },
@@ -3733,12 +3794,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fh9x20ix9",
               "label": "E-Commerce Store",
-              "val": 59.31
+              "val": 65.24
             },
             {
               "id": "asset_guwknoaje",
               "label": "Personal Business",
-              "val": 155.61
+              "val": 172.69
             }
           ]
         },
@@ -3750,12 +3811,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_lfh5zbcd7",
               "label": "Subaru Outback (Equity)",
-              "val": 27.07
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_0x32ou2nt",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 78.92889623015176
             }
           ]
         },
@@ -3767,12 +3829,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_september_2025",
               "label": "Fidelity Account",
-              "val": 49.1
+              "val": 42.73610400176741
             },
             {
               "id": "asset_schwab_september_2025",
               "label": "Charles Schwab Account",
-              "val": 36.95
+              "val": 32.81997849907231
             }
           ]
         },
@@ -3784,27 +3846,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_kror9lawv",
               "label": "Fidelity 401k",
-              "val": 118.54
+              "val": 117.51096981125781,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_drdhcr30i",
               "label": "Fidelity HSA",
-              "val": 12.22
+              "val": 12.286407963948086
             },
             {
               "id": "asset_s22iy1zel",
               "label": "Schwab IRA",
-              "val": 38.88
+              "val": 39.353790826721
             },
             {
               "id": "asset_fqbb5fkao",
               "label": "Schwab Roth IRA",
-              "val": 30.03
+              "val": 30.866936770699063
             },
             {
               "id": "asset_xoqxeqmmt",
               "label": "Inspira Financial HSA",
-              "val": 10.4
+              "val": 10.102552213130725
             }
           ]
         }
@@ -3887,22 +3950,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_qecug2x1b",
               "label": "Marcus HYSA",
-              "val": 139.32012054717097
+              "val": 141.4662037741483,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_yf9b2e4k0",
               "label": "Chase Checking",
-              "val": 4.98
+              "val": 5.6
             },
             {
               "id": "asset_qtks8srf0",
               "label": "Betterment Cash Reserve",
-              "val": 11.04
+              "val": 12.26
             },
             {
               "id": "asset_b9x2eom0g",
               "label": "Amex HYSA",
-              "val": 13.54
+              "val": 15.03
             }
           ]
         },
@@ -3914,12 +3978,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fr1gn1fun",
               "label": "E-Commerce Store",
-              "val": 60.26
+              "val": 65.24
             },
             {
               "id": "asset_yuqy4by7e",
               "label": "Personal Business",
-              "val": 160.57
+              "val": 172.69
             }
           ]
         },
@@ -3931,12 +3995,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_hyklzymfq",
               "label": "Subaru Outback (Equity)",
-              "val": 27.64
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_k6k0ri3e6",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 79.07355374100102
             }
           ]
         },
@@ -3948,12 +4013,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_october_2025",
               "label": "Fidelity Account",
-              "val": 49.27
+              "val": 44.049511572696275
             },
             {
               "id": "asset_schwab_october_2025",
               "label": "Charles Schwab Account",
-              "val": 36.12
+              "val": 33.828634043260934
             }
           ]
         },
@@ -3965,27 +4030,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_u6gn821wc",
               "label": "Fidelity 401k",
-              "val": 124.44
+              "val": 121.12243138508111,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_hdydnv303",
               "label": "Fidelity HSA",
-              "val": 12.66
+              "val": 12.664005819819618
             },
             {
               "id": "asset_4x7gpb1eh",
               "label": "Schwab IRA",
-              "val": 38.6
+              "val": 40.563249854956915
             },
             {
               "id": "asset_bc08scpt1",
               "label": "Schwab Roth IRA",
-              "val": 29.61
+              "val": 31.81556953433007
             },
             {
               "id": "asset_1f6b2ox2v",
               "label": "Inspira Financial HSA",
-              "val": 10.95
+              "val": 10.413033687106015
             }
           ]
         }
@@ -4068,22 +4134,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_9lowg6ba3",
               "label": "Marcus HYSA",
-              "val": 145.3184696227746
+              "val": 147.0662037741483,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_w5ksj1mh3",
               "label": "Chase Checking",
-              "val": 5.13
+              "val": 5.6
             },
             {
               "id": "asset_la2b0vwzz",
               "label": "Betterment Cash Reserve",
-              "val": 11.41
+              "val": 12.26
             },
             {
               "id": "asset_rmrlf7kcp",
               "label": "Amex HYSA",
-              "val": 13.86
+              "val": 15.03
             }
           ]
         },
@@ -4095,12 +4162,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_5okorqep4",
               "label": "E-Commerce Store",
-              "val": 61.19
+              "val": 65.24
             },
             {
               "id": "asset_fk9kjkg1o",
               "label": "Personal Business",
-              "val": 166.68
+              "val": 172.69
             }
           ]
         },
@@ -4112,12 +4179,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_t830yv4mr",
               "label": "Subaru Outback (Equity)",
-              "val": 28
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_25mkq5kh2",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 79.09569018012907
             }
           ]
         },
@@ -4129,12 +4197,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_november_2025",
               "label": "Fidelity Account",
-              "val": 49.52
+              "val": 45.49406000077122
             },
             {
               "id": "asset_schwab_november_2025",
               "label": "Charles Schwab Account",
-              "val": 36
+              "val": 34.93800162502102
             }
           ]
         },
@@ -4146,27 +4214,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_j425dfzut",
               "label": "Fidelity 401k",
-              "val": 124.74
+              "val": 125.0944894537201,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_6aa95symu",
               "label": "Fidelity HSA",
-              "val": 13.64
+              "val": 13.079305991081712
             },
             {
               "id": "asset_pmhyir5wg",
               "label": "Schwab IRA",
-              "val": 39.85
+              "val": 41.89347070698355
             },
             {
               "id": "asset_tdydupms3",
               "label": "Schwab Roth IRA",
-              "val": 31.81
+              "val": 32.85892119291266
             },
             {
               "id": "asset_zpuxbe7dd",
               "label": "Inspira Financial HSA",
-              "val": 11.01
+              "val": 10.754516053360542
             }
           ]
         }
@@ -4249,22 +4318,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_t80jvy150",
               "label": "Marcus HYSA",
-              "val": 150.72117436205122
+              "val": 152.6662037741483,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_8bnhuz3fs",
               "label": "Chase Checking",
-              "val": 5.19
+              "val": 5.6
             },
             {
               "id": "asset_w32nnqzja",
               "label": "Betterment Cash Reserve",
-              "val": 11.48
+              "val": 12.26
             },
             {
               "id": "asset_r6mmvfff6",
               "label": "Amex HYSA",
-              "val": 13.89
+              "val": 15.03
             }
           ]
         },
@@ -4276,12 +4346,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_tf6cybjwo",
               "label": "E-Commerce Store",
-              "val": 60.81
+              "val": 65.24
             },
             {
               "id": "asset_8hjk3ktz3",
               "label": "Personal Business",
-              "val": 166.59
+              "val": 172.69
             }
           ]
         },
@@ -4293,12 +4363,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fjm8zlyr0",
               "label": "Subaru Outback (Equity)",
-              "val": 28.79
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_j65zqcllq",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 79.1138157255786
             }
           ]
         },
@@ -4310,12 +4381,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_december_2025",
               "label": "Fidelity Account",
-              "val": 48.58
+              "val": 45.355375750963255
             },
             {
               "id": "asset_schwab_december_2025",
               "label": "Charles Schwab Account",
-              "val": 37.34
+              "val": 34.83149650006463
             }
           ]
         },
@@ -4327,27 +4398,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_f0r2ewuci",
               "label": "Fidelity 401k",
-              "val": 126.27
+              "val": 124.71315097953895,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_usxq9nq0p",
               "label": "Fidelity HSA",
-              "val": 13.45
+              "val": 13.039434989475101
             },
             {
               "id": "asset_utodqfku2",
               "label": "Schwab IRA",
-              "val": 41.47
+              "val": 41.76576250602827
             },
             {
               "id": "asset_on2rju3g8",
               "label": "Schwab Roth IRA",
-              "val": 31.81
+              "val": 32.7587539439342
             },
             {
               "id": "asset_kp9eby64y",
               "label": "Inspira Financial HSA",
-              "val": 11.28
+              "val": 10.721731949438341
             }
           ]
         }
@@ -4430,22 +4502,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_rs3pv1ike",
               "label": "Marcus HYSA",
-              "val": 156.2638950776131
+              "val": 158.2662037741483,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_gcip9oxc7",
               "label": "Chase Checking",
-              "val": 5.34
+              "val": 5.6
             },
             {
               "id": "asset_o3kkrpuio",
               "label": "Betterment Cash Reserve",
-              "val": 11.91
+              "val": 12.26
             },
             {
               "id": "asset_wv7yt689m",
               "label": "Amex HYSA",
-              "val": 14.35
+              "val": 15.03
             }
           ]
         },
@@ -4457,12 +4530,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_7ii6ug27k",
               "label": "E-Commerce Store",
-              "val": 62.39
+              "val": 65.24
             },
             {
               "id": "asset_6qen5q8qx",
               "label": "Personal Business",
-              "val": 167.81
+              "val": 172.69
             }
           ]
         },
@@ -4474,12 +4547,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_pdrqw3eis",
               "label": "Subaru Outback (Equity)",
-              "val": 29.91
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_5xq24bypl",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 79.15408723174843
             }
           ]
         },
@@ -4491,12 +4565,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_january_2026",
               "label": "Fidelity Account",
-              "val": 49.88
+              "val": 45.819338441823085
             },
             {
               "id": "asset_schwab_january_2026",
               "label": "Charles Schwab Account",
-              "val": 37.61
+              "val": 35.18780519722059
             }
           ]
         },
@@ -4508,27 +4582,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_rfljp3q31",
               "label": "Fidelity 401k",
-              "val": 125.12
+              "val": 125.98890381271544,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_odwn57dml",
               "label": "Fidelity HSA",
-              "val": 13.03
+              "val": 13.172821853652502
             },
             {
               "id": "asset_lhqkthyxw",
               "label": "Schwab IRA",
-              "val": 40.98
+              "val": 42.1930052581225
             },
             {
               "id": "asset_4k1bkjca9",
               "label": "Schwab Roth IRA",
-              "val": 32.21
+              "val": 33.09385952684231
             },
             {
               "id": "asset_asg6rz3m0",
               "label": "Inspira Financial HSA",
-              "val": 10.98
+              "val": 10.831409876774961
             }
           ]
         }
@@ -4611,22 +4686,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_d61p0znl8",
               "label": "Marcus HYSA",
-              "val": 162.5178077905027
+              "val": 163.8662037741483,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_asl9f3jfl",
               "label": "Chase Checking",
-              "val": 5.53
+              "val": 5.6
             },
             {
               "id": "asset_wi4saeckf",
               "label": "Betterment Cash Reserve",
-              "val": 12.13
+              "val": 12.26
             },
             {
               "id": "asset_6zsc3pves",
               "label": "Amex HYSA",
-              "val": 14.88
+              "val": 15.03
             }
           ]
         },
@@ -4638,12 +4714,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_zicg1hgxq",
               "label": "E-Commerce Store",
-              "val": 62.9
+              "val": 65.24
             },
             {
               "id": "asset_m87f1ia1v",
               "label": "Personal Business",
-              "val": 172.86
+              "val": 172.69
             }
           ]
         },
@@ -4655,12 +4731,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_tc8087lcu",
               "label": "Subaru Outback (Equity)",
-              "val": 30.92
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_3qzvddf4k",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 79.3962010622405
             }
           ]
         },
@@ -4672,12 +4749,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_february_2026",
               "label": "Fidelity Account",
-              "val": 48.5
+              "val": 46.590592037661594
             },
             {
               "id": "asset_schwab_february_2026",
               "label": "Charles Schwab Account",
-              "val": 37.74
+              "val": 35.78010360682071
             }
           ]
         },
@@ -4689,27 +4766,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_vn0o5klks",
               "label": "Fidelity 401k",
-              "val": 126.12
+              "val": 128.1096108854438,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_gijxaiwj8",
               "label": "Fidelity HSA",
-              "val": 13.67
+              "val": 13.394553257192282
             },
             {
               "id": "asset_h9l3l45j8",
               "label": "Schwab IRA",
-              "val": 42.53
+              "val": 42.90321863376689
             },
             {
               "id": "asset_g47211iir",
               "label": "Schwab Roth IRA",
-              "val": 31.19
+              "val": 33.6509116150705
             },
             {
               "id": "asset_xlt9decs8",
               "label": "Inspira Financial HSA",
-              "val": 11.67
+              "val": 11.013729484598855
             }
           ]
         }
@@ -4792,22 +4870,23 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_5h2wisukp",
               "label": "Marcus HYSA",
-              "val": 169.00395421907413
+              "val": 169.46620377414828,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_ackkfugtz",
               "label": "Chase Checking",
-              "val": 5.51
+              "val": 5.6
             },
             {
               "id": "asset_xrodpto3y",
               "label": "Betterment Cash Reserve",
-              "val": 12.04
+              "val": 12.26
             },
             {
               "id": "asset_1ylazjemh",
               "label": "Amex HYSA",
-              "val": 14.8
+              "val": 15.03
             }
           ]
         },
@@ -4819,12 +4898,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_8ucf1uoe1",
               "label": "E-Commerce Store",
-              "val": 63.08
+              "val": 65.24
             },
             {
               "id": "asset_kslwjr8r7",
               "label": "Personal Business",
-              "val": 172.41
+              "val": 172.69
             }
           ]
         },
@@ -4836,12 +4915,13 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_gvqzpnpde",
               "label": "Subaru Outback (Equity)",
-              "val": 31.83
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_n6mphrzud",
               "label": "Primary Residence (Equity)",
-              "val": 80
+              "val": 79.74045139591772
             }
           ]
         },
@@ -4853,12 +4933,12 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_fidelity_march_2026",
               "label": "Fidelity Account",
-              "val": 50
+              "val": 47.653007926421694
             },
             {
               "id": "asset_schwab_march_2026",
               "label": "Charles Schwab Account",
-              "val": 36.26
+              "val": 36.5960054640592
             }
           ]
         },
@@ -4870,27 +4950,28 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_isvb4twwh",
               "label": "Fidelity 401k",
-              "val": 134.65
+              "val": 131.03092354010053,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_l9qhtr0i0",
               "label": "Fidelity HSA",
-              "val": 13.97
+              "val": 13.699992307886918
             },
             {
               "id": "asset_ni8mtgir6",
               "label": "Schwab IRA",
-              "val": 44.66
+              "val": 43.881550506403684
             },
             {
               "id": "asset_bdzbfw2bd",
               "label": "Schwab Roth IRA",
-              "val": 33.43
+              "val": 34.41826102205406
             },
             {
               "id": "asset_cke3v001m",
               "label": "Inspira Financial HSA",
-              "val": 11.47
+              "val": 11.264878068190255
             }
           ]
         }
@@ -4973,7 +5054,8 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_11oj8w9ys",
               "label": "Marcus HYSA",
-              "val": 175.06620377414828
+              "val": 175.06620377414828,
+              "note": "3.65% APY"
             },
             {
               "id": "asset_i82qyun2p",
@@ -5017,7 +5099,8 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_rcb4b5gwq",
               "label": "Subaru Outback (Equity)",
-              "val": 32.38
+              "val": 32.38,
+              "note": "Subaru Guaranteed Value"
             },
             {
               "id": "asset_nb5adwdpk",
@@ -5051,7 +5134,8 @@ export const DEMO_DATA: DemoData = {
             {
               "id": "asset_ix1oeoqv2",
               "label": "Fidelity 401k",
-              "val": 132.37
+              "val": 132.37,
+              "note": "Contributing 6% 401k Roth + 3% employer match"
             },
             {
               "id": "asset_b7pitspk6",
