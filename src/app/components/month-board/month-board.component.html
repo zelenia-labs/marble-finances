@@ -18,95 +18,73 @@
         </div>
 
         <!-- Singular Sidebar Module: Monthly Flow + Monthly Metrics -->
-        <div class="flex-none mt-0 w-[280px] bg-[#F5FAFE] rounded-[40px] p-4 border border-blue-50/50 shadow-sm flex flex-col h-fit">
+        <div class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] px-4 py-8 border border-blue-50/50 shadow-sm flex flex-col h-fit">
             
             <!-- Monthly Flow Section -->
             <app-monthly-cash-flow [monthIndex]="monthIndex()"></app-monthly-cash-flow>
  
             <!-- Monthly Metrics Section -->
             <div class="flex flex-col mt-4">
-                <h2 class="text-[20px] font-black text-slate tracking-normal mt-6 mb-4 px-4 text-center">Monthly Metrics</h2>
+                <h2 class="text-[20px] font-black text-slate tracking-normal mt-6 mb-4 text-center">Monthly Metrics</h2>
                 
                 @defer (on idle) {
                     <div class="w-full">
                         
-                        <!-- UNIFIED PERFORMANCE ISLAND (Indented Dividers) -->
-                        <div class="bg-white rounded-[40px] overflow-hidden flex flex-col">
+                        <!-- UNIFIED PERFORMANCE ISLAND (Blueprint-Synced) -->
+                        <div class="bg-white rounded-[32px] border border-blue-100/20 flex flex-col p-8">
                             
-                            <!-- VALUE HISTORY -->
-                            <app-summary-panel [monthIndex]="monthIndex()"></app-summary-panel>
-
-                            <!-- Indented Divider -->
-                            <div class="h-[2px] bg-gray-100 w-[calc(100%-64px)] mx-auto"></div>
-
-                            <!-- RATIO BLOCK: EXPENSES vs SAVINGS -->
-                            <div class="p-8 flex flex-col items-center">
-                                <!-- Top: Labels Context -->
-                                <div class="flex justify-between w-full mb-3">
-                                    <span class="text-[11px] font-bold text-slate tracking-tight">💸 Expenses</span>
-                                    <span class="text-[11px] font-bold text-slate tracking-tight">🏦 Savings</span>
+                            <!-- RATIO BLOCK: SAVINGS vs EXPENSES (Savings Leads) -->
+                            <div class="flex flex-col items-center">
+                                <!-- Top: Labels Context (TOTAL SAVINGS Standard) -->
+                                <div class="flex justify-between w-full mb-1">
+                                    <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">Savings</h4>
+                                    <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">Expenses</h4>
                                 </div>
-                                <!-- Middle: The Visual Hero -->
-                                <div class="h-[6px] w-full flex rounded-full overflow-hidden mb-3">
-                                    <div class="bg-flow-orange/80 h-full" [style.width.%]="expenseSavingsRatio().expensesPct"></div>
-                                    <div class="bg-flow-blue/80 h-full flex-1"></div>
+                                <!-- Middle: The Visual Hero with 2px White Pivot Line -->
+                                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-1 relative bg-flow-orange/80">
+                                    <div class="bg-flow-blue/80 h-full relative" [style.width.%]="expenseSavingsRatio().savingsPct">
+                                        <!-- White Pivot Line (2px) -->
+                                        <div class="absolute right-0 top-0 w-[2px] h-full bg-white z-10"></div>
+                                    </div>
                                 </div>
-                                <!-- Bottom: Percentages -->
+                                <!-- Bottom: Percentages (Flow Value Standard) -->
                                 <div class="flex justify-between w-full">
-                                    <span class="text-[15px] font-black text-slate leading-none">{{ expenseSavingsRatio().expensesPct.toFixed(0) }}%</span>
-                                    <span class="text-[15px] font-black text-slate leading-none">{{ expenseSavingsRatio().savingsPct.toFixed(0) }}%</span>
+                                    <span class="text-[13px] font-black text-[#314158] leading-none">{{ expenseSavingsRatio().savingsPct.toFixed(0) }}%</span>
+                                    <span class="text-[13px] font-black text-[#314158] leading-none">{{ expenseSavingsRatio().expensesPct.toFixed(0) }}%</span>
                                 </div>
                             </div>
 
-                            <!-- Indented Divider -->
-                            <div class="h-[2px] bg-gray-100 w-[calc(100%-64px)] mx-auto"></div>
-
-                            <!-- RATIO BLOCK: CASH vs INVESTMENTS -->
-                            <div class="p-8 flex flex-col items-center">
-                                <!-- Top: Labels Context -->
-                                <div class="flex justify-between w-full mb-3">
-                                    <span class="text-[11px] font-bold text-slate tracking-tight">💵 Cash</span>
-                                    <span class="text-[11px] font-bold text-slate tracking-tight">📈 Investments</span>
+                            <!-- RATIO BLOCK: CASH vs INVESTMENTS (Cash Leads) -->
+                            <div class="flex flex-col items-center mt-10">
+                                <!-- Top: Labels Context (TOTAL SAVINGS Standard) -->
+                                <div class="flex justify-between w-full mb-1">
+                                    <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">Cash</h4>
+                                    <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">Investments</h4>
                                 </div>
-                                <!-- Middle: The Visual Hero -->
-                                <div class="h-[6px] w-full flex rounded-full overflow-hidden mb-3">
-                                    <div class="bg-violet-500/80 h-full" [style.width.%]="cashInvRatio().cashPct"></div>
-                                    <div class="bg-emerald-600/80 h-full flex-1"></div>
+                                <!-- Middle: The Visual Hero with 2px White Pivot Line -->
+                                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-1 relative bg-emerald-600/80">
+                                    <div class="bg-violet-500/80 h-full relative" [style.width.%]="cashInvRatio().cashPct">
+                                        <!-- White Pivot Line (2px) -->
+                                        <div class="absolute right-0 top-0 w-[2px] h-full bg-white z-10"></div>
+                                    </div>
                                 </div>
-                                <!-- Bottom: Percentages -->
+                                <!-- Bottom: Percentages (Flow Value Standard) -->
                                 <div class="flex justify-between w-full">
-                                    <span class="text-[15px] font-black text-slate leading-none">{{ cashInvRatio().cashPct.toFixed(0) }}%</span>
-                                    <span class="text-[15px] font-black text-slate leading-none">{{ cashInvRatio().invPct.toFixed(0) }}%</span>
+                                    <span class="text-[13px] font-black text-[#314158] leading-none">{{ cashInvRatio().cashPct.toFixed(0) }}%</span>
+                                    <span class="text-[13px] font-black text-[#314158] leading-none">{{ cashInvRatio().invPct.toFixed(0) }}%</span>
                                 </div>
                             </div>
 
-                            <!-- Indented Divider (Before Trends) -->
-                            <div class="h-[2px] bg-gray-100 w-[calc(100%-64px)] mx-auto"></div>
+                            <!-- THE STRUCTURAL DIVIDER (Robust 2px Vault Line) -->
+                            <div class="w-full mt-10 pt-6 border-t-2 border-gray-100"></div>
 
-                            <!-- DETAILED TRENDS (Liquid, Month, Year) -->
-                            <div class="bg-slate-50/10 p-8 space-y-6">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-[11px] text-slate font-bold tracking-tight">Liquid worth</span>
-                                    <span class="text-[15px] font-black text-slate">${{(stats().liquidNetWorth * store.marbleMultiplier()) | number:'1.0-0'}}</span>
-                                </div>
-                                
-                                <div class="flex justify-between items-center">
-                                    <span class="text-[11px] text-slate font-bold tracking-tight">Month to month</span>
-                                    <span class="text-[15px] font-black" 
-                                          [class]="stats().mtm >= 0 ? 'text-emerald-700' : 'text-rose-700'">
-                                          {{stats().mtm >= 0 ? '+' : ''}}{{stats().mtm | number:'1.2-2'}}%
-                                    </span>
-                                </div>
-              
-                                <div class="flex justify-between items-center">
-                                    <span class="text-[11px] text-slate font-bold tracking-tight">Year to date</span>
-                                    <span class="text-[15px] font-black"
-                                          [class]="stats().ytd >= 0 ? 'text-emerald-700' : 'text-rose-700'">
-                                          {{stats().ytd >= 0 ? '+' : ''}}{{stats().ytd | number:'1.2-2'}}%
-                                    </span>
-                                </div>
-                            </div>
+
+                            <!-- VALUE VAULT (YTD, Prev, Today, Liquid) -->
+                            <app-summary-panel [monthIndex]="monthIndex()" [liquidNetWorth]="stats().liquidNetWorth" [mtm]="stats().mtm"></app-summary-panel>
                         </div>
+
+
+
                     </div>
                 } @placeholder {
                     <div class="h-20 bg-white rounded-[32px] animate-pulse border border-gray-100"></div>

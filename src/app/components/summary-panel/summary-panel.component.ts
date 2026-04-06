@@ -10,6 +10,8 @@ import { FinanceStore, sumAssets, formatHumanUSD } from '../../store/finance.sto
 })
 export class SummaryPanelComponent {
   monthIndex = input.required<number>();
+  liquidNetWorth = input<number>(0);
+  mtm = input<number>(0);
   store = inject(FinanceStore);
   
   monthRecord = computed(() => this.store.months()[this.monthIndex()]);

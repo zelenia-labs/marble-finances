@@ -4,33 +4,61 @@
   <!-- ═══════════════════════════════════════════════ -->
   <!-- Table 1: ⌛ 2025 | Yesterday | 🎁 Today        -->
   <!-- ═══════════════════════════════════════════════ -->
-  <div class="bg-white flex flex-col pt-4">
+  <div class="bg-white rounded-[32px] overflow-hidden flex flex-col space-y-8 pb-4 w-full">
  
-     <!-- ALL HEADER LABELS + VALUES AS UNIFIED UNITS (Scalar Standard: 15px) -->
-     <div class="grid grid-cols-3 bg-white">
+     <!-- ROW 1: YEARLY BASELINE (YTD & PREVIOUS) -->
+     <div class="grid grid-cols-2">
        
-       <!-- UNIT: Jan -->
-       <div class="py-8 px-3 flex flex-col items-center justify-center">
-         <span class="text-[11px] font-bold text-slate tracking-tight mb-1">⌛ Jan</span>
-         <span class="text-[15px] font-black text-slate leading-none">{{ rows().startOfYear !== null ? fmt(rows().startOfYear!) : '—' }}</span>
-         <span class="text-[10px] font-bold mt-2" [class.text-emerald-700]="isPositive(pcts().todayVsStartOfYear)" [class.text-rose-700]="!isPositive(pcts().todayVsStartOfYear)">{{ fmtPct(pcts().todayVsStartOfYear) }}</span>
+       <!-- UNIT: YTD -->
+       <div class="flex flex-col items-center justify-center">
+         <h4 class="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500 mb-4">YTD</h4>
+         <span class="text-[13px] font-black text-[#314158] leading-none">{{ rows().startOfYear !== null ? fmt(rows().startOfYear!) : '—' }}</span>
+         <span class="text-[11px] font-bold mt-2" 
+               [class.text-emerald-700]="pcts().todayVsStartOfYear !== null && isPositive(pcts().todayVsStartOfYear!)" 
+               [class.text-rose-700]="pcts().todayVsStartOfYear !== null && !isPositive(pcts().todayVsStartOfYear!)">
+           {{ pcts().todayVsStartOfYear !== null ? (pcts().todayVsStartOfYear! >= 0 ? '+' : '') + (pcts().todayVsStartOfYear! | number:'1.2-2') + '%' : '—' }}
+         </span>
        </div>
 
        <!-- UNIT: Previous -->
-       <div class="py-8 px-3 flex flex-col items-center justify-center">
-         <span class="text-[11px] font-bold text-slate tracking-tight mb-1">Previous</span>
-         <span class="text-[15px] font-black text-slate leading-none">{{ rows().previous !== null ? fmt(rows().previous!) : '—' }}</span>
-         <span class="text-[11px] font-bold mt-2" [class.text-emerald-700]="isPositive(pcts().previousVsStartOfYear)" [class.text-rose-700]="!isPositive(pcts().previousVsStartOfYear)">{{ fmtPct(pcts().previousVsStartOfYear) }}</span>
-       </div>
-
-       <!-- UNIT: Today -->
-       <div class="py-8 px-3 flex flex-col items-center justify-center">
-         <span class="text-[11px] font-bold text-slate tracking-tight mb-1">🎁 Today</span>
-         <span class="text-[15px] font-black text-slate leading-none">{{ fmt(rows().today) }}</span>
-         <span class="text-[11px] font-bold mt-2" [class.text-emerald-700]="isPositive(pcts().todayVsPrevious)" [class.text-rose-700]="!isPositive(pcts().todayVsPrevious)">{{ fmtPct(pcts().todayVsPrevious) }}</span>
+       <div class="flex flex-col items-center justify-center">
+         <h4 class="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500 mb-4">Previous</h4>
+         <span class="text-[13px] font-black text-[#314158] leading-none">{{ rows().previous !== null ? fmt(rows().previous!) : '—' }}</span>
+         <span class="text-[11px] font-bold mt-2" 
+               [class.text-emerald-700]="pcts().previousVsStartOfYear !== null && isPositive(pcts().previousVsStartOfYear!)" 
+               [class.text-rose-700]="pcts().previousVsStartOfYear !== null && !isPositive(pcts().previousVsStartOfYear!)">
+           {{ pcts().previousVsStartOfYear !== null ? (pcts().previousVsStartOfYear! >= 0 ? '+' : '') + (pcts().previousVsStartOfYear! | number:'1.2-2') + '%' : '—' }}
+         </span>
        </div>
 
      </div>
+
+     <!-- ROW 2: MONTHLY REALITY (TODAY & LIQUID WORTH) -->
+     <div class="grid grid-cols-2">
+       
+       <!-- UNIT: Today -->
+       <div class="flex flex-col items-center justify-center">
+         <h4 class="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500 mb-4">Today</h4>
+         <span class="text-[13px] font-black text-[#314158] leading-none">{{ fmt(rows().today) }}</span>
+         <span class="text-[11px] font-bold mt-2" 
+               [class.text-emerald-700]="pcts().todayVsPrevious !== null && isPositive(pcts().todayVsPrevious!)" 
+               [class.text-rose-700]="pcts().todayVsPrevious !== null && !isPositive(pcts().todayVsPrevious!)">
+           {{ pcts().todayVsPrevious !== null ? (pcts().todayVsPrevious! >= 0 ? '+' : '') + (pcts().todayVsPrevious! | number:'1.2-2') + '%' : '—' }}
+         </span>
+       </div>
+
+       <!-- UNIT: Liquid Worth -->
+       <div class="flex flex-col items-center justify-center">
+         <h4 class="text-[11px] font-black uppercase tracking-[0.14em] text-slate-500 mb-4">Liquid worth</h4>
+         <span class="text-[13px] font-black text-[#314158] leading-none">${{(liquidNetWorth() * store.marbleMultiplier()) | number:'1.0-0'}}</span>
+         <span class="text-[11px] font-bold mt-2" [class.text-emerald-700]="isPositive(mtm())" [class.text-rose-700]="!isPositive(mtm())">
+           {{mtm() >= 0 ? '+' : ''}}{{mtm() | number:'1.2-2'}}%
+         </span>
+       </div>
+
+     </div>
+
+
 
    </div>
 
