@@ -125,7 +125,7 @@ export class MonthlyCashFlowComponent {
     };
 
     // OPTIMISTIC UI: Instant update for the blocks
-    this.store.applyLocalUpdate(action);
+    this.store.applyLocalUpdate(action, false);
 
     if (this.flowTimeoutMap.has(action.targetId)) {
       clearTimeout(this.flowTimeoutMap.get(action.targetId));
@@ -137,7 +137,7 @@ export class MonthlyCashFlowComponent {
         // Debounce the cascading prompt
         this.store.promptForwardUpdate(action);
         this.flowTimeoutMap.delete(action.targetId);
-      }, 1000),
+      }, 400),
     );
   }
 

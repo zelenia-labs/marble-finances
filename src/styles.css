@@ -46,6 +46,8 @@
   --color-border-timeline: #EFEFE8; /* Off-white — timeline sidebar right border */
 
   /* ── Surfaces ── */
+  --color-border-history: #EFEFE8; /* Off-white — history sidebar right border */
+  --color-surface-history: #F6F5EF; /* Warm off-white — history sidebar background */
   --color-surface-inset: #F9FAFB; /* Gray 50 — inset panel background */
   --color-surface-timeline: #F6F5EF; /* Warm off-white — timeline sidebar background */
 }
@@ -95,12 +97,9 @@ body {
   perspective: 1000px;
 }
 
-#canvas-grid {
-  /* High-performance 2D grid rendering enabled */
-}
-
 /* Clean Underlined Inputs — System Level Styling */
 input:not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable] {
+    cursor: text !important;
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
@@ -126,9 +125,12 @@ input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, [content
     border-bottom-color: var(--color-slate) !important;
 }
 
-/* For fields that should be completely invisible until focus (e.g. Action Items labels) */
+/* For fields that should be completely invisible until focus/hover (e.g. Action Items labels) */
 [contenteditable] {
     border-bottom-color: transparent;
+}
+[contenteditable]:hover {
+    border-bottom-color: var(--color-border-interactive);
 }
 
 /* Specific class for inputs that should only show the line when focused (like notes) */

@@ -305,9 +305,11 @@ The `.btn-dismiss` CSS utility class is the **single, canonical implementation**
 
 ### Editable Fields
 
-- Use inline editing with a hidden underline that appears on focus (2px solid `var(--color-slate)` bottom border)
-- Submit on Enter key press — never allow multi-line editing
-- Select all text on focus for easy replacement
+- **Interaction:** Use the I-beam (`cursor: text`) on hover.
+- **Visual Cue:** Show a faint bottom border (`var(--color-border-interactive)`) on hover to indicate editability.
+- **Focus State:** On focus, the border becomes solid `var(--color-slate)` (2px).
+- **Submission:** Submit on Enter key press — never allow multi-line editing.
+- **Selection:** Select all text on focus for easy replacement.
 
 ### Stat / Computation Items
 

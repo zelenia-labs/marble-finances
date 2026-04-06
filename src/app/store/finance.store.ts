@@ -43,7 +43,7 @@ export interface MonthRecord {
   actionItems: ActionItem[];
 }
 
-export interface MonthSnapshot {
+export interface MonthVersion {
   label: string;
   total: number;
 }
@@ -93,7 +93,7 @@ export interface MarbleFinancesState {
   activeTimelineIndex: number;
   addBreakdownParentIndex: number | null;
 
-  snapshots: Record<string, MonthSnapshot | null>;
+  versionSummaries: Record<string, MonthVersion | null>;
   autoApplyForward: boolean;
   isCompareModalOpen: boolean;
   compareState: { baseMonthId: string; targetMonthId: string } | null;
@@ -103,9 +103,9 @@ export interface MarbleFinancesState {
   assetsGridSize: number;
   flowGridSize: number;
 
-  // Changelog State
+  // Version History (formerly Changelog) State
   changelog: ChangelogEntry[];
-  isChangelogOpen: boolean;
+  isHistoryOpen: boolean;
   revertTarget: ChangelogEntry | null;
   isRevertModalOpen: boolean;
 }
@@ -131,7 +131,7 @@ const initialState: MarbleFinancesState = {
   activeModalMonthIndex: 0,
   activeTimelineIndex: 0,
   addBreakdownParentIndex: null,
-  snapshots: {},
+  versionSummaries: {},
   autoApplyForward: false,
   isCompareModalOpen: false,
   compareState: null,
@@ -139,7 +139,7 @@ const initialState: MarbleFinancesState = {
   assetsGridSize: 5,
   flowGridSize: 5,
   changelog: [],
-  isChangelogOpen: false,
+  isHistoryOpen: false,
   revertTarget: null,
   isRevertModalOpen: false,
 };
@@ -186,7 +186,6 @@ function getInitialState(): MarbleFinancesState {
     ...initialState, 
     months: DEMO_DATA.months,
     marbleMultiplier: DEMO_DATA.marbleMultiplier,
-    snapshots: DEMO_DATA.snapshots,
     customColors: DEMO_DATA.customColors,
     changelog
   };
@@ -243,7 +242,6 @@ export const FinanceStore = signalStore(
         marbleMultiplier: store.marbleMultiplier(),
         assetsGridSize: store.assetsGridSize(),
         flowGridSize: store.flowGridSize(),
-        snapshots: store.snapshots(),
         customColors: store.customColors()
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -389,21 +387,20 @@ export const FinanceStore = signalStore(
     toggleFlowPanel() {
       patchState(store, (state) => ({ isFlowPanelOpen: !state.isFlowPanelOpen }));
     },
-    toggleTimeline() {
-      patchState(store, (state) => ({ isTimelineOpen: !state.isTimelineOpen }));
-    },
     toggleCharts(isOpen?: boolean) {
       patchState(store, (state) => ({ isChartsModalOpen: isOpen !== undefined ? isOpen : !state.isChartsModalOpen }));
     },
     setActiveMenuId(activeMenuId: string | null) {
       patchState(store, { activeMenuId });
     },
+    toggleHistory() {
+      patchState(store, (state) => ({ isHistoryOpen: !state.isHistoryOpen }));
+    },
+    toggleTimeline() {
+      patchState(store, (state) => ({ isTimelineOpen: !state.isTimelineOpen }));
+    },
     setActiveTimelineIndex(idx: number) {
       patchState(store, { activeTimelineIndex: idx });
-    },
-
-    toggleChangelog() {
-      patchState(store, (state) => ({ isChangelogOpen: !state.isChangelogOpen }));
     },
 
     closeRevertModal() {
@@ -411,7 +408,7 @@ export const FinanceStore = signalStore(
     },
 
     promptRevert(item: ChangelogEntry) {
-      patchState(store, { revertTarget: item, isRevertModalOpen: true, isChangelogOpen: false });
+      patchState(store, { revertTarget: item, isRevertModalOpen: true, isHistoryOpen: false });
     },
 
     undo() {
@@ -543,8 +540,8 @@ export const FinanceStore = signalStore(
       this.recordChange('Duplicated Month', `Created a copy of ${monthDate}`);
     },
 
-    applyLocalUpdate(action: ForwardAction) {
-      this.executeForwardAction(action, false);
+    applyLocalUpdate(action: ForwardAction, record = true) {
+      this.executeForwardAction(action, false, record);
     },
 
     promptForwardTarget(action: ForwardAction) {
@@ -566,11 +563,10 @@ export const FinanceStore = signalStore(
       }
 
       // If auto-apply is ON or it's current/future month, proceed to write.
-      this.applyLocalUpdate(action);
-
-      // If it was a prior month with auto-apply, also trigger the cascade immediately.
       if (isPriorMonth && store.autoApplyForward()) {
         this.executeForwardAction(action, true);
+      } else {
+        this.applyLocalUpdate(action);
       }
     },
 
@@ -582,7 +578,7 @@ export const FinanceStore = signalStore(
       patchState(store, { forwardTarget: null });
     },
 
-    executeForwardAction(targetAction?: ForwardAction, cascade = false) {
+    executeForwardAction(targetAction?: ForwardAction, cascade = false, record = true) {
 
 
       patchState(store, (state) => {
@@ -675,7 +671,9 @@ export const FinanceStore = signalStore(
               : `${label} to ${action.value} in ${monthDate}`;
         }
 
-        this.recordChange(label, details);
+        if (record) {
+          this.recordChange(label, details);
+        }
       }
     },
 
@@ -890,7 +888,7 @@ export const FinanceStore = signalStore(
 
       setTimeout(() => {
         this.promptForwardUpdate(action);
-      }, 1000);
+      }, 300);
     },
 
     openAddModal(monthIdx: number) {
@@ -984,8 +982,6 @@ export const FinanceStore = signalStore(
         this.promptForwardUpdate(action);
       }
       patchState(store, { isAddModalOpen: false, addModalMode: 'palette' });
-      const typeLabel = store.addModalType() === 'breakdown' ? 'Added Sub-Asset' : 'Added Asset Category';
-      this.recordChange(typeLabel, `Added "${name || 'New Item'}" with value ${amount}`);
     },
 
     confirmAddFlow(name: string, amount: number, type: string, parentCategory: 'expense' | 'savings') {
@@ -1000,18 +996,17 @@ export const FinanceStore = signalStore(
       };
       this.promptForwardUpdate(action);
       patchState(store, { isAddModalOpen: false });
-      this.recordChange('Added Cash Flow', `Added "${name || 'New Flow'}" (${amount}) as ${type} to ${parentCategory}`);
     },
 
     saveSnapshot(key: string, label: string, total: number) {
-      patchState(store, (state) => ({ snapshots: { ...state.snapshots, [key]: { label, total } } }));
+      patchState(store, (state) => ({ versionSummaries: { ...state.versionSummaries, [key]: { label, total } } }));
     },
 
     exportData() {
       const currentState = {
         months: sanitizeMonths(store.months()),
         marbleMultiplier: store.marbleMultiplier(),
-        snapshots: store.snapshots(),
+        versionSummaries: store.versionSummaries(),
         customColors: store.customColors()
       };
 
@@ -1044,7 +1039,7 @@ export const FinanceStore = signalStore(
           patchState(store, {
             months: cleanMonths,
             marbleMultiplier: parsed.marbleMultiplier || 1000,
-            snapshots: parsed.snapshots || {},
+            versionSummaries: parsed.snapshots || {},
             customColors: parsed.customColors || []
           });
           this.recordChange('Imported Portfolio', `Restored ${cleanMonths.length} months from backup`);
@@ -1061,7 +1056,7 @@ export const FinanceStore = signalStore(
       if (confirm('Are you sure you want to clear all data? This action cannot be undone unless you have a backup.')) {
         patchState(store, {
           months: [],
-          snapshots: {},
+          versionSummaries: {},
           customColors: []
         });
         localStorage.removeItem(STORAGE_KEY);
@@ -1107,7 +1102,7 @@ export const FinanceStore = signalStore(
       patchState(store, {
         months: [freshMonth],
         marbleMultiplier: 1000,
-        snapshots: {},
+        versionSummaries: {},
         customColors: []
       });
       this.recordChange('Created Fresh Portfolio');
@@ -1118,7 +1113,7 @@ export const FinanceStore = signalStore(
         patchState(store, {
           months: DEMO_DATA.months,
           marbleMultiplier: DEMO_DATA.marbleMultiplier,
-          snapshots: DEMO_DATA.snapshots,
+          versionSummaries: DEMO_DATA.snapshots,
           customColors: DEMO_DATA.customColors
         });
         localStorage.removeItem(STORAGE_KEY);

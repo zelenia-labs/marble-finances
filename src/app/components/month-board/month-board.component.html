@@ -1,7 +1,6 @@
 <!-- Month Frame Container (The template for each month) -->
-<div
-  class="bg-white rounded-[40px] shadow-[0px_2px_6px_rgba(0,0,0,0.08)] border border-gray-100 flex p-32 h-full w-fit"
->
+<section
+  class="bg-white rounded-[40px] shadow-[0px_2px_6px_rgba(0,0,0,0.08)] border border-gray-100 flex p-32 h-full w-fit">
   <!-- Left Column: Report Details -->
   <div class="w-[340px] flex flex-col justify-start shrink-0 h-full">
     <!-- Month and Year -->
@@ -9,11 +8,9 @@
       <div class="flex items-center gap-4 mb-[120px]">
         <h1
           class="text-[52px] font-black text-slate tracking-tighter outline-none interactive-element select-none leading-none"
-          contenteditable="true"
-          [innerText]="monthRecord().date"
+          contenteditable="true" [innerText]="monthRecord().date"
           (blur)="updateOverview($event, 'date', monthRecord().date)"
-          (keydown.enter)="$event.preventDefault(); blurElement($event)"
-        ></h1>
+          (keydown.enter)="$event.preventDefault(); blurElement($event)"></h1>
       </div>
       <!-- Dynamic Components scoped to Month -->
       <app-action-items [monthIndex]="monthIndex()" />
@@ -21,8 +18,7 @@
 
     <!-- Singular Sidebar Module: Monthly Flow + Monthly Metrics -->
     <div
-      class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] p-8 border border-blue-50/50 shadow-[0px_2px_6px_rgba(0,0,0,0.08)] flex flex-col h-fit"
-    >
+      class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] p-8 border border-blue-50/50 shadow-[0px_2px_6px_rgba(0,0,0,0.08)] flex flex-col h-fit">
       <!-- Monthly Flow Section -->
       <app-monthly-cash-flow [monthIndex]="monthIndex()" />
 
@@ -33,114 +29,86 @@
         </h2>
 
         @defer (on idle) {
-          <div class="w-full">
-            <!-- UNIFIED PERFORMANCE ISLAND (Blueprint-Synced) -->
-            <div class="bg-white rounded-[32px] border border-blue-100/20 flex flex-col p-8">
-              <!-- RATIO BLOCK: SAVINGS vs EXPENSES (Savings Leads) -->
-              <div class="flex flex-col items-center">
-                <!-- Top: Labels Context (TOTAL SAVINGS Standard) -->
-                <div class="flex justify-between w-full mb-1">
-                  <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
-                    Savings
-                  </h4>
-                  <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
-                    Expenses
-                  </h4>
-                </div>
-                <!-- Middle: The Visual Hero with 2px White Pivot Line -->
-                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-2 relative">
-                  <div
-                    class="bg-flow-blue/80 h-full shrink-0"
-                    [style.width.%]="expenseSavingsRatio().savingsPct"
-                  ></div>
-                  <div class="bg-white h-full w-1 shrink-0"></div>
-                  <div class="bg-flow-orange/80 h-full flex-1"></div>
-                </div>
-                <!-- Bottom: Percentages (Flow Value Standard) -->
-                <div class="flex justify-between w-full">
-                  <span class="text-[13px] font-black text-[#314158] leading-none"
-                    >{{ expenseSavingsRatio().savingsPct.toFixed(0) }}%</span
-                  >
-                  <span class="text-[13px] font-black text-[#314158] leading-none"
-                    >{{ expenseSavingsRatio().expensesPct.toFixed(0) }}%</span
-                  >
-                </div>
+        <div class="w-full">
+          <!-- UNIFIED PERFORMANCE ISLAND (Blueprint-Synced) -->
+          <div class="bg-white rounded-[32px] border border-blue-100/20 flex flex-col p-8">
+            <!-- RATIO BLOCK: SAVINGS vs EXPENSES (Savings Leads) -->
+            <div class="flex flex-col items-center">
+              <!-- Top: Labels Context (TOTAL SAVINGS Standard) -->
+              <div class="flex justify-between w-full mb-1">
+                <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
+                  Savings
+                </h4>
+                <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
+                  Expenses
+                </h4>
               </div>
-
-              <!-- RATIO BLOCK: CASH vs INVESTMENTS (Cash Leads) -->
-              <div class="flex flex-col items-center mt-10">
-                <!-- Top: Labels Context (TOTAL SAVINGS Standard) -->
-                <div class="flex justify-between w-full mb-1">
-                  <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
-                    Cash
-                  </h4>
-                  <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
-                    Investments
-                  </h4>
-                </div>
-                <!-- Middle: The Visual Hero with 2px White Pivot Line -->
-                <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-2 relative">
-                  <div
-                    class="bg-violet-500/80 h-full shrink-0"
-                    [style.width.%]="cashInvRatio().cashPct"
-                  ></div>
-                  <div class="bg-white h-full w-1 shrink-0"></div>
-                  <div class="bg-emerald-600/80 h-full flex-1"></div>
-                </div>
-                <!-- Bottom: Percentages (Flow Value Standard) -->
-                <div class="flex justify-between w-full">
-                  <span class="text-[13px] font-black text-[#314158] leading-none"
-                    >{{ cashInvRatio().cashPct.toFixed(0) }}%</span
-                  >
-                  <span class="text-[13px] font-black text-[#314158] leading-none"
-                    >{{ cashInvRatio().invPct.toFixed(0) }}%</span
-                  >
-                </div>
+              <!-- Middle: The Visual Hero with 2px White Pivot Line -->
+              <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-2 relative">
+                <div class="bg-flow-blue/80 h-full shrink-0" [style.width.%]="expenseSavingsRatio().savingsPct"></div>
+                <div class="bg-white h-full w-1 shrink-0"></div>
+                <div class="bg-flow-orange/80 h-full flex-1"></div>
               </div>
-
-              <!-- THE STRUCTURAL DIVIDER (Robust 2px Vault Line) -->
-              <div class="w-full mt-10 pt-8 border-t-2 border-gray-100"></div>
-
-              <!-- VALUE VAULT (YTD, Prev, Today, Liquid) -->
-              <app-summary-panel
-                [monthIndex]="monthIndex()"
-                [liquidNetWorth]="stats().liquidNetWorth"
-                [mtm]="stats().mtm"
-              />
+              <!-- Bottom: Percentages (Flow Value Standard) -->
+              <div class="flex justify-between w-full">
+                <span class="text-[13px] font-black text-[#314158] leading-none">{{
+                  expenseSavingsRatio().savingsPct.toFixed(0) }}%</span>
+                <span class="text-[13px] font-black text-[#314158] leading-none">{{
+                  expenseSavingsRatio().expensesPct.toFixed(0) }}%</span>
+              </div>
             </div>
+
+            <!-- RATIO BLOCK: CASH vs INVESTMENTS (Cash Leads) -->
+            <div class="flex flex-col items-center mt-10">
+              <!-- Top: Labels Context (TOTAL SAVINGS Standard) -->
+              <div class="flex justify-between w-full mb-1">
+                <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
+                  Cash
+                </h4>
+                <h4 class="text-[11px] font-black uppercase text-slate-500 tracking-widest">
+                  Investments
+                </h4>
+              </div>
+              <!-- Middle: The Visual Hero with 2px White Pivot Line -->
+              <div class="h-[7px] w-full flex rounded-full overflow-hidden mb-2 relative">
+                <div class="bg-violet-500/80 h-full shrink-0" [style.width.%]="cashInvRatio().cashPct"></div>
+                <div class="bg-white h-full w-1 shrink-0"></div>
+                <div class="bg-emerald-600/80 h-full flex-1"></div>
+              </div>
+              <!-- Bottom: Percentages (Flow Value Standard) -->
+              <div class="flex justify-between w-full">
+                <span class="text-[13px] font-black text-[#314158] leading-none">{{ cashInvRatio().cashPct.toFixed(0)
+                  }}%</span>
+                <span class="text-[13px] font-black text-[#314158] leading-none">{{ cashInvRatio().invPct.toFixed(0)
+                  }}%</span>
+              </div>
+            </div>
+
+            <!-- THE STRUCTURAL DIVIDER (Robust 2px Vault Line) -->
+            <div class="w-full mt-10 pt-8 border-t-2 border-gray-100"></div>
+
+            <!-- VALUE VAULT (YTD, Prev, Today, Liquid) -->
+            <app-summary-panel [monthIndex]="monthIndex()" [liquidNetWorth]="stats().liquidNetWorth"
+              [mtm]="stats().mtm" />
           </div>
+        </div>
         } @placeholder {
-          <div class="h-20 bg-white rounded-[32px] animate-pulse border border-gray-100"></div>
+        <div class="h-20 bg-white rounded-[32px] animate-pulse border border-gray-100"></div>
         }
       </div>
     </div>
   </div>
 
   <!-- Right Content: The Asset Category Mountain -->
-  <div
-    id="assetCategories-container"
-    class="flex items-end gap-32 pl-32 transition-all duration-300"
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    (cdkDropListDropped)="onColumnDrop($event)"
-    cdkDropListGroup
-  >
+  <div id="assetCategories-container" class="flex items-end gap-32 pl-32 transition-all duration-300" cdkDropList
+    cdkDropListOrientation="horizontal" (cdkDropListDropped)="onColumnDrop($event)" cdkDropListGroup>
     @for (asset of assetCategories(); track asset.id; let i = $index) {
-      <app-asset-category
-        cdkDrag
-        [cdkDragStartDelay]="200"
-        [cdkDragPreviewContainer]="'parent'"
-        class="cursor-grab active:cursor-grabbing"
-        [asset]="asset"
-        [index]="i"
-        [monthIndex]="monthIndex()"
-      >
-        <!-- Custom Placeholder for the Column -->
-        <div
-          *cdkDragPlaceholder
-          class="bg-gray-50/30 border-2 border-dashed border-gray-100 rounded-[40px] w-64 h-[600px] mb-16"
-        ></div>
-      </app-asset-category>
+    <app-asset-category cdkDrag [cdkDragStartDelay]="200" [cdkDragPreviewContainer]="'parent'"
+      class="cursor-grab active:cursor-grabbing" [asset]="asset" [index]="i" [monthIndex]="monthIndex()">
+      <!-- Custom Placeholder for the Column -->
+      <div *cdkDragPlaceholder
+        class="bg-gray-50/30 border-2 border-dashed border-gray-100 rounded-[40px] w-64 h-[600px] mb-16"></div>
+    </app-asset-category>
     }
   </div>
-</div>
+</section>

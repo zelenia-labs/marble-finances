@@ -100,7 +100,7 @@ export class AssetCategoryComponent {
     };
 
     // OPTIMISTIC UI: Apply locally immediately so the blocks change instantly
-    this.store.applyLocalUpdate(action);
+    this.store.applyLocalUpdate(action, false);
 
     // DEBOUNCE THE CASCADE PROMPT
     if (this.marbleTimeoutMap.has(action.targetId)) {
@@ -113,7 +113,7 @@ export class AssetCategoryComponent {
         // This will trigger the modal if it's a prior month (without re-applying locally)
         this.store.promptForwardUpdate(action);
         this.marbleTimeoutMap.delete(action.targetId);
-      }, 1000),
+      }, 400),
     );
   }
 

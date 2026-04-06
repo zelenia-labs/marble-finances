@@ -71,8 +71,7 @@ export class App implements OnDestroy {
         if (idx !== -1) {
           // Delay to ensure the overlay is rendered and measured
           setTimeout(() => {
-            const boards = document.querySelectorAll('app-month-board > div');
-            const target = boards[idx] as HTMLElement;
+            const target = document.getElementById('month-board-' + idx);
             const overlay = document.querySelector('app-comparison-overlay') as HTMLElement;
 
             if (target) {
@@ -142,10 +141,10 @@ export class App implements OnDestroy {
         const idx = months.findIndex((m) => m.id === lastBaseId);
         if (idx !== -1) {
           setTimeout(() => {
-            const boards = document.querySelectorAll('app-month-board > div');
-            const target = boards[idx] as HTMLElement;
+            const target = document.getElementById('month-board-' + idx);
             if (target) {
-              this.centerOnBoard(target);
+              const board = target.querySelector('app-month-board > section') as HTMLElement;
+              this.centerOnBoard(board || target);
             }
           }, 10);
         }
@@ -214,10 +213,10 @@ export class App implements OnDestroy {
   }
 
   jumpToTimelineIndex(idx: number) {
-    const boards = document.querySelectorAll('app-month-board > div');
-    const target = boards[idx] as HTMLElement;
+    const target = document.getElementById('month-board-' + idx);
     if (target) {
-      this.centerOnBoard(target);
+      const board = target.querySelector('app-month-board > section') as HTMLElement;
+      this.centerOnBoard(board || target);
     }
   }
 
@@ -225,7 +224,7 @@ export class App implements OnDestroy {
     const mainArea = this.mainArea();
     if (this.isAnimatingPan() || !mainArea) return;
 
-    const boards = Array.from(document.querySelectorAll('app-month-board > div')) as HTMLElement[];
+    const boards = Array.from(document.querySelectorAll('app-month-board > section')) as HTMLElement[];
     if (boards.length === 0) return;
 
     const viewportRect = mainArea.nativeElement.getBoundingClientRect();
@@ -319,15 +318,16 @@ export class App implements OnDestroy {
   }
 
   jumpToLatestMonth(animate = true) {
-    const boards = document.querySelectorAll('app-month-board > div');
-    const lastBoard = boards[boards.length - 1] as HTMLElement;
-    if (lastBoard) {
-      this.centerOnBoard(lastBoard, animate);
+    const idx = this.store.months().length - 1;
+    const target = document.getElementById('month-board-' + idx);
+    if (target) {
+      const board = target.querySelector('app-month-board > section') as HTMLElement;
+      this.centerOnBoard(board || target, animate);
     }
   }
 
   zoomToNextFrame() {
-    const boards = Array.from(document.querySelectorAll('app-month-board > div')) as HTMLElement[];
+    const boards = Array.from(document.querySelectorAll('app-month-board > section')) as HTMLElement[];
     const screenCenterX = window.innerWidth / 2;
     let closestIdx = 0;
     let minDiff = Infinity;
@@ -476,6 +476,11 @@ export class App implements OnDestroy {
     this.store.toggleTimeline();
   }
 
+  toggleHistory(evt: Event) {
+    evt.stopPropagation();
+    this.store.toggleHistory();
+  }
+
   toggleFlowPanel(evt: Event) {
     evt.stopPropagation();
     this.store.toggleFlowPanel();
@@ -509,9 +514,11 @@ export class App implements OnDestroy {
     this.store.duplicateMonth(this.store.months().length - 1);
 
     setTimeout(() => {
-      const boards = document.querySelectorAll('app-month-board > div');
-      const lastBoard = boards[boards.length - 1] as HTMLElement;
-      if (lastBoard) this.centerOnBoard(lastBoard);
+      const target = document.getElementById('month-board-' + (this.store.months().length - 1));
+      if (target) {
+        const board = target.querySelector('app-month-board > section') as HTMLElement;
+        this.centerOnBoard(board || target);
+      }
     }, 50);
   }
 

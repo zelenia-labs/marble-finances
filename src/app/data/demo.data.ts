@@ -1,9 +1,9 @@
-import { MonthRecord, MonthSnapshot } from '../store/finance.store';
+import { MonthRecord, MonthVersion } from '../store/finance.store';
 
 export interface DemoData {
   months: MonthRecord[];
   marbleMultiplier: number;
-  snapshots: Record<string, MonthSnapshot | null>;
+  snapshots: Record<string, MonthVersion | null>;
   customColors: string[];
 }
 
