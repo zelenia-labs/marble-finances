@@ -1,5 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { TooltipService } from '../../services/tooltip.service';
 import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
 import { getColorProps, getPreviewStyle } from '../../utils/color.util';
@@ -13,12 +21,11 @@ export interface GridSlot {
 
 @Component({
   selector: 'app-marble-stack',
-  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './marble-stack.component.html',
   host: {
-    '(mousedown)': '$event.stopPropagation()'
-  }
+    '(mousedown)': '$event.stopPropagation()',
+  },
 })
 export class MarbleStackComponent {
   val = input.required<number>();
@@ -100,7 +107,7 @@ export class MarbleStackComponent {
     if (fract <= 0.5001) return whole + 0.5;
     return whole + 1;
   });
-  baseForGrid = computed(() => this.currentAccounted() + (this.bigMarblesCount() * this.pageSize()));
+  baseForGrid = computed(() => this.currentAccounted() + this.bigMarblesCount() * this.pageSize());
 
   marbleRows = computed(() => {
     if (this.simple()) {
@@ -127,7 +134,7 @@ export class MarbleStackComponent {
           idx: slotIdx,
           value: slotIdx + 1,
           activeRemaining: active,
-          baseValue: base
+          baseValue: base,
         });
       }
     }
@@ -194,7 +201,7 @@ export class MarbleStackComponent {
   getHoverValue(evt: MouseEvent, slot: GridSlot): number {
     const target = evt.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
-    const isHalfPos = (evt.clientX - rect.left) < (rect.width / 2);
+    const isHalfPos = evt.clientX - rect.left < rect.width / 2;
     return slot.baseValue + slot.idx + (isHalfPos ? 0.5 : 1);
   }
 
@@ -203,14 +210,14 @@ export class MarbleStackComponent {
       this.hoveredSlotIdx.set(slot.idx);
       const target = evt.currentTarget as HTMLElement;
       const rect = target.getBoundingClientRect();
-      this.hoveredIsHalf.set((evt.clientX - rect.left) < (rect.width / 2));
+      this.hoveredIsHalf.set(evt.clientX - rect.left < rect.width / 2);
     }
   }
 
   onSlotMouseMove(evt: MouseEvent, slot: GridSlot) {
     const target = evt.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
-    const isHalfPos = (evt.clientX - rect.left) < (rect.width / 2);
+    const isHalfPos = evt.clientX - rect.left < rect.width / 2;
 
     if (this.isGhost(slot)) {
       this.hoveredSlotIdx.set(slot.idx);
@@ -234,7 +241,7 @@ export class MarbleStackComponent {
     if (evt instanceof MouseEvent) {
       const target = evt.currentTarget as HTMLElement;
       const rect = target.getBoundingClientRect();
-      isHalfClick = (evt.clientX - rect.left) < (rect.width / 2);
+      isHalfClick = evt.clientX - rect.left < rect.width / 2;
     }
 
     // Value equals base blocks total + slot index + (half or full addition)
@@ -247,7 +254,7 @@ export class MarbleStackComponent {
     const marbleRows = size;
     return {
       'width.px': size * 32 - 4,
-      'height.px': marbleRows * 32 - 4
+      'height.px': marbleRows * 32 - 4,
     };
   });
 
@@ -257,7 +264,7 @@ export class MarbleStackComponent {
     return {
       'grid-template-columns': `repeat(${size}, minmax(0, 1fr))`,
       'width.px': size * 32 - 4,
-      'height.px': rows * 32 - 4
+      'height.px': rows * 32 - 4,
     };
   });
 }
