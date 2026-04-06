@@ -23,51 +23,94 @@
             <!-- Monthly Flow Section -->
             <app-monthly-cash-flow [monthIndex]="monthIndex()"></app-monthly-cash-flow>
  
-            <!-- Monthly Metrics Section (Internal separation with more air) -->
+            <!-- Monthly Metrics Section -->
             <div class="flex flex-col mt-4">
-                <h2 class="text-[24px] font-black text-slate tracking-tight mt-6 mb-6 px-4">Monthly Metrics</h2>
+                <h2 class="text-[20px] font-black text-slate tracking-normal mt-6 mb-4 px-4 text-center">Monthly Metrics</h2>
                 
                 @defer (on idle) {
                     <div class="w-full">
-                        <app-summary-panel [monthIndex]="monthIndex()"></app-summary-panel>
+                        
+                        <!-- UNIFIED PERFORMANCE ISLAND (Indented Dividers) -->
+                        <div class="bg-white rounded-[40px] overflow-hidden flex flex-col">
+                            
+                            <!-- VALUE HISTORY -->
+                            <app-summary-panel [monthIndex]="monthIndex()"></app-summary-panel>
+
+                            <!-- Indented Divider -->
+                            <div class="h-[2px] bg-gray-100 w-[calc(100%-64px)] mx-auto"></div>
+
+                            <!-- RATIO BLOCK: EXPENSES vs SAVINGS -->
+                            <div class="p-8 flex flex-col items-center">
+                                <!-- Top: Labels Context -->
+                                <div class="flex justify-between w-full mb-3">
+                                    <span class="text-[11px] font-bold text-slate tracking-tight">💸 Expenses</span>
+                                    <span class="text-[11px] font-bold text-slate tracking-tight">🏦 Savings</span>
+                                </div>
+                                <!-- Middle: The Visual Hero -->
+                                <div class="h-[6px] w-full flex rounded-full overflow-hidden mb-3">
+                                    <div class="bg-flow-orange/80 h-full" [style.width.%]="expenseSavingsRatio().expensesPct"></div>
+                                    <div class="bg-flow-blue/80 h-full flex-1"></div>
+                                </div>
+                                <!-- Bottom: Percentages -->
+                                <div class="flex justify-between w-full">
+                                    <span class="text-[15px] font-black text-slate leading-none">{{ expenseSavingsRatio().expensesPct.toFixed(0) }}%</span>
+                                    <span class="text-[15px] font-black text-slate leading-none">{{ expenseSavingsRatio().savingsPct.toFixed(0) }}%</span>
+                                </div>
+                            </div>
+
+                            <!-- Indented Divider -->
+                            <div class="h-[2px] bg-gray-100 w-[calc(100%-64px)] mx-auto"></div>
+
+                            <!-- RATIO BLOCK: CASH vs INVESTMENTS -->
+                            <div class="p-8 flex flex-col items-center">
+                                <!-- Top: Labels Context -->
+                                <div class="flex justify-between w-full mb-3">
+                                    <span class="text-[11px] font-bold text-slate tracking-tight">💵 Cash</span>
+                                    <span class="text-[11px] font-bold text-slate tracking-tight">📈 Investments</span>
+                                </div>
+                                <!-- Middle: The Visual Hero -->
+                                <div class="h-[6px] w-full flex rounded-full overflow-hidden mb-3">
+                                    <div class="bg-violet-500/80 h-full" [style.width.%]="cashInvRatio().cashPct"></div>
+                                    <div class="bg-emerald-600/80 h-full flex-1"></div>
+                                </div>
+                                <!-- Bottom: Percentages -->
+                                <div class="flex justify-between w-full">
+                                    <span class="text-[15px] font-black text-slate leading-none">{{ cashInvRatio().cashPct.toFixed(0) }}%</span>
+                                    <span class="text-[15px] font-black text-slate leading-none">{{ cashInvRatio().invPct.toFixed(0) }}%</span>
+                                </div>
+                            </div>
+
+                            <!-- Indented Divider (Before Trends) -->
+                            <div class="h-[2px] bg-gray-100 w-[calc(100%-64px)] mx-auto"></div>
+
+                            <!-- DETAILED TRENDS (Liquid, Month, Year) -->
+                            <div class="bg-slate-50/10 p-8 space-y-6">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[11px] text-slate font-bold tracking-tight">Liquid worth</span>
+                                    <span class="text-[15px] font-black text-slate">${{(stats().liquidNetWorth * store.marbleMultiplier()) | number:'1.0-0'}}</span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[11px] text-slate font-bold tracking-tight">Month to month</span>
+                                    <span class="text-[15px] font-black" 
+                                          [class]="stats().mtm >= 0 ? 'text-emerald-700' : 'text-rose-700'">
+                                          {{stats().mtm >= 0 ? '+' : ''}}{{stats().mtm | number:'1.2-2'}}%
+                                    </span>
+                                </div>
+              
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[11px] text-slate font-bold tracking-tight">Year to date</span>
+                                    <span class="text-[15px] font-black"
+                                          [class]="stats().ytd >= 0 ? 'text-emerald-700' : 'text-rose-700'">
+                                          {{stats().ytd >= 0 ? '+' : ''}}{{stats().ytd | number:'1.2-2'}}%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 } @placeholder {
                     <div class="h-20 bg-white rounded-[32px] animate-pulse border border-gray-100"></div>
                 }
- 
-                <!-- Computations Internal Section -->
-                <div class="mt-4 p-6 rounded-[32px] bg-white border border-gray-100/50 flex flex-col gap-0 group select-none">
-                    <p class="text-[12px] font-black uppercase text-slate tracking-widest mb-6 mt-2">Computations</p>
-                    
-                    <div class="flex justify-between items-center py-4 border-b border-gray-200/60">
-                        <span class="text-[11px] text-gray-600 font-medium">Liquid Net Worth</span>
-                        <span class="text-xs font-black text-slate">${{(stats().liquidNetWorth * store.marbleMultiplier()) | number:'1.0-0'}}</span>
-                    </div>
-                    
-                    <div class="flex justify-between items-center py-4 border-b border-gray-200/60">
-                        <span class="text-[11px] text-gray-600 font-medium">Month to Month</span>
-                        <span class="text-[11px] font-black" 
-                              [class]="stats().mtm >= 0 ? 'text-emerald-700' : 'text-rose-700'">
-                              {{stats().mtm >= 0 ? '+' : ''}}{{stats().mtm | number:'1.2-2'}}%
-                        </span>
-                    </div>
-  
-                    <div class="flex justify-between items-center py-4 border-b border-gray-200/60">
-                        <span class="text-[11px] text-gray-600 font-medium">Year to Date</span>
-                        <span class="text-[11px] font-black"
-                              [class]="stats().ytd >= 0 ? 'text-emerald-700' : 'text-rose-700'">
-                              {{stats().ytd >= 0 ? '+' : ''}}{{stats().ytd | number:'1.2-2'}}%
-                        </span>
-                    </div>
- 
-                    <div class="mt-6">
-                        <app-sparkline [cashPercent]="stats().cashPercent" [invPercent]="stats().investmentsPercent"></app-sparkline>
-                        <div class="flex justify-between mt-3 px-1">
-                            <span class="text-[9px] font-black text-violet-700 tracking-wider uppercase">Cash {{stats().cashPercent | number:'1.0-0'}}%</span>
-                            <span class="text-[9px] font-black text-emerald-800 tracking-wider uppercase">Inv {{stats().investmentsPercent | number:'1.0-0'}}%</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

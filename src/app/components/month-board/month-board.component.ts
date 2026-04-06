@@ -27,6 +27,27 @@ export class MonthBoardComponent {
   assetCategories = computed(() => this.monthRecord().assetCategories);
 
   stats = computed(() => this.store.monthStats().get(this.monthRecord().id) || { mtm: 0, ytd: 0, currentTotal: 0, cashPercent: 0, investmentsPercent: 0, liquidNetWorth: 0 });
+  
+  expenseSavingsRatio = computed(() => {
+    const expenses = this.monthRecord().flow
+      .filter(i => i.parentCategory === 'expense')
+      .reduce((t, i) => t + i.val, 0);
+    const savings = this.monthRecord().flow
+      .filter(i => i.parentCategory === 'savings')
+      .reduce((t, i) => t + i.val, 0);
+    const total = expenses + savings;
+    return total > 0 ? {
+      expensesPct: (expenses / total) * 100,
+      savingsPct: (savings / total) * 100
+    } : { expensesPct: 0, savingsPct: 0 };
+  });
+
+  cashInvRatio = computed(() => {
+    return {
+      cashPct: this.stats().cashPercent,
+      invPct: this.stats().investmentsPercent
+    };
+  });
 
   updateOverview(event: Event, field: 'grossAnnual' | 'netAnnual' | 'netMonthly' | 'date', originalValue: string) {
     const el = event.target as HTMLElement;

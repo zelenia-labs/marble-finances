@@ -4,46 +4,34 @@
   <!-- ═══════════════════════════════════════════════ -->
   <!-- Table 1: ⌛ 2025 | Yesterday | 🎁 Today        -->
   <!-- ═══════════════════════════════════════════════ -->
-  <div class="bg-white rounded-[32px] border border-gray-100/50 overflow-hidden">
+  <div class="bg-white flex flex-col pt-4">
+ 
+     <!-- ALL HEADER LABELS + VALUES AS UNIFIED UNITS (Scalar Standard: 15px) -->
+     <div class="grid grid-cols-3 bg-white">
+       
+       <!-- UNIT: Jan -->
+       <div class="py-8 px-3 flex flex-col items-center justify-center">
+         <span class="text-[11px] font-bold text-slate tracking-tight mb-1">⌛ Jan</span>
+         <span class="text-[15px] font-black text-slate leading-none">{{ rows().startOfYear !== null ? fmt(rows().startOfYear!) : '—' }}</span>
+         <span class="text-[10px] font-bold mt-2" [class.text-emerald-700]="isPositive(pcts().todayVsStartOfYear)" [class.text-rose-700]="!isPositive(pcts().todayVsStartOfYear)">{{ fmtPct(pcts().todayVsStartOfYear) }}</span>
+       </div>
 
-    <!-- Column Headers: Light Grey Flat Header -->
-    <div class="grid grid-cols-3 border-b border-gray-200/60" style="background-color: #EEF3F6;">
-      <div class="py-3 px-3 text-center">
-        <span class="text-[11px] font-black text-slate tracking-tight">⌛ Start of Yr</span>
-      </div>
-      <div class="py-3 px-3 text-center border-x border-gray-200/60">
-        <span class="text-[11px] font-black text-slate tracking-tight">Previous</span>
-      </div>
-      <div class="py-3 px-3 text-center">
-        <span class="text-[11px] font-black text-slate tracking-tight">🎁 Today</span>
-      </div>
-    </div>
+       <!-- UNIT: Previous -->
+       <div class="py-8 px-3 flex flex-col items-center justify-center">
+         <span class="text-[11px] font-bold text-slate tracking-tight mb-1">Previous</span>
+         <span class="text-[15px] font-black text-slate leading-none">{{ rows().previous !== null ? fmt(rows().previous!) : '—' }}</span>
+         <span class="text-[11px] font-bold mt-2" [class.text-emerald-700]="isPositive(pcts().previousVsStartOfYear)" [class.text-rose-700]="!isPositive(pcts().previousVsStartOfYear)">{{ fmtPct(pcts().previousVsStartOfYear) }}</span>
+       </div>
 
-    <!-- Totals Row -->
-    <div class="grid grid-cols-3 border-b border-gray-100/30">
-      <div class="py-3 px-3 flex items-center justify-center">
-        <span class="text-[13px] font-bold text-slate/80">{{ rows().startOfYear !== null ? fmt(rows().startOfYear!) : '—' }}</span>
-      </div>
-      <div class="py-3 px-3 flex items-center justify-center border-x border-gray-200/60">
-        <span class="text-[13px] font-bold text-slate/80">{{ rows().previous !== null ? fmt(rows().previous!) : '—' }}</span>
-      </div>
-      <div class="py-3 px-3 flex items-center justify-center">
-        <span class="text-[13px] font-bold text-slate">{{ fmt(rows().today) }}</span>
-      </div>
-    </div>
+       <!-- UNIT: Today -->
+       <div class="py-8 px-3 flex flex-col items-center justify-center">
+         <span class="text-[11px] font-bold text-slate tracking-tight mb-1">🎁 Today</span>
+         <span class="text-[15px] font-black text-slate leading-none">{{ fmt(rows().today) }}</span>
+         <span class="text-[11px] font-bold mt-2" [class.text-emerald-700]="isPositive(pcts().todayVsPrevious)" [class.text-rose-700]="!isPositive(pcts().todayVsPrevious)">{{ fmtPct(pcts().todayVsPrevious) }}</span>
+       </div>
 
-    <!-- Percentages Row -->
-    <div class="grid grid-cols-3">
-      <div class="py-3 px-2 flex items-center justify-center">
-        <span class="text-[11px] font-bold" [class.text-emerald-700]="isPositive(pcts().todayVsStartOfYear)" [class.text-rose-700]="!isPositive(pcts().todayVsStartOfYear)">{{ fmtPct(pcts().todayVsStartOfYear) }}</span>
-      </div>
-      <div class="py-3 px-2 flex items-center justify-center border-x border-gray-200/60">
-        <span class="text-[11px] font-bold" [class.text-emerald-700]="isPositive(pcts().previousVsStartOfYear)" [class.text-rose-700]="!isPositive(pcts().previousVsStartOfYear)">{{ fmtPct(pcts().previousVsStartOfYear) }}</span>
-      </div>
-      <div class="py-3 px-2 flex items-center justify-center">
-        <span class="text-[11px] font-bold" [class.text-emerald-700]="isPositive(pcts().todayVsPrevious)" [class.text-rose-700]="!isPositive(pcts().todayVsPrevious)">{{ fmtPct(pcts().todayVsPrevious) }}</span>
-      </div>
-    </div>
-  </div>
+     </div>
+
+   </div>
 
 </div>
