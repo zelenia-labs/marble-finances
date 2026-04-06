@@ -4,7 +4,7 @@
     <!-- EXPENSES SECTION -->
     <div class="w-full mb-12">
         <div class="flex items-center justify-between mb-8">
-            <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-[0.1em]">Expenses</h3>
+            <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-widest">Expenses</h3>
             <button (click)="store.openAddFlowModal(monthIndex(), 'expense')" class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element">+ Add</button>
         </div>
 
@@ -50,6 +50,7 @@
                                 [val]="item.val" 
                                 [color]="'bg-flowOrange'"
                                 [simple]="true"
+                                [size]="store.flowGridSize()"
                                 (amountChanged)="updateAmount(item.originalIndex, $event)">
                             </app-marble-stack>
                         </div>
@@ -72,7 +73,7 @@
     <!-- SAVINGS SECTION -->
     <div class="w-full mb-6">
         <div class="flex items-center justify-between mb-8">
-            <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-[0.1em]">Savings</h3>
+            <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-widest">Savings</h3>
             <button (click)="store.openAddFlowModal(monthIndex(), 'savings')" class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element">+ Add</button>
         </div>
         
@@ -117,6 +118,7 @@
                                 [val]="item.val" 
                                 [color]="'bg-assetBlue'"
                                 [simple]="true"
+                                [size]="store.flowGridSize()"
                                 (amountChanged)="updateAmount(item.originalIndex, $event)">
                             </app-marble-stack>
                         </div>

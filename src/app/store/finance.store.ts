@@ -89,6 +89,8 @@ export interface MarbleFinancesState {
   isCompareRibbonVisible: boolean;
 
   // Tooltip State
+  assetsGridSize: number;
+  flowGridSize: number;
 }
 
 
@@ -117,6 +119,8 @@ const initialState: MarbleFinancesState = {
   isCompareModalOpen: false,
   compareState: null,
   isCompareRibbonVisible: false,
+  assetsGridSize: 5,
+  flowGridSize: 5,
 };
 
 const STORAGE_KEY = 'marble_finance_multi_data';
@@ -191,6 +195,8 @@ export const FinanceStore = signalStore(
       const state = {
         months: sanitizeMonths(store.months()),
         marbleMultiplier: store.marbleMultiplier(),
+        assetsGridSize: store.assetsGridSize(),
+        flowGridSize: store.flowGridSize(),
         snapshots: store.snapshots(),
         customColors: store.customColors()
       };
@@ -319,6 +325,12 @@ export const FinanceStore = signalStore(
     },
     setMarbleMultiplier(val: number) {
       patchState(store, { marbleMultiplier: val });
+    },
+    setAssetsGridSize(val: number) {
+      patchState(store, { assetsGridSize: val });
+    },
+    setFlowGridSize(val: number) {
+      patchState(store, { flowGridSize: val });
     },
     toggleFlowPanel() {
       patchState(store, (state) => ({ isFlowPanelOpen: !state.isFlowPanelOpen }));

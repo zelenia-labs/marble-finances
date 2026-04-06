@@ -17,10 +17,10 @@ import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
         </button>
 
         <h2 class="text-2xl font-black text-slate mb-2 tracking-tight">App Settings</h2>
-        <p class="text-sm text-gray-500 mb-8 font-medium">Configure global mechanics for Financial Marbles</p>
+        <p class="text-sm text-gray-500 mb-8 font-medium">Configure global mechanics for Marble Finances</p>
 
         <!-- Setting: Marble Multiplier -->
-        <div class="space-y-4">
+        <div class="space-y-6">
             <div>
                 <label for="multiplierInput" class="block text-sm font-bold text-slate mb-1">Marble Block Multiplier</label>
                 <p class="text-xs text-gray-500 font-medium mb-3">Define how much actual dollar value a single full marble block represents in the visualization.</p>
@@ -40,6 +40,26 @@ import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
                         <span class="text-xl font-black text-slate">= {{ formatHumanUSD(1, store.marbleMultiplier()) }}</span>
                         <span class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Value of 1 block</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- Setting: Squared Grid Sizes -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="assetsGridSizeInput" class="block text-sm font-bold text-slate mb-1">Asset Block (NxN)</label>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">Square dimension</p>
+                    <input id="assetsGridSizeInput" type="number" 
+                        [value]="store.assetsGridSize()" 
+                        (input)="onAssetsGridSizeInput($event)"
+                        class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl text-lg font-bold text-slate focus:outline-none focus:ring-2 focus:ring-assetBlue/50 focus:border-assetBlue transition-all">
+                </div>
+                <div>
+                    <label for="flowGridSizeInput" class="block text-sm font-bold text-slate mb-1">Flow Block (NxN)</label>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">Square dimension</p>
+                    <input id="flowGridSizeInput" type="number" 
+                        [value]="store.flowGridSize()" 
+                        (input)="onFlowGridSizeInput($event)"
+                        class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl text-lg font-bold text-slate focus:outline-none focus:ring-2 focus:ring-assetBlue/50 focus:border-assetBlue transition-all">
                 </div>
             </div>
         </div>
@@ -64,6 +84,16 @@ export class SettingsModalComponent {
   onMultiplierInput(event: Event) {
     const val = parseInt((event.target as HTMLInputElement).value) || 1;
     this.store.setMarbleMultiplier(Math.max(1, val));
+  }
+
+  onAssetsGridSizeInput(event: Event) {
+    const val = parseInt((event.target as HTMLInputElement).value) || 1;
+    this.store.setAssetsGridSize(Math.max(1, val));
+  }
+
+  onFlowGridSizeInput(event: Event) {
+    const val = parseInt((event.target as HTMLInputElement).value) || 1;
+    this.store.setFlowGridSize(Math.max(1, val));
   }
 
   formatHumanUSD(blocks: number, multiplier: number): string {

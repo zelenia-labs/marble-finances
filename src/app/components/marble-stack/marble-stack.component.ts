@@ -24,6 +24,7 @@ export class MarbleStackComponent {
   val = input.required<number>();
   color = input.required<string>();
   simple = input<boolean>(false);
+  size = input<number>(5);
 
   amountChanged = output<number>();
   store = inject(FinanceStore);
@@ -74,23 +75,35 @@ export class MarbleStackComponent {
   remainder = computed(() => this.val() % 100);
   currentAccounted = computed(() => this.val() - this.remainder());
   
-  bigMarblesCount = computed(() => Math.floor(this.remainder() / 25));
+  pageSize = computed(() => this.size() * this.size());
+
+  bigMarblesCount = computed(() => Math.floor(this.remainder() / this.pageSize()));
   bigMarbles = computed(() => Array(this.bigMarblesCount()).fill(0));
   
   showMarbleBox = computed(() => this.remainder() > 0 || this.val() === 0);
-  stackWidth = computed(() => (this.bigMarblesCount() > 0 ? 'wide' : 'narrow'));
+  stackWidth = computed(() => (!this.simple() && this.bigMarblesCount() > 0 ? 'wide' : 'narrow'));
   
-  showGrid = computed(() => this.bigMarblesCount() < 4);
-  activeRemaining = computed(() => this.remainder() % 25);
-  baseForGrid = computed(() => this.currentAccounted() + (this.bigMarblesCount() * 25));
+  showGrid = computed(() => true);
+  activeRemaining = computed(() => this.remainder() % this.pageSize());
+  baseForGrid = computed(() => this.currentAccounted() + (this.bigMarblesCount() * this.pageSize()));
+
+  gridRows = computed(() => {
+    const active = this.activeRemaining();
+    // Always provide an empty row if the current one is full
+    return Math.floor(active / this.size()) + 1;
+  });
 
   gridSlots = computed(() => {
     const slots: GridSlot[] = [];
     const active = this.activeRemaining();
     const base = this.baseForGrid();
-    for (let row = 4; row >= 0; row--) {
-      for (let col = 0; col < 5; col++) {
-        const slotIdx = row * 5 + col;
+    const size = this.size();
+    const rows = this.gridRows();
+
+    // Render only the rows we need
+    for (let row = rows - 1; row >= 0; row--) {
+      for (let col = 0; col < size; col++) {
+        const slotIdx = row * size + col;
         slots.push({
           idx: slotIdx,
           value: slotIdx + 1,
@@ -207,4 +220,22 @@ export class MarbleStackComponent {
     const updatedVal = slot.baseValue + slot.idx + (isHalfClick ? 0.5 : 1);
     this.amountChanged.emit(updatedVal);
   }
+
+  getBigBlockStyle = computed(() => {
+    const size = this.size();
+    return {
+      'width.px': size * 32 - 4,
+      'height.px': size * 32 - 4
+    };
+  });
+
+  getGridStyle = computed(() => {
+    const size = this.size();
+    const rows = this.gridRows();
+    return {
+      'grid-template-columns': `repeat(${size}, minmax(0, 1fr))`,
+      'width.px': size * 32 - 4,
+      'height.px': rows * 32 - 4
+    };
+  });
 }

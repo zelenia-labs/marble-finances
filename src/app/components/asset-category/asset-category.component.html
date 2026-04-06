@@ -56,7 +56,11 @@
                   </div>
                </div>
                <!-- Bento Blocks -->
-               <app-marble-stack [val]="sub.val" [color]="asset().color"></app-marble-stack>
+               <app-marble-stack 
+                  [val]="sub.val" 
+                  [color]="asset().color"
+                  [size]="store.assetsGridSize()">
+               </app-marble-stack>
             </div>
          </div>
 
@@ -131,7 +135,10 @@
                </div>
 
                <!-- Bento Stack -->
-               <app-marble-stack [val]="sub.val" [color]="asset().color"
+               <app-marble-stack 
+                  [val]="sub.val" 
+                  [color]="asset().color"
+                  [size]="store.assetsGridSize()"
                   (amountChanged)="updateMarbleAmount(subIndex, $event)">
                </app-marble-stack>
             </div>

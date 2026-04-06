@@ -3,38 +3,39 @@
    
    <!-- The Remainder Marble Box -->
    @if (showMarbleBox() || showGrid()) {
-     <div class="flex flex-row flex-wrap-reverse gap-1 content-start" [class.w-[316px]]="stackWidth() === 'wide'" [class.w-[156px]]="stackWidth() === 'narrow'">
+     <div class="flex flex-row flex-wrap-reverse gap-1 content-start" 
+          [style.max-width.px]="stackWidth() === 'wide' ? (size() * 64 - 4) : (size() * 32 - 4)">
         
-        <!-- Big Blocks (25s) -->
-        @if (!simple()) {
-          @for (b of bigMarbles(); track $index) {
-              <div
-                 class="w-[156px] h-[156px] rounded-[4px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
-                 [class]="colorPropsFull().cls"
-                 [style]="colorPropsFull().stl"
-                 role="button"
-                 tabindex="0"
-                 [attr.aria-label]="'Add 25 marbles'"
-                 (mousedown)="$event.stopPropagation()"
-                 (click)="onBlockClick(currentAccounted() + ($index + 1) * 25 - 1)"
-                 (keydown.enter)="onBlockClick(currentAccounted() + ($index + 1) * 25 - 1)"
-                 (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + ($index + 1) * 25))"
-                 (mouseleave)="hideTooltip()">
-                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none"></div>
-                 
-                 <!-- 🎉 Easter Egg: celebrate when this big block is newly formed -->
-                 @if (celebratingBigBlockIdx() === $index) {
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
-                       <span class="celebrate-burst text-3xl select-none">🎉</span>
-                    </div>
-                 }
-              </div>
-          }
+        <!-- Big Blocks (Full Rows) -->
+        @for (b of bigMarbles(); track $index) {
+            <div
+               class="rounded-[4px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
+               [ngStyle]="getBigBlockStyle()"
+               [class]="colorPropsFull().cls"
+               [style]="colorPropsFull().stl"
+               role="button"
+               tabindex="0"
+               [attr.aria-label]="'Add ' + pageSize() + ' marbles'"
+               (mousedown)="$event.stopPropagation()"
+               (click)="onBlockClick(currentAccounted() + ($index + 1) * pageSize() - 1)"
+               (keydown.enter)="onBlockClick(currentAccounted() + ($index + 1) * pageSize() - 1)"
+               (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + ($index + 1) * pageSize()))"
+               (mouseleave)="hideTooltip()">
+               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none"></div>
+               
+               <!-- 🎉 Easter Egg: celebrate when this big block is newly formed -->
+               @if (celebratingBigBlockIdx() === $index) {
+                  <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                     <span class="celebrate-burst text-3xl select-none">🎉</span>
+                  </div>
+               }
+            </div>
         }
 
-        <!-- 5x5 Grid for remaining units -->
+        <!-- Dynamic Grid for remaining units -->
         @if (simple() || showGrid()) {
-           <div class="grid grid-cols-5 gap-1 w-[156px] h-[156px] content-start shrink-0"
+            <div class="grid gap-1 content-start shrink-0"
+                 [ngStyle]="getGridStyle()"
                 (mouseleave)="onGridLeave()">
               @for (slot of gridSlots(); track slot.idx) {
                  <div
@@ -83,29 +84,27 @@
    }
 
    <!-- Hundreds (Huge Blocks) -->
-   @if (!simple()) {
-     @for (h of hugeMarbles(); track $index) {
-        <div
-           class="w-[316px] h-[316px] rounded-[6px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
-           [class]="colorPropsFull().cls"
-           [style]="colorPropsFull().stl"
-           role="button"
-           tabindex="0"
-           [attr.aria-label]="'Add 100 marbles'"
-           (mousedown)="$event.stopPropagation()"
-           (click)="onBlockClick(100 * ($index + 1) - 1)"
-           (keydown.enter)="onBlockClick(100 * ($index + 1) - 1)"
-           (mouseenter)="showTooltip($event, formatUSD(100 * (hundredsCount() - $index)))"
-           (mouseleave)="hideTooltip()">
-           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none"></div>
-  
-           <!-- 💯 Easter Egg: celebrate when this huge block is newly formed -->
-           @if (celebratingHugeBlockIdx() === $index) {
-              <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
-                 <span class="celebrate-burst text-5xl select-none">💯</span>
-              </div>
-           }
-        </div>
-     }
+   @for (h of hugeMarbles(); track $index) {
+      <div
+         class="w-[316px] h-[316px] rounded-[6px] shadow-sm relative group transition-transform active:scale-95 flex items-end justify-end shrink-0 interactive-element focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
+         [class]="colorPropsFull().cls"
+         [style]="colorPropsFull().stl"
+         role="button"
+         tabindex="0"
+         [attr.aria-label]="'Add 100 marbles'"
+         (mousedown)="$event.stopPropagation()"
+         (click)="onBlockClick(100 * ($index + 1) - 1)"
+         (keydown.enter)="onBlockClick(100 * ($index + 1) - 1)"
+         (mouseenter)="showTooltip($event, formatUSD(100 * (hundredsCount() - $index)))"
+         (mouseleave)="hideTooltip()">
+         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none"></div>
+
+         <!-- 💯 Easter Egg: celebrate when this huge block is newly formed -->
+         @if (celebratingHugeBlockIdx() === $index) {
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+               <span class="celebrate-burst text-5xl select-none">💯</span>
+            </div>
+         }
+      </div>
    }
 </div>
