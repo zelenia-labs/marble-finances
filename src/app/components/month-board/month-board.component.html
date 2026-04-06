@@ -1,5 +1,5 @@
 <!-- Month Frame Container (The template for each month) -->
-<div class="bg-white rounded-[40px] shadow-sm border border-gray-100 flex p-16 h-full w-fit flex-1">
+<div class="bg-white rounded-[40px] shadow-md border border-gray-100 flex p-16 h-full w-fit flex-1">
 
     <!-- Left Column: Report Details -->
     <div class="w-[340px] flex flex-col justify-start shrink-0 h-full">
@@ -18,7 +18,7 @@
         </div>
 
         <!-- Singular Sidebar Module: Monthly Flow + Monthly Metrics -->
-        <div class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] px-4 py-8 border border-blue-50/50 shadow-sm flex flex-col h-fit">
+        <div class="flex-none mt-0 w-full bg-[#F5FAFE] rounded-[40px] p-8 border border-blue-50/50 shadow-md flex flex-col h-fit">
             
             <!-- Monthly Flow Section -->
             <app-monthly-cash-flow [monthIndex]="monthIndex()"></app-monthly-cash-flow>
@@ -76,7 +76,7 @@
                             </div>
 
                             <!-- THE STRUCTURAL DIVIDER (Robust 2px Vault Line) -->
-                            <div class="w-full mt-10 pt-6 border-t-2 border-gray-100"></div>
+                            <div class="w-full mt-10 pt-8 border-t-2 border-gray-100"></div>
 
 
                             <!-- VALUE VAULT (YTD, Prev, Today, Liquid) -->
