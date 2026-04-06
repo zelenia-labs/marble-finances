@@ -6,7 +6,8 @@
     <h1 class="sr-only">Marble Finances</h1>
 
     <!-- Primary Application Navigation -->
-    <nav class="fixed top-8 left-8 z-110 flex items-center animate-slide-in-left" aria-label="Timeline navigation">
+    <nav class="fixed top-8 left-8 z-110 flex items-center animate-slide-in-left" aria-label="Timeline navigation"
+        [class.hidden]="store.months().length === 0">
         <ul
             class="flex items-center m-0 p-0 list-none border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden">
             <li>
@@ -289,25 +290,23 @@
                 </div>
                 }
 
-                <!-- Matrix Skeletons: Stable Structural Channels (Safety Guided) -->
+                <!-- Month Skeletons-->
                 @for (mIdx of getMissingMonthIndices(group); track mIdx) {
-                <div class="w-full h-full min-h-[1000px] border-2 border-gray-200 rounded-[48px] bg-slate/3 backdrop-blur-[2px] flex flex-col items-center justify-center gap-8 z-0 shadow-inner group transition-all duration-300"
+                <div class="w-full h-full min-w-5xl min-h-5xl border-2 border-gray-200 rounded-[48px] bg-slate/3 backdrop-blur-[2px] flex flex-col items-center justify-center gap-8 z-0 shadow-inner group transition-all duration-300"
                     [style.grid-row]="yearIdx + 1" [style.grid-column]="mIdx + 1">
 
-                    <!-- Explicitly Gated Action Point: Only the button is clickable -->
                     <button
                         class="w-24 h-24 rounded-full bg-slate shadow-lg border-2 border-slate/10 flex items-center justify-center transition-all duration-300 opacity-20 text-white hover:opacity-100 hover:scale-110 cursor-pointer"
                         (click)="addSpecificMonth(+group.year, mIdx)">
                         <span class="text-5xl font-black pointer-events-none">+</span>
                     </button>
 
-                    <!-- Contextual Temporal Label: Design-System Harmonized (Hierarchical Gray) -->
                     <div
                         class="flex flex-col items-center gap-2 opacity-100 group-hover:scale-105 transition-all duration-700">
-                        <span class="text-[96px] font-black text-slate/50 tracking-tighter leading-none select-none">{{
+                        <span class="text-6xl font-black text-slate-600 leading-none select-none">{{
                             getMonthNameFromIndex(mIdx) || 'Unknown' }}</span>
                         <span
-                            class="text-[48px] font-black text-slate/20 tracking-[0.2em] leading-none select-none ml-[0.2em] uppercase">{{
+                            class="text-4xl font-black text-slate-400 tracking-[0.2em] leading-none select-none ml-[0.2em] uppercase">{{
                             group.year }}</span>
                     </div>
                 </div>
@@ -318,6 +317,6 @@
         </div>
     </main>
     @defer (when store.isChartsModalOpen(); on idle) {
-        <app-portfolio-charts-modal #chartsModal></app-portfolio-charts-modal>
+    <app-portfolio-charts-modal #chartsModal></app-portfolio-charts-modal>
     }
 </div>
