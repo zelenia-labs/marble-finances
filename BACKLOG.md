@@ -8,6 +8,8 @@
 - [ ] Clicking on certain asset titles doesn't work (suspected visual overlapping issue).
 
 ## 💡 Features & Tech Debt
+- [ ] Add undo functionality to revert changes. Include a changelog in the session that persists only during the session. Use session storage for saving it. Create a button ground navigation in the form of [Changelog + Undo]. When click in a specific changelog item, revert to that state only after a confirmation dialog that double checks if the user would like to revert to that state.
+
 - [ ] Enhance Data Visualization Interactivity. The marbles lack immediate context. Add hover or tap event listeners to trigger tooltips displaying the exact dollar amount represented by each block.
 
 - [ ] Breakdown the app Angular component into smaller components.

@@ -44,6 +44,7 @@ export class MarbleStackComponent {
   simple = input<boolean>(false);
   size = input<number>(5);
   useThresholdRounding = input<boolean>(false);
+  maxTier = input<'penta' | 'viginti'>('viginti');
 
   amountChanged = output<number>();
   store = inject(FinanceStore);
@@ -98,16 +99,28 @@ export class MarbleStackComponent {
   colorPropsShadow = computed(() => getColorProps(this.color(), 'shadow'));
 
   // A Viginti block represents 400 units (20x20 blocks)
-  vigintiMarbleBlocksCount = computed(() => Math.floor(this.val() / 400));
+  vigintiMarbleBlocksCount = computed(() => {
+    if (this.maxTier() === 'penta') return 0;
+    return Math.floor(this.val() / 400);
+  });
   vigintiMarbleBlocks = computed(() => Array(this.vigintiMarbleBlocksCount()).fill(0));
 
-  remainderAfterViginti = computed(() => this.val() % 400);
+  remainderAfterViginti = computed(() => {
+    if (this.maxTier() === 'penta') return this.val();
+    return this.val() % 400;
+  });
 
   // A Deca block represents 100 units (10x10 blocks)
-  decaMarbleBlocksCount = computed(() => Math.floor(this.remainderAfterViginti() / 100));
+  decaMarbleBlocksCount = computed(() => {
+    if (this.maxTier() === 'penta') return 0;
+    return Math.floor(this.remainderAfterViginti() / 100);
+  });
   decaMarbleBlocks = computed(() => Array(this.decaMarbleBlocksCount()).fill(0));
 
-  remainderAfterDeca = computed(() => this.remainderAfterViginti() % 100);
+  remainderAfterDeca = computed(() => {
+    if (this.maxTier() === 'penta') return this.val();
+    return this.remainderAfterViginti() % 100;
+  });
   currentAccounted = computed(() => this.val() - this.remainderAfterDeca());
 
   pageSize = computed(() => this.size() * this.size()); // Default 25 for 5x5
@@ -120,6 +133,7 @@ export class MarbleStackComponent {
   showMarbleBox = computed(() => this.remainder() > 0 || this.val() === 0);
   
   stackWidth = computed(() => {
+    if (this.maxTier() === 'penta') return 'narrow';
     if (this.simple()) return 'narrow';
     if (this.vigintiMarbleBlocksCount() > 0 || this.decaMarbleBlocksCount() > 0 || this.pentaMarbleBlocksCount() > 1) return 'wide'; // 636
     return 'narrow';
@@ -303,8 +317,10 @@ export class MarbleStackComponent {
     let curSmallY = 0;
     let maxSmallRowH = 0;
 
+    let lastWasMaxTier = false;
     const addSmall = (type: 'penta' | 'grid', w: number, h: number, id: string) => {
-      if (curSmallX > 0 && curSmallX + w > decaSide + 1) {
+      const isMaxTier = type === (this.maxTier() as string);
+      if (curSmallX > 0 && (isMaxTier || lastWasMaxTier || curSmallX + w > decaSide + 1)) {
         curSmallX = 0;
         curSmallY += maxSmallRowH + gap;
         maxSmallRowH = 0;
@@ -312,6 +328,7 @@ export class MarbleStackComponent {
       smallItems.push({ type, x: curSmallX, y: curSmallY, width: w, height: h, id });
       maxSmallRowH = Math.max(maxSmallRowH, h);
       curSmallX += w + gap;
+      lastWasMaxTier = isMaxTier;
     };
 
     this.pentaMarbleBlocks().forEach((_, i) => addSmall('penta', blockSide, blockSide, `penta-${i}`));

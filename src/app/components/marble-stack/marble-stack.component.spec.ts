@@ -207,5 +207,98 @@ describe('MarbleStackComponent — Regression Tests', () => {
       expect(vigs[0].x).toBe(0);
       expect(vigs[1].x).toBe(0);
     });
+    it('should cap the hierarchy at Penta tier when requested ($400 with maxTier=penta)', () => {
+      // $400 units = usually 1 Viginti, but with maxTier='penta' it should be 16 Pentas (400/25)
+      fixture.componentRef.setInput('val', 400);
+      fixture.componentRef.setInput('maxTier', 'penta');
+      fixture.detectChanges();
+
+      const els = fixture.componentInstance.allElements();
+      const decas = els.filter(e => e.type === 'deca');
+      const vigs = els.filter(e => e.type === 'viginti');
+      const pentas = els.filter(e => e.type === 'penta');
+
+      expect(vigs.length).toBe(0);
+      expect(decas.length).toBe(0);
+      expect(pentas.length).toBe(16);
+      expect(fixture.componentInstance.stackWidth()).toBe('narrow');
+    });
+
+    it('should stack Penta blocks vertically when they are the maxTier ($50 with maxTier=penta)', () => {
+      // Normally 2 Pentas fit in a 316px cell (156 + 4 + 156 = 316)
+      fixture.componentRef.setInput('val', 50);
+      fixture.componentRef.setInput('maxTier', 'penta');
+      fixture.detectChanges();
+
+      const els = fixture.componentInstance.allElements();
+      const pentas = els.filter(e => e.type === 'penta');
+
+      expect(pentas.length).toBe(2);
+      
+      // Vertical check: they should NOT be on the same row
+      expect(pentas[0].y + pentas[0].height).not.toBe(pentas[1].y + pentas[1].height);
+      
+      // One per row check: X should be 0 for both
+      expect(pentas[0].x).toBe(0);
+      expect(pentas[1].x).toBe(0);
+    });
+
+    it('should ensure maxTier blocks have no siblings in their row ($28 with maxTier=penta)', () => {
+      // 28 units = 1 Penta (25) + 3 Marbles (grid)
+      // They should NOT be side-by-side even though they both fit in 316px (156 + 156 + 4 = 316)
+      fixture.componentRef.setInput('val', 28);
+      fixture.componentRef.setInput('maxTier', 'penta');
+      fixture.detectChanges();
+
+      const els = fixture.componentInstance.allElements();
+      const penta = els.find(e => e.type === 'penta');
+      const grid = els.find(e => e.type === 'grid');
+
+      expect(penta).toBeTruthy();
+      expect(grid).toBeTruthy();
+      
+      // Vertical check: they should be on different rows
+      expect(penta!.y + penta!.height).not.toBe(grid!.y + grid!.height);
+      
+      // Solitary check: X should be 0 for both
+      expect(penta!.x).toBe(0);
+      expect(grid!.x).toBe(0);
+    });
+
+    it('should scale Cash Flow width up to 1000 items without expanding horizontally ($1000 with maxTier=penta)', () => {
+      // 1000 units = 40 Pentas (stacked vertically)
+      fixture.componentRef.setInput('val', 1000);
+      fixture.componentRef.setInput('maxTier', 'penta');
+      fixture.detectChanges();
+
+      const els = fixture.componentInstance.allElements();
+      const pentas = els.filter(e => e.type === 'penta');
+
+      expect(pentas.length).toBe(40);
+      expect(fixture.componentInstance.totalSvgWidth()).toBe(316);
+      
+      // All Pentas should be in a single column (X=0)
+      pentas.forEach(p => expect(p.x).toBe(0));
+    });
+
+    it('should isolate Viginti blocks from leading balance in Asset view ($405 with maxTier=viginti)', () => {
+      // 405 units = 1 Viginti (400) + 5 Marbles (grid)
+      fixture.componentRef.setInput('val', 405);
+      fixture.componentRef.setInput('maxTier', 'viginti');
+      fixture.detectChanges();
+
+      const els = fixture.componentInstance.allElements();
+      const vig = els.find(e => e.type === 'viginti');
+      const grid = els.find(e => e.type === 'grid');
+
+      expect(vig).toBeTruthy();
+      expect(grid).toBeTruthy();
+
+      // No siblings in the row: Grid should be visually ABOVE Viginti foundation
+      // In bottom-up flipped coords, "above" means a LOWER y + height.
+      expect(grid!.y + grid!.height).toBeLessThan(vig!.y);
+      expect(vig!.x).toBe(0);
+      expect(grid!.x).toBe(0);
+    });
   });
 });
