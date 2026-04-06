@@ -25,15 +25,13 @@ interface TimelineYear {
         <ul class="flex flex-col gap-6 w-full relative list-none p-0 m-0">
            @for (grp of yearsGrouped(); track grp.year; let lastGrp = $last) {
                <li class="flex flex-col w-full relative">
-                  <button class="flex items-center gap-2 cursor-pointer interactive-element mb-1 w-full text-left bg-transparent border-none p-0 appearance-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded" 
+                  <button class="flex items-center gap-2 cursor-pointer interactive-element mb-1 w-full text-left bg-transparent border-none p-0 appearance-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded group" 
                           (click)="toggleYear(grp)"
-                          (mouseenter)="tooltip.show($event, 'Toggle year ' + grp.year)"
-                          (mouseleave)="tooltip.hide()"
                           [attr.aria-expanded]="grp.isExpanded"
                           [attr.aria-controls]="'year-content-' + grp.year">
-                     <time [attr.datetime]="grp.year" class="text-[18px] font-black tracking-tighter" [class]="grp.isExpanded ? 'text-slate' : 'text-slate/40'">{{ grp.year }}</time>
+                     <time [attr.datetime]="grp.year" class="text-[18px] font-black tracking-normal" [class]="grp.isExpanded ? 'text-slate' : 'text-slate-500'">{{ grp.year }}</time>
                      @if (grp.months.length > 1) {
-                         <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full ml-auto"
+                         <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full ml-auto transition-opacity group-hover:opacity-75"
                                [class]="grp.ytd >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'"
                                [class.opacity-40]="!grp.isExpanded"
                                [class.opacity-100]="grp.isExpanded">
@@ -46,26 +44,24 @@ interface TimelineYear {
                   @if (grp.isExpanded) {
                      <ul [id]="'year-content-' + grp.year" class="flex flex-col mt-[8px] mb-4 gap-[20px] ml-[14px] relative list-none p-0 m-0">
                           <!-- Connective Vertical Line covering all months -->
-                          <li class="absolute top-[8px] bottom-[10px] left-[3px] w-px bg-slate/12" aria-hidden="true"></li>
+                          <li class="absolute top-[8px] bottom-[10px] left-[3px] w-px bg-slate-300" aria-hidden="true"></li>
                           
                           @for (m of grp.months; track m.index; let lastMonth = $last) {
                               <li>
                                 <button class="flex items-center gap-4 cursor-pointer interactive-element group pr-2 w-full text-left bg-transparent border-none p-0 appearance-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded" 
                                         (click)="handleJump(m.index)"
-                                        (mouseenter)="tooltip.show($event, 'Go to ' + m.label + ' ' + grp.year)"
-                                        (mouseleave)="tooltip.hide()"
                                         [attr.aria-current]="store.activeTimelineIndex() === m.index ? 'page' : null">
                                     <div class="w-1.5 h-1.5 rounded-full z-10 transition-colors relative shrink-0"
-                                         [class]="store.activeTimelineIndex() === m.index ? 'bg-accent ring-2 ring-accent/20' : 'bg-slate/20 group-hover:bg-slate/40'">
+                                         [class]="store.activeTimelineIndex() === m.index ? 'bg-accent ring-2 ring-accent/20' : 'bg-slate-500 group-hover:bg-slate'">
                                     </div>
                                     <!-- Month Label & Badge -->
                                     <div class="flex items-center justify-between w-full">
-                                        <span class="text-[14px] font-black tracking-tighter transition-colors"
-                                              [class]="store.activeTimelineIndex() === m.index ? 'text-slate' : 'text-slate/40 group-hover:text-slate'">
+                                        <span class="text-[14px] tracking-normal transition-colors"
+                                              [class]="store.activeTimelineIndex() === m.index ? 'text-slate font-black' : 'text-slate-500 font-medium group-hover:text-slate group-hover:font-semibold'">
                                            {{ m.label }}
                                         </span>
                                         @if (m.index > 0) {
-                                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full transition-opacity"
+                                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full transition-opacity group-hover:opacity-75"
                                                   [class]="m.mtm >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'"
                                                   [class.opacity-40]="store.activeTimelineIndex() !== m.index"
                                                   [class.opacity-100]="store.activeTimelineIndex() === m.index">

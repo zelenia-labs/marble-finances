@@ -109,13 +109,6 @@
         </ul>
     </nav>
 
-    <!-- Left Sidebar Backdrop -->
-    @if (store.isTimelineOpen()) {
-    <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-90 animate-fade-in" tabindex="0" role="button"
-        aria-label="Close timeline" (click)="toggleTimeline($event)" (keydown.enter)="toggleTimeline($event)">
-    </div>
-    }
-
     <!-- Left Sidebar: High-Performance History Tracking -->
     @if (store.isTimelineOpen()) {
     @defer (on interaction(timelineTrigger); on idle) {
