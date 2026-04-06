@@ -178,6 +178,9 @@ export class App implements OnDestroy {
   isPanningCanvas = signal<boolean>(false);
   isCanvasReady = signal<boolean>(false);
   isAnimatingPan = signal<boolean>(false);
+  isZoomControlsVisible = signal<boolean>(false);
+
+  private zoomTimeout: ReturnType<typeof setTimeout> | null = null;
 
   private startX = 0;
   private startY = 0;
@@ -392,10 +395,58 @@ export class App implements OnDestroy {
   }
 
   private onMouseMove(e: MouseEvent) {
+    this.showZoomControls();
+
     if (!this.isPanningCanvas()) return;
     this.panX.set(e.clientX - this.startX);
     this.panY.set(e.clientY - this.startY);
     this.updateTransform();
+  }
+
+  showZoomControls() {
+    this.isZoomControlsVisible.set(true);
+    if (this.zoomTimeout) {
+      clearTimeout(this.zoomTimeout);
+    }
+    this.zoomTimeout = setTimeout(() => {
+      this.isZoomControlsVisible.set(false);
+    }, 3000);
+  }
+
+  zoomIn(e?: Event) {
+    if (e) e.stopPropagation();
+    this.showZoomControls();
+    this.applyZoom(1.2);
+  }
+
+  zoomOut(e?: Event) {
+    if (e) e.stopPropagation();
+    this.showZoomControls();
+    this.applyZoom(1 / 1.2);
+  }
+
+  private applyZoom(zoomFactor: number) {
+    const currentScale = this.scale();
+    const newScale = Math.min(Math.max(0.05, currentScale * zoomFactor), 4);
+
+    if (newScale === currentScale) return;
+
+    const viewport = this.mainArea().nativeElement;
+    const rect = viewport.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const newPanX = centerX - (centerX - this.panX()) * (newScale / currentScale);
+    const newPanY = centerY - (centerY - this.panY()) * (newScale / currentScale);
+
+    this.panX.set(newPanX);
+    this.panY.set(newPanY);
+    this.scale.set(newScale);
+    this.updateTransform();
+    
+    // Smooth, performance-focused transition (matching wait duration with CSS class)
+    this.isAnimatingPan.set(true); 
+    setTimeout(() => this.isAnimatingPan.set(false), 510);
   }
 
   private onMouseUp() {
