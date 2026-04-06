@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  ViewChild,
   ElementRef,
   AfterViewInit,
+  viewChild,
 } from '@angular/core';
 import { FinanceStore } from '../../store/finance.store';
 
@@ -153,13 +153,13 @@ import { FinanceStore } from '../../store/finance.store';
 export class SettingsModalComponent implements AfterViewInit {
   store = inject(FinanceStore);
 
-  @ViewChild('marbleInput') marbleInput!: ElementRef<HTMLInputElement>;
+  readonly marbleInput = viewChild.required<ElementRef<HTMLInputElement>>('marbleInput');
 
   ngAfterViewInit() {
     // Small timeout to ensure the modal animation hasn't blocked the focus
     setTimeout(() => {
-      this.marbleInput.nativeElement.focus();
-      this.marbleInput.nativeElement.select();
+      this.marbleInput().nativeElement.focus();
+      this.marbleInput().nativeElement.select();
     }, 150);
   }
 

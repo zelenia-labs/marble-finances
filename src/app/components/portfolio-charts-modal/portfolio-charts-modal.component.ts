@@ -6,7 +6,7 @@ import {
   ElementRef,
   inject,
   signal,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { ChartConfiguration, ChartDataset, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -21,7 +21,7 @@ import { FinanceStore } from '../../store/finance.store';
 })
 export class PortfolioChartsModalComponent {
   store = inject(FinanceStore);
-  @ViewChild('carouselContainer') carouselContainer!: ElementRef<HTMLDivElement>;
+  readonly carouselContainer = viewChild.required<ElementRef<HTMLDivElement>>('carouselContainer');
 
   activeIndex = signal(0);
   isReady = signal(false);
@@ -209,8 +209,9 @@ export class PortfolioChartsModalComponent {
   }
 
   scrollTo(index: number) {
-    if (this.carouselContainer) {
-      this.carouselContainer.nativeElement.scrollTo({
+    const carouselContainer = this.carouselContainer();
+    if (carouselContainer) {
+      carouselContainer.nativeElement.scrollTo({
         left: window.innerWidth * index,
         behavior: 'smooth',
       });

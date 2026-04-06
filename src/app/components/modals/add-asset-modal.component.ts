@@ -2,12 +2,12 @@ import {
   Component,
   ChangeDetectionStrategy,
   ElementRef,
-  ViewChild,
   inject,
   signal,
   effect,
   ChangeDetectorRef,
   computed,
+  viewChild,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -43,10 +43,10 @@ export class AddAssetModalComponent {
     'bg-asset-stone',
   ];
 
-  @ViewChild('colorCanvas') colorCanvas!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('wheelContainer') wheelContainer!: ElementRef<HTMLDivElement>;
-  @ViewChild('nameInput') nameInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('otherInput') otherInput!: ElementRef<HTMLInputElement>;
+  readonly colorCanvas = viewChild.required<ElementRef<HTMLCanvasElement>>('colorCanvas');
+  readonly wheelContainer = viewChild.required<ElementRef<HTMLDivElement>>('wheelContainer');
+  readonly nameInput = viewChild.required<ElementRef<HTMLInputElement>>('nameInput');
+  readonly otherInput = viewChild.required<ElementRef<HTMLInputElement>>('otherInput');
 
   targetX = signal<number>(80);
   targetY = signal<number>(80);
@@ -81,7 +81,7 @@ export class AddAssetModalComponent {
         this.assetName = '';
         this.assetAmount = null;
         // Auto-focus the name field for quick entry
-        setTimeout(() => this.nameInput?.nativeElement?.focus(), 80);
+        setTimeout(() => this.nameInput()?.nativeElement?.focus(), 80);
       }
       if (this.store.isAddModalOpen()) {
         if (this.store.addModalType() === 'flow-expense') {
@@ -96,7 +96,7 @@ export class AddAssetModalComponent {
 
         if (this.store.addModalMode() === 'custom') {
           setTimeout(() => {
-            if (this.colorCanvas) {
+            if (this.colorCanvas()) {
               this.initColorWheel();
               this.centerTarget();
             }
@@ -120,7 +120,7 @@ export class AddAssetModalComponent {
   }
 
   initColorWheel() {
-    const canvas = this.colorCanvas.nativeElement;
+    const canvas = this.colorCanvas().nativeElement;
     const radius = 80;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
@@ -150,7 +150,7 @@ export class AddAssetModalComponent {
     if (!this.isDragging && e.type !== 'click') return;
     e.preventDefault();
 
-    const container = this.wheelContainer.nativeElement;
+    const container = this.wheelContainer().nativeElement;
     const rect = container.getBoundingClientRect();
     const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
@@ -207,7 +207,7 @@ export class AddAssetModalComponent {
   selectFlowCategory(cat: string) {
     this.flowCategory = cat;
     if (cat === 'other') {
-      setTimeout(() => this.otherInput?.nativeElement?.focus(), 50);
+      setTimeout(() => this.otherInput()?.nativeElement?.focus(), 50);
     }
   }
 

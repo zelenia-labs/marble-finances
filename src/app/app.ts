@@ -9,6 +9,7 @@ import {
   signal,
   untracked,
   ViewChild,
+  viewChild,
 } from '@angular/core';
 import { ComparisonOverlayComponent } from './components/comparison-overlay/comparison-overlay.component';
 import { AddAssetModalComponent } from './components/modals/add-asset-modal.component';
@@ -48,8 +49,8 @@ export class App implements OnDestroy {
   store = inject(FinanceStore);
   tooltipService = inject(TooltipService);
 
-  @ViewChild('mainArea') mainArea!: ElementRef<HTMLElement>;
-  @ViewChild(PortfolioChartsModalComponent) chartsModal!: PortfolioChartsModalComponent;
+  readonly mainArea = viewChild.required<ElementRef<HTMLElement>>('mainArea');
+  readonly chartsModal = viewChild.required(PortfolioChartsModalComponent);
 
   constructor() {
     effect(() => {
@@ -91,7 +92,7 @@ export class App implements OnDestroy {
               let offsetL = 0;
               let offsetT = 0;
               let el: HTMLElement | null = target;
-              const wrapper = this.mainArea.nativeElement.querySelector(
+              const wrapper = this.mainArea().nativeElement.querySelector(
                 '#canvas-wrapper',
               ) as HTMLElement;
               while (el && el !== wrapper) {
@@ -207,12 +208,13 @@ export class App implements OnDestroy {
   }
 
   private updateActiveTimelineTracker() {
-    if (this.isAnimatingPan() || !this.mainArea) return;
+    const mainArea = this.mainArea();
+    if (this.isAnimatingPan() || !mainArea) return;
 
     const boards = Array.from(document.querySelectorAll('app-month-board > div')) as HTMLElement[];
     if (boards.length === 0) return;
 
-    const viewportRect = this.mainArea.nativeElement.getBoundingClientRect();
+    const viewportRect = mainArea.nativeElement.getBoundingClientRect();
     const screenCenterX = viewportRect.left + viewportRect.width / 2;
     const screenCenterY = viewportRect.top + viewportRect.height / 2;
 
@@ -249,7 +251,7 @@ export class App implements OnDestroy {
       const zoomFactor = Math.exp(-e.deltaY * zoomIntensity);
       const newScale = Math.min(Math.max(0.05, this.scale() * zoomFactor), 4);
 
-      const rect = this.mainArea.nativeElement.getBoundingClientRect();
+      const rect = this.mainArea().nativeElement.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
@@ -337,7 +339,7 @@ export class App implements OnDestroy {
 
   centerOnBoard(board: HTMLElement, animate = true) {
     const startScale = 0.28;
-    const viewport = this.mainArea.nativeElement;
+    const viewport = this.mainArea().nativeElement;
     const viewW = viewport.clientWidth;
     const viewH = viewport.clientHeight;
     const bWidth = board.offsetWidth;
@@ -428,7 +430,7 @@ export class App implements OnDestroy {
   }
 
   openVisualizeModal() {
-    this.chartsModal?.open();
+    this.chartsModal()?.open();
   }
 
   openSettings() {
