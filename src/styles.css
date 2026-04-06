@@ -7,22 +7,37 @@
   --color-slate: #333333;         /* Near-black — primary text & dark surfaces */
 
   /* ── Brand / Asset ── */
-  --color-labelYellow: #F3D05F;   /* Golden yellow — labels & highlights */
-  --color-labelYellowMuted: #FFF9E6; /* Very pale yellow — action-items bg */
-  --color-flowOrange: #F09E6D;    /* Warm orange — expense flow blocks */
-  --color-assetGreen: #82C37E;    /* Soft green — Investments, Stocks, Crypto */
-  --color-assetPurple: #C694F9;   /* Soft purple — Cash */
-  --color-assetBlue: #84ADF8;     /* Soft blue — Retirement */
-  --color-assetSand: #D4C3A3;     /* Warm sand */
-  --color-assetRose: #F0A8A8;     /* Soft rose */
-  --color-assetTeal: #82C4C3;     /* Soft teal */
-  --color-assetStone: #A0AAB2;    /* Cool gray */
+  --color-labelYellow: #FBDE72;   /* Brighter Easter Yellow */
+  --color-labelYellowMuted: #FFFAE6; 
+  --color-flowOrange: #FB9F78;    /* Peachy Flow */
+  
+  /* Primary Asset Colors (Cute & Bright) */
+  --color-assetGreen: #88DF9B;    /* Mint */
+  --color-assetPurple: #CDA4FB;   /* Lilac */
+  --color-assetBlue: #90B9FB;     /* Sky Blue */
+  --color-assetCyan: #86E2E4;     /* Pale Cyan */
+  --color-assetOrange: #FFC09F;   /* Peach */
+  --color-assetSand: #E5D0A1;     
+  --color-assetRose: #FFB3BA;     /* Pink */
+  --color-assetTeal: #98DDBB;     
+  --color-assetStone: #B0C4DE;    
+
+  /* 🧱 Block/Marble Variants (Darker for WCAG 3.1:1 Contrast vs White) */
+  --color-block-asset-green: #429C5A;    
+  --color-block-asset-purple: #A174D2;   
+  --color-block-asset-blue: #5B8CD9;     
+  --color-block-asset-cyan: #469EA1;     
+  --color-block-asset-orange: #D97544;   
+  --color-block-asset-sand: #968153;     
+  --color-block-asset-rose: #D96D8D;     
+  --color-block-asset-teal: #499978;     
+  --color-block-asset-stone: #6B7280;    
 
   /* ── Semantic / Functional ── */
   --color-positive: #10B981;      /* Emerald 500 — gains */
   --color-negative: #F43F5E;      /* Rose 500 — losses */
-  --color-accent: #3B82F6;        /* Blue 500 — active indicators & projections */
-  --color-actionIndicator: #D4A100; /* Dark amber — checkbox borders / checkmarks */
+  --color-accent: #1D4ED8;        /* Blue 700 — active indicators & projections (darker for contrast) */
+  --color-actionIndicator: #926F00; /* Darker amber — for better visibility on white/cream */
 
   /* ── Borders ── */
   --color-border-card: #F3F4F6;   /* Gray 100 — card borders (1px stroke) */

@@ -120,7 +120,7 @@
                         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
                         @if (sub.note === null || sub.note === undefined) {
                         <button (click)="addNote(subIndex)"
-                           class="text-xs font-bold text-gray-500 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
+                           class="text-xs font-bold text-gray-600 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
                            Note</button>
                         <div class="w-px bg-gray-200 my-1"></div>
                         }
@@ -145,7 +145,7 @@
                      placeholder="Add optional note..." (mousedown)="$event.stopPropagation()"
                      (blur)="updateNote($event, subIndex, sub.note)"
                      (keydown.enter)="$event.preventDefault(); triggerBlur($event)"
-                     class="bg-transparent outline-none w-full text-[11px] font-medium text-gray-500 placeholder-gray-400 border-b border-transparent focus:border-gray-400 interactive-element transition-colors">
+                     class="bg-transparent outline-none w-full text-[11px] font-medium text-gray-600 placeholder-gray-400 border-b border-transparent focus:border-gray-400 interactive-element transition-colors">
                </div>
             </div>
             }
@@ -179,7 +179,7 @@
                [class.translate-y-0]="store.activeMenuId() === 'menu_main_' + monthIndex() + '_' + index()"
                (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
                <button (click)="addSubcategory()"
-                  class="text-xs font-bold text-gray-500 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
+                  class="text-xs font-bold text-gray-600 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
                   Add</button>
                <div class="w-px bg-gray-200 my-1"></div>
                <button (click)="promptDeleteAsset()"

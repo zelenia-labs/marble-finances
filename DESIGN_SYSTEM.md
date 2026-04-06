@@ -37,9 +37,11 @@ All colors are defined as CSS custom properties in the codebase. **Do NOT introd
 
 | CSS Variable | Hex | Usage |
 |---|---|---|
-| `--color-assetGreen` | `#82C37E` | Investments, Stocks, Crypto |
-| `--color-assetPurple` | `#C694F9` | Cash |
-| `--color-assetBlue` | `#84ADF8` | Retirement |
+| `--color-assetGreen` | `#82C37E` | Investments |
+| `--color-assetPurple` | `#C694F9` | Retirement |
+| `--color-assetBlue` | `#84ADF8` | Cash |
+| `--color-assetCyan` | `#7ED2C4` | Company |
+| `--color-assetOrange` | `#F8A86B` | Tangible |
 | `--color-assetSand` | `#D4C3A3` | Reserved |
 | `--color-assetRose` | `#F0A8A8` | Reserved |
 | `--color-assetTeal` | `#82C4C3` | Reserved |
@@ -53,9 +55,17 @@ All colors are defined as CSS custom properties in the codebase. **Do NOT introd
 | `--color-labelYellow` | `#F3D05F` | Labels and highlights |
 | `--color-labelYellowMuted` | `#FFF9E6` | Action items card background |
 
-### Chart Variants
+### Chart & Block Variants
 
-Slightly desaturated versions of the asset category colors for use in data visualizations (e.g., Chart.js). Defined in code at `src/app/utils/color.util.ts`. These must stay visually in sync with the main palette.
+| Asset Type | Block Variant Token | Hex (3.1:1 Contrast) | Usage |
+|---|---|---|---|
+| Green | `--color-block-asset-green` | `#679267` | Investment Marbles |
+| Purple | `--color-block-asset-purple` | `#8B85B6` | Retirement Marbles |
+| Blue | `--color-block-asset-blue` | `#7089BD` | Cash Marbles |
+| Cyan | `--color-block-asset-cyan` | `#678E92` | Company Marbles |
+| Orange | `--color-block-asset-orange` | `#A1826D` | Tangible Marbles |
+
+**The Block Rule:** Marbles, blocks, and plates must use the `block-` variant tokens. These are slightly darker/more saturated versions of the brand colors designed to pass **WCAG 3:1 contrast** against both the cream canvas and pure white backgrounds. This rule does *not* apply to text labels or background bubbles, which should use the primary brand tokens.
 
 ### Gray Scale
 
@@ -69,7 +79,7 @@ Used for borders, dividers, and subtle surfaces. These are now formally tokenize
 | Timeline sidebar background | `--color-surface-timeline` | `#F6F5EF` |
 | Timeline sidebar border | `--color-border-timeline` | `#EFEFE8` |
 | Glassmorphic overlays | — | `#FFFFFF` at 50% opacity |
-| Secondary text | — | `#9CA3AF` – `#6B7280` (Gray 400–500) |
+| Secondary text | — | `#4B5563` (Gray 600) |
 
 ### Functional Colors
 
@@ -102,7 +112,7 @@ The application uses the **system font stack** (SF Pro on macOS, Segoe UI on Win
 | Page Headings | 24px | Black (900) | Normal | Modal titles, welcome screen |
 | Section Headings | 12px, UPPERCASE | Black (900) | Wide (+0.1em) | Panel headers, section titles |
 | Body Labels | 10px | Bold (700) | Normal | Category names, asset labels |
-| Secondary Text | 10px | Medium (500) | Normal | Descriptions, helper text (Gray 500) |
+| Secondary Text | 10px | Medium (500) | Normal | Descriptions, helper text (Gray 600) |
 | Micro Labels | 10px, UPPERCASE | Bold (700) | Widest (+0.15em) | Badge labels, stat annotations |
 | Editable Values | 10px | Black (900) | Normal | Inline-editable dollar amounts |
 
@@ -313,9 +323,11 @@ The `.btn-dismiss` CSS utility class is the **single, canonical implementation**
 ## 10. Accessibility Minimums
 
 - All interactive elements must show a **pointer cursor**
-- Buttons must have **visible focus outlines** (ring/outline on focus)
-- Color contrast must meet **WCAG AA** against the `#F5F3ED` canvas and white surfaces
-- Positive/negative indicators must not rely on color alone — use `+`/`-` signs alongside green/red
+- Buttons must have **visible focus outlines**
+- All text must meet **WCAG 2.2 AA** (4.5:1 for small, 3:1 for large)
+- Ensure all text on Asset or Flow backgrounds uses `--color-slate` for contrast
+- Secondary text must use Gray 600 (`#4B5563`) or darker
+- Positive/negative indicators must not rely on color alone — use `+`/`-` signs
 - All modals must **trap focus** and support **Escape** to close
 - SVG icons used as buttons must have `title` attributes or `aria-label`
 

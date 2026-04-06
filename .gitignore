@@ -2,6 +2,7 @@
 
 /lighthouse-reports
 /.web-codegen-scorer
+/database
 
 # Compiled output
 /dist
