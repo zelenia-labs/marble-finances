@@ -163,7 +163,7 @@ export class MarbleStackComponent {
   }
 
   isGhost(slot: GridSlot): boolean {
-    return slot.activeRemaining < slot.value && !this.isHalf(slot);
+    return slot.activeRemaining < slot.value;
   }
 
   /** Returns true when this ghost slot is between the last active slot and the hovered slot. */
