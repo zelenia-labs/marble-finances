@@ -40,7 +40,7 @@ export class MarbleStackComponent {
 
   hoveredSlotIdx = signal<number | null>(null);
   hoveredIsHalf = signal<boolean>(false);
-  celebratingBigBlockIdx = signal<number | null>(null);
+  celebratingLargeBlockIdx = signal<number | null>(null);
   celebratingHugeBlockIdx = signal<number | null>(null);
 
   private prevBigBlocksCount = 0;
@@ -50,20 +50,20 @@ export class MarbleStackComponent {
 
   constructor() {
     effect(() => {
-      const current = this.bigMarblesCount();
+      const current = this.largeMarbleBlocksCount();
       if (current > this.prevBigBlocksCount) {
         const newIdx = current - 1;
         if (this.celebrateTimer) clearTimeout(this.celebrateTimer);
-        this.celebratingBigBlockIdx.set(newIdx);
-        this.celebrateTimer = setTimeout(() => this.celebratingBigBlockIdx.set(null), 1080);
+        this.celebratingLargeBlockIdx.set(newIdx);
+        this.celebrateTimer = setTimeout(() => this.celebratingLargeBlockIdx.set(null), 1080);
       }
       this.prevBigBlocksCount = current;
     });
 
     effect(() => {
-      const current = this.hundredsCount();
+      const current = this.hugeMarbleBlocksCount();
       if (current > this.prevHugeBlocksCount) {
-        // A 100-unit huge block was just formed — celebrate it!
+        // A 100-unit huge marble block was just formed — celebrate it!
         // Always target index 0: the topmost huge block, directly below the ghost grid,
         // which is where the user just completed the consolidation.
         if (this.celebrateHugeTimer) clearTimeout(this.celebrateHugeTimer);
@@ -77,19 +77,19 @@ export class MarbleStackComponent {
   colorPropsFull = computed(() => getColorProps(this.color(), 'full'));
   colorPropsShadow = computed(() => getColorProps(this.color(), 'shadow'));
 
-  hundredsCount = computed(() => Math.floor(this.val() / 100));
-  hugeMarbles = computed(() => Array(this.hundredsCount()).fill(0));
+  hugeMarbleBlocksCount = computed(() => Math.floor(this.val() / 100));
+  hugeMarbleBlocks = computed(() => Array(this.hugeMarbleBlocksCount()).fill(0));
 
   remainder = computed(() => this.val() % 100);
   currentAccounted = computed(() => this.val() - this.remainder());
 
   pageSize = computed(() => this.size() * this.size());
 
-  bigMarblesCount = computed(() => Math.floor(this.remainder() / this.pageSize()));
-  bigMarbles = computed(() => Array(this.bigMarblesCount()).fill(0));
+  largeMarbleBlocksCount = computed(() => Math.floor(this.remainder() / this.pageSize()));
+  largeMarbleBlocks = computed(() => Array(this.largeMarbleBlocksCount()).fill(0));
 
   showMarbleBox = computed(() => this.remainder() > 0 || this.val() === 0);
-  stackWidth = computed(() => (!this.simple() && this.bigMarblesCount() > 0 ? 'wide' : 'narrow'));
+  stackWidth = computed(() => (!this.simple() && this.largeMarbleBlocksCount() > 0 ? 'wide' : 'narrow'));
 
   showGrid = computed(() => true);
   activeRemaining = computed(() => {
@@ -107,7 +107,7 @@ export class MarbleStackComponent {
     if (fract <= 0.5001) return whole + 0.5;
     return whole + 1;
   });
-  baseForGrid = computed(() => this.currentAccounted() + this.bigMarblesCount() * this.pageSize());
+  baseForGrid = computed(() => this.currentAccounted() + this.largeMarbleBlocksCount() * this.pageSize());
 
   marbleRows = computed(() => {
     if (this.simple()) {
@@ -145,20 +145,17 @@ export class MarbleStackComponent {
     if (slot.activeRemaining >= slot.value) {
       return this.colorPropsFull().cls;
     } else if (slot.activeRemaining === slot.value - 0.5) {
-      return 'bg-gray-100';
+      return this.colorPropsShadow().cls;
     } else {
       return this.colorPropsShadow().cls;
     }
   }
 
-  getSlotStyle(slot: GridSlot): string {
-    if (slot.activeRemaining >= slot.value) {
-      return this.colorPropsFull().stl;
-    } else if (slot.activeRemaining === slot.value - 0.5) {
-      return '';
-    } else {
-      return this.colorPropsShadow().stl;
-    }
+  getColorStyleVal(slot: GridSlot): string {
+    const val = slot.activeRemaining >= slot.value 
+      ? this.colorPropsFull().val 
+      : this.colorPropsShadow().val;
+    return val || (this.color().startsWith('#') ? this.color() : 'var(--color-slate)');
   }
 
   isHalf(slot: GridSlot): boolean {

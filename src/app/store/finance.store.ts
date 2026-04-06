@@ -127,7 +127,9 @@ const initialState: MarbleFinancesState = {
 const STORAGE_KEY = 'marble_finance_multi_data';
 
 function getInitialState(): MarbleFinancesState {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  // Safe check for localStorage (prevents ReferenceError in headless/SSR environments)
+  const storage = typeof window !== 'undefined' ? window.localStorage : null;
+  const saved = storage?.getItem(STORAGE_KEY);
   if (saved) {
     try {
       const parsed = JSON.parse(saved);

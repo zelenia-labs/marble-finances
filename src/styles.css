@@ -23,16 +23,16 @@
   --color-asset-teal: #98DDBB;     
   --color-asset-stone: #B0C4DE;    
 
-  /* 🧱 Block/Marble Variants (Updated per user request) */
-  --color-block-asset-green: #52CB6C;    
-  --color-block-asset-purple: #67A2F9;   
-  --color-block-asset-blue: #C380F5;     
-  --color-block-asset-cyan: #707AFF;     
-  --color-block-asset-orange: #F89160;   
-  --color-block-asset-sand: #8B7A58;     
-  --color-block-asset-rose: #B66A6A;     
-  --color-block-asset-teal: #548E8D;     
-  --color-block-asset-stone: #6B7280;    
+  /* 🧱 Marble Variants (Updated per naming spec) */
+  --color-marble-asset-green: #52CB6C;    
+  --color-marble-asset-purple: #67A2F9;   
+  --color-marble-asset-blue: #C380F5;     
+  --color-marble-asset-cyan: #707AFF;     
+  --color-marble-asset-orange: #F89160;   
+  --color-marble-asset-sand: #8B7A58;     
+  --color-marble-asset-rose: #B66A6A;     
+  --color-marble-asset-teal: #548E8D;     
+  --color-marble-asset-stone: #6B7280;    
 
   /* ── Semantic / Functional ── */
   --color-positive: #10B981;      /* Emerald 500 — gains */

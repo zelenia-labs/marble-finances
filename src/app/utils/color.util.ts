@@ -4,6 +4,10 @@
  * to improve readability in Chart.js data visualizations (DESIGN_SYSTEM.md §2 "Chart Variants").
  * DO NOT use these for UI components — use the CSS tokens (--color-*) instead.
  */
+/**
+ * Chart-variant hex values for legacy or direct lookups.
+ * DO NOT use these for UI components — use the CSS tokens (--color-*) instead.
+ */
 export const TAILWIND_COLOR_MAP: Record<string, string> = {
     'bg-assetGreen':  '#52CB6C', 
     'bg-assetPurple': '#67A2F9', 
@@ -15,68 +19,82 @@ export const TAILWIND_COLOR_MAP: Record<string, string> = {
     'bg-assetTeal':   '#548E8D',
     'bg-assetStone':  '#6B7280',
     'bg-flowOrange':  '#FF7E7E',
+    'bg-flowExpense': '#FF7E7E', // Legacy alias for flow-orange
     'bg-flowBlue':    '#4AB1FF',
     'bg-labelYellow': '#FBDE72',
 };
 
-export function getColorProps(color: string, type: 'full' | 'shadow' = 'full'): { cls: string; stl: string } {
+export function getColorProps(color: string, type: 'full' | 'shadow' = 'full'): { cls: string; stl: string; val: string } {
     const isHex = color.startsWith('#');
     
     // If it's a Tailwind-style class (e.g. bg-assetGreen, bg-flowOrange)
     if (!isHex && color.startsWith('bg-')) {
-        // Map camelCase class to kebab-case variable name
         const camelToKebab = (str: string) => str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
         const baseName = camelToKebab(color.replace('bg-', ''));
         
-        // Asset classes map to 'block-' variants, flow classes use directly
-        const varName = baseName.startsWith('asset') ? `block-${baseName}` : baseName;
+        // Asset classes map to 'marble-' variants, flow classes use directly
+        const varName = baseName.startsWith('asset') ? `marble-${baseName}` : baseName;
         
         if (type === 'full') {
+            const val = `var(--color-${varName})`;
             return {
                 cls: '',
-                stl: `background-color: var(--color-${varName});`
+                stl: `background-color: ${val};`,
+                val
             };
         }
         if (type === 'shadow') {
+            const val = `color-mix(in srgb, var(--color-${varName}) 8%, var(--color-canvas))`;
             return {
                 cls: '',
-                stl: 'background-color: #EDF2F7;'
+                // DESIGN_SYSTEM.md §2 "The Marble Rule": Inactive marbles use a faint tint of the marble color for warm minimalism
+                stl: `background-color: ${val};`,
+                val
             };
         }
     }
 
     // Fallback for direct HEX or other strings
     if (type === 'full') {
+        const val = isHex ? color : '';
         return {
             cls: isHex ? '' : color,
-            stl: isHex ? `background-color: ${color};` : ''
+            stl: isHex ? `background-color: ${color};` : '',
+            val
         };
     }
     if (type === 'shadow') {
+        const baseColor = isHex ? color : 'var(--color-slate)';
+        const val = `color-mix(in srgb, ${baseColor} 8%, var(--color-canvas))`;
         return {
             cls: '',
-            stl: 'background-color: #EDF2F7;'
+            stl: `background-color: ${val};`,
+            val
         };
     }
-    return { cls: '', stl: '' };
+    return { cls: '', stl: '', val: '' };
 }
 
-/** Returns an inline rgba style for the colour at configurable opacity — works for both hex and Tailwind class colours. */
+/** 
+ * Returns an inline style for the colour at configurable opacity using color-mix for token compatibility.
+ */
 export function getPreviewStyle(color: string, opacity = 0.4): string {
-    if (color.startsWith('#')) {
-        const r = parseInt(color.slice(1, 3), 16);
-        const g = parseInt(color.slice(3, 5), 16);
-        const b = parseInt(color.slice(5, 7), 16);
-        return `background-color: rgba(${r},${g},${b},${opacity});`;
+    const isHex = color.startsWith('#');
+    let baseColor: string;
+
+    if (isHex) {
+        baseColor = color;
+    } else if (color.startsWith('bg-')) {
+        const camelToKebab = (str: string) => str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+        const baseName = camelToKebab(color.replace('bg-', ''));
+        const varName = baseName.startsWith('asset') ? `marble-${baseName}` : baseName;
+        baseColor = `var(--color-${varName})`;
+    } else {
+        baseColor = 'var(--color-slate)';
     }
-    const hex = TAILWIND_COLOR_MAP[color];
-    if (hex) {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        return `background-color: rgba(${r},${g},${b},${opacity});`;
-    }
-    return `background-color: rgba(0,0,0,${opacity});`;
+
+    // DESIGN_SYSTEM.md §2 & §7: Use token-aware color-mix for translucent hover previews
+    return `background-color: color-mix(in srgb, ${baseColor} ${Math.round(opacity * 100)}%, transparent);`;
 }
 
 export function hslToHex(h: number, s: number, l: number): string {

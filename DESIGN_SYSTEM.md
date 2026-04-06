@@ -9,14 +9,14 @@
 
 ## 1. Design Philosophy
 
-Marble Finances uses a **warm, soft, physical** visual language that evokes the tactile feeling of real marble blocks on a board. The interface should feel like a premium desktop application — never like a generic web dashboard.
+Marble Finances uses a **warm, soft, physical** visual language that evokes the tactile feeling of real marbles on a board. The interface should feel like a premium desktop application — never like a generic web dashboard.
 
 ### Core Principles
 
 | Principle | Description |
 |---|---|
 | **Warm Minimalism** | Clean layouts with generous spacing, soft cream backgrounds, and rounded surfaces |
-| **Physical Metaphor** | UI elements should feel tangible — blocks stack, marbles roll, cards have weight |
+| **Physical Metaphor** | UI elements should feel tangible — marble blocks and cards have weight |
 | **Information Density** | Dense financial data presented with visual hierarchy, never overwhelming |
 | **Quiet Confidence** | Subtle shadows, gentle borders, and restrained animations — never flashy |
 
@@ -55,17 +55,20 @@ All colors are defined as CSS custom properties in the codebase. **Do NOT introd
 | `--color-labelYellow` | `#F3D05F` | Labels and highlights |
 | `--color-labelYellowMuted` | `#FFF9E6` | Action items card background |
 
-### Chart & Block Variants
+### Chart & Marble Variants
 
-| Asset Type | Block Variant Token | Hex (User Choice) | Usage |
+| Asset Type | Marble Variant Token | Hex (User Choice) | Usage |
 |---|---|---|---|
-| Green | `--color-block-asset-green` | `#8670FF` | Investment Marbles |
-| Purple | `--color-block-asset-purple` | `#67A2F9` | Retirement Marbles |
-| Blue | `--color-block-asset-blue` | `#C380F5` | Cash Marbles |
-| Cyan | `--color-block-asset-cyan` | `#707AFF` | Business/Company Marbles |
-| Orange | `--color-block-asset-orange` | `#F89160` | Tangible Marbles |
+| Green | `--color-marble-asset-green` | `#8670FF` | Investment Marbles |
+| Purple | `--color-marble-asset-purple` | `#67A2F9` | Retirement Marbles |
+| Blue | `--color-marble-asset-blue` | `#C380F5` | Cash Marbles |
+| Cyan | `--color-marble-asset-cyan` | `#707AFF` | Business/Company Marbles |
+| Orange | `--color-marble-asset-orange` | `#F89160` | Tangible Marbles |
 
-**The Block Rule:** Marbles, blocks, and plates must use the `block-` variant tokens. These are slightly darker/more saturated versions of the brand colors designed to pass **WCAG 3:1 contrast** against both the cream canvas and pure white backgrounds. This rule does *not* apply to text labels or background bubbles, which should use the primary brand tokens.
+**The Marble Rule:** Marbles must use the `marble-` variant tokens. These are slightly darker/more saturated versions of the brand colors designed to pass **WCAG 3:1 contrast** against both the cream canvas and pure white backgrounds. This rule does *not* apply to text labels or background bubbles, which should use the primary brand tokens.
+- **Active Marbles:** Use the solid `marble-` variant.
+- **Inactive Marbles:** Use a faint **8% tint** of the marble color (mixed with the canvas background) to maintain category context without being distracting.
+- **Ghost Marbles (Hover):** Use a translucent **40% opacity** version of the marble color for predicted range, and **70% opacity** for the specific hovered slot. Use `color-mix` to maintain token compatibility.
 
 ### Gray Scale
 
@@ -302,6 +305,17 @@ The `.btn-dismiss` CSS utility class is the **single, canonical implementation**
 |---|---|
 | **Container** | `--color-surface-inset` fill · 24px radius · 1px `--color-border-card` border · Inset shadow · 20px padding |
 | **Item Row** | White fill · 12px/8px padding · 12px radius · 1px `--color-border-card` border · Light shadow |
+
+### Marbles
+
+| Element | Spec |
+|---|---|
+| **Solid Marble** | Full opacity `marble-` variant · 2px radius (`rounded-[2px]`) |
+| **Inactive Marble** | 8% tint of `marble-` variant · Mixed with `--color-canvas` |
+| **Half Marble** | Solid left half · Semi-transparent tinted background |
+| **Ghost Marble** | 40% translucent `marble-` variant · Animated overlay |
+| **Large Marble block** | Full opacity `marble-` variant · 4px radius (`rounded-[4px]`) · Light shadow |
+| **Huge Marble Block** | Full opacity `marble-` variant · 6px radius (`rounded-[6px]`) · Standard shadow |
 
 ---
 
