@@ -178,6 +178,8 @@ export class App implements OnDestroy {
   private startX = 0;
   private startY = 0;
 
+  // TODO: Skipped for migration because:
+  //  Accessor queries cannot be migrated as they are too complex.
   @ViewChild('tooltipPopover', { static: false }) set tooltipPopover(ref: ElementRef<HTMLElement>) {
     if (ref) this.tooltipService.setPopoverRef(ref);
   }

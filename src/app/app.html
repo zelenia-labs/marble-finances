@@ -1,318 +1,478 @@
 <!-- src/app/app.component.html -->
-<div class="bg-canvas text-slate flex h-screen antialiased overflow-hidden relative no-select" tabindex="-1"
-    (click)="onDocumentClick()" (keydown)="onDocumentClick()">
+<div
+  class="bg-canvas text-slate flex h-screen antialiased overflow-hidden relative no-select"
+  tabindex="-1"
+  (click)="onDocumentClick()"
+  (keydown)="onDocumentClick()"
+>
+  <!-- Screen-reader page title anchors the heading hierarchy (h2/h3 in children are valid descendants) -->
+  <h1 class="sr-only">Marble Finances</h1>
 
-    <!-- Screen-reader page title anchors the heading hierarchy (h2/h3 in children are valid descendants) -->
-    <h1 class="sr-only">Marble Finances</h1>
+  <!-- Primary Application Navigation -->
+  <nav
+    class="fixed top-8 left-8 z-110 flex items-center animate-slide-in-left"
+    aria-label="Timeline navigation"
+    [class.hidden]="store.months().length === 0"
+  >
+    <ul
+      class="flex items-center m-0 p-0 list-none border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden"
+    >
+      <li>
+        <button
+          #timelineTrigger
+          (click)="toggleTimeline($event)"
+          class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+            />
+          </svg>
+          Timeline
+        </button>
+      </li>
+      <li>
+        <button
+          (click)="jumpToLatestMonth()"
+          (mouseenter)="tooltipService.show($event, 'Jump to latest month')"
+          (mouseleave)="tooltipService.hide()"
+          class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <circle cx="8" cy="8" r="2.5" />
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </nav>
 
-    <!-- Primary Application Navigation -->
-    <nav class="fixed top-8 left-8 z-110 flex items-center animate-slide-in-left" aria-label="Timeline navigation"
-        [class.hidden]="store.months().length === 0">
-        <ul
-            class="flex items-center m-0 p-0 list-none border border-gray-200 bg-white/90 backdrop-blur rounded-full shadow-sm overflow-hidden">
-            <li>
-                <button #timelineTrigger (click)="toggleTimeline($event)"
-                    class="px-5 py-2.5 text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element border-r border-gray-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-                    </svg>
-                    Timeline
-                </button>
-            </li>
-            <li>
-                <button (click)="jumpToLatestMonth()" (mouseenter)="tooltipService.show($event, 'Jump to latest month')"
-                    (mouseleave)="tooltipService.hide()"
-                    class="px-4 py-2.5 text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <circle cx="8" cy="8" r="2.5" />
-                    </svg>
-                </button>
-            </li>
-        </ul>
-    </nav>
+  <!-- Main Actions Tools -->
+  <nav class="fixed top-8 right-8 z-50 animate-slide-in-right" aria-label="Application actions">
+    <ul class="flex items-center gap-4 m-0 p-0 list-none">
+      @if (store.months().length > 0) {
+        <li>
+          <button
+            (click)="openAddModal($event)"
+            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+              />
+            </svg>
+            Add Asset
+          </button>
+        </li>
+        <li>
+          <button
+            (click)="openCompareModal($event)"
+            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"
+              />
+            </svg>
+            Compare
+          </button>
+        </li>
+        <li>
+          <button
+            #chartsTrigger
+            (click)="openChartsModal($event)"
+            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"
+              />
+            </svg>
+            Analysis
+          </button>
+        </li>
+        <li>
+          <button
+            (click)="exportData()"
+            class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
+              />
+              <path
+                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
+              />
+            </svg>
+            Save Backup
+          </button>
+        </li>
+        <li>
+          <button
+            (click)="openSettings()"
+            (mouseenter)="tooltipService.show($event, 'Settings & theme')"
+            (mouseleave)="tooltipService.hide()"
+            class="p-2.5 rounded-full tooltip-left border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+              />
+              <path
+                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.902 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
+              />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button
+            (click)="unloadData()"
+            (mouseenter)="tooltipService.show($event, 'Unload portfolio')"
+            (mouseleave)="tooltipService.hide()"
+            class="p-2.5 rounded-full tooltip-left border border-red-200 bg-white/90 backdrop-blur shadow-sm text-red-400 hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors flex items-center justify-center interactive-element"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+              />
+            </svg>
+          </button>
+        </li>
+      }
+    </ul>
+  </nav>
 
-    <!-- Main Actions Tools -->
-    <nav class="fixed top-8 right-8 z-50 animate-slide-in-right" aria-label="Application actions">
-        <ul class="flex items-center gap-4 m-0 p-0 list-none">
-            @if (store.months().length > 0) {
-            <li>
-                <button (click)="openAddModal($event)"
-                    class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                    </svg>
-                    Add Asset
-                </button>
-            </li>
-            <li>
-                <button (click)="openCompareModal($event)"
-                    class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z" />
-                    </svg>
-                    Compare
-                </button>
-            </li>
-            <li>
-                <button #chartsTrigger (click)="openChartsModal($event)"
-                    class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path
-                            d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z" />
-                    </svg>
-                    Analysis
-                </button>
-            </li>
-            <li>
-                <button (click)="exportData()"
-                    class="px-5 py-2.5 rounded-full border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-[12px] font-black tracking-wide text-slate hover:bg-gray-50 transition-colors flex items-center gap-2 interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path
-                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                        <path
-                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                    </svg>
-                    Save Backup
-                </button>
-            </li>
-            <li>
-                <button (click)="openSettings()" (mouseenter)="tooltipService.show($event, 'Settings & theme')"
-                    (mouseleave)="tooltipService.hide()"
-                    class="p-2.5 rounded-full tooltip-left border border-gray-200 bg-white/90 backdrop-blur shadow-sm text-slate hover:bg-gray-50 transition-colors flex items-center justify-center interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path
-                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
-                        <path
-                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.902 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
-                    </svg>
-                </button>
-            </li>
-            <li>
-                <button (click)="unloadData()" (mouseenter)="tooltipService.show($event, 'Unload portfolio')"
-                    (mouseleave)="tooltipService.hide()"
-                    class="p-2.5 rounded-full tooltip-left border border-red-200 bg-white/90 backdrop-blur shadow-sm text-red-400 hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors flex items-center justify-center interactive-element">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path
-                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                    </svg>
-                </button>
-            </li>
-            }
-        </ul>
-    </nav>
-
-    <!-- Left Sidebar: High-Performance History Tracking -->
-    @if (store.isTimelineOpen()) {
+  <!-- Left Sidebar: High-Performance History Tracking -->
+  @if (store.isTimelineOpen()) {
     @defer (on interaction(timelineTrigger); on idle) {
-    <app-timeline-sidebar (jumpTo)="jumpToTimelineIndex($event)"></app-timeline-sidebar>
+      <app-timeline-sidebar (jumpTo)="jumpToTimelineIndex($event)" />
     } @placeholder {
-    <div
-        class="fixed top-0 left-0 bottom-0 w-[240px] bg-surface-timeline flex items-center justify-center border-r border-border-timeline">
-        <div class="w-8 h-8 rounded-full border-4 border-slate/10 border-t-slate animate-spin"></div>
-    </div>
-    }
-    }
-
-    <!-- Modals: Lazy-Loaded & Signal-Synchronized DOM Presence -->
-    @if (store.isAddModalOpen()) {
-    <app-add-asset-modal></app-add-asset-modal>
-    }
-
-    @if (store.isDeleteModalOpen()) {
-    <app-delete-modal></app-delete-modal>
-    } @if (store.isCompareModalOpen()) {
-    <app-compare-select-modal></app-compare-select-modal>
-    }
-
-    @if (store.forwardTarget()) {
-    <app-forward-modal></app-forward-modal>
-    }
-
-
-
-    @if (store.isSettingsOpen()) {
-    <app-settings-modal></app-settings-modal>
-    }
-
-    <!-- Global Popover Tooltip (Latest HTML Popover API) -->
-    <div #tooltipPopover popover="manual"
-        class="fixed z-9999 pointer-events-none bg-[color-mix(in_srgb,var(--color-slate)_88%,transparent)] backdrop-blur-xl px-4 py-2 rounded-[14px] border border-white/10 shadow-2xl flex items-center gap-2"
-        style="position: fixed; top: 0; left: 0; margin: 0; width: max-content;">
-
-        <!-- Typical Tooltip Arrow -->
-        <div class="tooltip-arrow absolute w-[18px] h-[18px] bg-[color-mix(in_srgb,var(--color-slate)_88%,transparent)] rotate-45 z-[-1] pointer-events-none border-white/10"
-            style="box-shadow: 2px 2px 5px rgba(0,0,0,0.2);"></div>
-
-        <span class="text-[11px] font-bold text-white leading-none">
-            {{ tooltipService.getTooltipLabel()() }}
-        </span>
-    </div>
-
-    <style>
-        [popover] {
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.1s ease-out, transform 0.1s ease-out, display 0.1s ease-out allow-discrete;
-        }
-
-        [popover]:popover-open {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        @starting-style {
-            [popover]:popover-open {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-        }
-    </style>
-
-    <!-- Empty State / Initial Load -->
-    @if (store.months().length === 0) {
-    <div class="absolute inset-0 flex items-center justify-center bg-canvas z-100">
+      <div
+        class="fixed top-0 left-0 bottom-0 w-[240px] bg-surface-timeline flex items-center justify-center border-r border-border-timeline"
+      >
         <div
-            class="flex flex-col items-center gap-8 px-12 py-10 bg-white/50 backdrop-blur border border-white/60 shadow-xl rounded-[40px] max-w-lg w-full">
-            <img ngSrc="favicon.png" alt="Marble Finances" width="80" height="80">
+          class="w-8 h-8 rounded-full border-4 border-slate/10 border-t-slate animate-spin"
+        ></div>
+      </div>
+    }
+  }
+
+  <!-- Modals: Lazy-Loaded & Signal-Synchronized DOM Presence -->
+  @if (store.isAddModalOpen()) {
+    <app-add-asset-modal />
+  }
+
+  @if (store.isDeleteModalOpen()) {
+    <app-delete-modal />
+  }
+  @if (store.isCompareModalOpen()) {
+    <app-compare-select-modal />
+  }
+
+  @if (store.forwardTarget()) {
+    <app-forward-modal />
+  }
+
+  @if (store.isSettingsOpen()) {
+    <app-settings-modal />
+  }
+
+  <!-- Global Popover Tooltip (Latest HTML Popover API) -->
+  <div
+    #tooltipPopover
+    popover="manual"
+    class="fixed z-9999 pointer-events-none bg-[color-mix(in_srgb,var(--color-slate)_88%,transparent)] backdrop-blur-xl px-4 py-2 rounded-[14px] border border-white/10 shadow-2xl flex items-center gap-2"
+    style="position: fixed; top: 0; left: 0; margin: 0; width: max-content"
+  >
+    <!-- Typical Tooltip Arrow -->
+    <div
+      class="tooltip-arrow absolute w-[18px] h-[18px] bg-[color-mix(in_srgb,var(--color-slate)_88%,transparent)] rotate-45 z-[-1] pointer-events-none border-white/10"
+      style="box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2)"
+    ></div>
+
+    <span class="text-[11px] font-bold text-white leading-none">
+      {{ tooltipService.getTooltipLabel()() }}
+    </span>
+  </div>
+
+  <style>
+    [popover] {
+      opacity: 0;
+      transform: scale(0.95);
+      transition:
+        opacity 0.1s ease-out,
+        transform 0.1s ease-out,
+        display 0.1s ease-out allow-discrete;
+    }
+
+    [popover]:popover-open {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    @starting-style {
+      [popover]:popover-open {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+  </style>
+
+  <!-- Empty State / Initial Load -->
+  @if (store.months().length === 0) {
+    <div class="absolute inset-0 flex items-center justify-center bg-canvas z-100">
+      <div
+        class="flex flex-col items-center gap-8 px-12 py-10 bg-white/50 backdrop-blur border border-white/60 shadow-xl rounded-[40px] max-w-lg w-full"
+      >
+        <img ngSrc="favicon.png" alt="Marble Finances" width="80" height="80" />
+        <div class="text-center">
+          <h2 class="text-2xl font-black text-slate mb-1">Welcome to Marble Finances</h2>
+          <p class="text-sm text-slate/60 font-medium">
+            Start a new portfolio or load an existing backup
+          </p>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="grid grid-cols-2 gap-4 w-full">
+          <!-- New Portfolio -->
+          <button
+            (click)="createFreshPortfolio()"
+            class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-white text-slate hover:bg-gray-50 transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-gray-100"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              class="text-slate/70"
+            >
+              <path
+                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z"
+              />
+            </svg>
             <div class="text-center">
-                <h2 class="text-2xl font-black text-slate mb-1">Welcome to Marble Finances</h2>
-                <p class="text-sm text-slate/60 font-medium">Start a new portfolio or load an existing backup</p>
+              <div class="font-black text-base tracking-tight">New Portfolio</div>
+              <div class="text-xs text-slate/50 mt-0.5 font-medium">Start fresh</div>
             </div>
+          </button>
 
-            <!-- Action Cards -->
-            <div class="grid grid-cols-2 gap-4 w-full">
-
-                <!-- New Portfolio -->
-                <button (click)="createFreshPortfolio()"
-                    class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-white text-slate hover:bg-gray-50 transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-gray-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
-                        viewBox="0 0 16 16" class="text-slate/70">
-                        <path
-                            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z" />
-                    </svg>
-                    <div class="text-center">
-                        <div class="font-black text-base tracking-tight">New Portfolio</div>
-                        <div class="text-xs text-slate/50 mt-0.5 font-medium">Start fresh</div>
-                    </div>
-                </button>
-
-                <!-- Load from file -->
-                <button (click)="fileImporter.click()"
-                    class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-slate text-white hover:bg-slate/90 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-transparent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
-                        viewBox="0 0 16 16" class="opacity-90">
-                        <path
-                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                        <path
-                            d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-                    </svg>
-                    <div class="text-center">
-                        <div class="font-black text-base tracking-tight">Load Portfolio</div>
-                        <div class="text-xs opacity-70 mt-0.5 font-medium">Import from JSON</div>
-                    </div>
-                </button>
-
+          <!-- Load from file -->
+          <button
+            (click)="fileImporter.click()"
+            class="flex flex-col items-center gap-3 px-6 py-6 rounded-3xl bg-slate text-white hover:bg-slate/90 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] cursor-pointer interactive-element border-2 border-transparent"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              class="opacity-90"
+            >
+              <path
+                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
+              />
+              <path
+                d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"
+              />
+            </svg>
+            <div class="text-center">
+              <div class="font-black text-base tracking-tight">Load Portfolio</div>
+              <div class="text-xs opacity-70 mt-0.5 font-medium">Import from JSON</div>
             </div>
-
-            <input type="file" #fileImporter accept=".json" class="hidden" (change)="importData($event)">
+          </button>
         </div>
+
+        <input
+          type="file"
+          #fileImporter
+          accept=".json"
+          class="hidden"
+          (change)="importData($event)"
+        />
+      </div>
     </div>
-    }
+  }
 
-    <!-- Main Canvas Area -->
-    <main #mainArea id="main-area" class="flex-1 h-full relative overflow-hidden"
-        [class.cursor-grab]="!isPanningCanvas()" [class.cursor-grabbing]="isPanningCanvas()" (wheel)="onWheel($event)"
-        (mousedown)="onMouseDown($event)">
+  <!-- Main Canvas Area -->
+  <main
+    #mainArea
+    id="main-area"
+    class="flex-1 h-full relative overflow-hidden"
+    [class.cursor-grab]="!isPanningCanvas()"
+    [class.cursor-grabbing]="isPanningCanvas()"
+    (wheel)="onWheel($event)"
+    (mousedown)="onMouseDown($event)"
+  >
+    <div
+      id="canvas-wrapper"
+      #canvasWrapper
+      class="absolute top-0 left-0 flex flex-col gap-96 items-start p-64 pt-96 transition-opacity duration-300"
+      [class.opacity-0]="!isCanvasReady()"
+      [class.opacity-100]="isCanvasReady()"
+      [class.transition-transform]="isAnimatingPan()"
+      [class.duration-500]="isAnimatingPan()"
+      [class.ease-out]="isAnimatingPan()"
+      [style.transform]="canvasTransform()"
+    >
+      <!-- Refactored Canvas: High-Performance CSS Grid Layout (Multi-Year Matrix) -->
+      <div
+        id="canvas-grid"
+        class="grid gap-x-96 gap-y-96 items-start auto-cols-min"
+        [style.grid-template-columns]="'auto repeat(12, min-content)'"
+        [style.grid-template-rows]="'repeat(' + store.monthsByYear().length + ', auto)'"
+      >
+        @for (
+          group of store.monthsByYear();
+          track group.year;
+          let yearIdx = $index;
+          let lastYear = $last
+        ) {
+          <!-- Year Identifier Column (Always Column 1 of its Row) -->
+          <div class="col-start-1 select-none self-end h-fit pb-16" [style.grid-row]="yearIdx + 1">
+            <div
+              class="flex flex-col items-center justify-center bg-white/80 backdrop-blur-md p-10 rounded-[60px] shadow-sm border border-gray-200/50 min-w-[450px] h-[320px]"
+            >
+              <span
+                class="text-[200px] font-black text-slate tracking-[-0.05em] leading-none select-none"
+                >{{ group.year }}</span
+              >
+              @if (group.items.length > 1) {
+                <div
+                  class="flex items-center gap-4 mt-6 px-8 py-3 rounded-full border border-gray-100 bg-white shadow-md overflow-hidden relative"
+                >
+                  <!-- Functional Background Tonal Wash -->
+                  <div
+                    class="absolute inset-0 opacity-20"
+                    [class.bg-emerald-400]="group.ytd >= 0"
+                    [class.bg-rose-400]="group.ytd < 0"
+                  ></div>
 
-        <div id="canvas-wrapper" #canvasWrapper
-            class="absolute top-0 left-0 flex flex-col gap-96 items-start p-64 pt-96 transition-opacity duration-300"
-            [class.opacity-0]="!isCanvasReady()" [class.opacity-100]="isCanvasReady()"
-            [class.transition-transform]="isAnimatingPan()" [class.duration-500]="isAnimatingPan()"
-            [class.ease-out]="isAnimatingPan()" [style.transform]="canvasTransform()">
-
-            <!-- Refactored Canvas: High-Performance CSS Grid Layout (Multi-Year Matrix) -->
-            <div id="canvas-grid" class="grid gap-x-96 gap-y-96 items-start auto-cols-min"
-                [style.grid-template-columns]="'auto repeat(12, min-content)'"
-                [style.grid-template-rows]="'repeat(' + store.monthsByYear().length + ', auto)'">
-
-                @for (group of store.monthsByYear(); track group.year; let yearIdx = $index; let lastYear = $last) {
-                <!-- Year Identifier Column (Always Column 1 of its Row) -->
-                <div class="col-start-1 select-none self-end h-fit pb-16" [style.grid-row]="yearIdx + 1">
-                    <div
-                        class="flex flex-col items-center justify-center bg-white/80 backdrop-blur-md p-10 rounded-[60px] shadow-sm border border-gray-200/50 min-w-[450px] h-[320px]">
-                        <span
-                            class="text-[200px] font-black text-slate tracking-[-0.05em] leading-none select-none">{{group.year}}</span>
-                        @if (group.items.length > 1) {
-                        <div
-                            class="flex items-center gap-4 mt-6 px-8 py-3 rounded-full border border-gray-100 bg-white shadow-md overflow-hidden relative">
-                            <!-- Functional Background Tonal Wash -->
-                            <div class="absolute inset-0 opacity-20" [class.bg-emerald-400]="group.ytd >= 0"
-                                [class.bg-rose-400]="group.ytd < 0"></div>
-
-                            <span
-                                class="text-[12px] font-black tracking-[0.15em] uppercase opacity-40 relative z-10">YTD</span>
-                            <span class="text-[11px] font-black px-2.5 py-1 rounded-full"
-                                [class]="group.ytd >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
-                                {{group.ytd >= 0 ? '+' : ''}}{{group.ytd | number:'1.2-2'}}%
-                            </span>
-                        </div>
-                        }
-                    </div>
+                  <span
+                    class="text-[12px] font-black tracking-[0.15em] uppercase opacity-40 relative z-10"
+                    >YTD</span
+                  >
+                  <span
+                    class="text-[11px] font-black px-2.5 py-1 rounded-full"
+                    [class]="
+                      group.ytd >= 0
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : 'bg-rose-100 text-rose-800'
+                    "
+                  >
+                    {{ group.ytd >= 0 ? '+' : '' }}{{ group.ytd | number: '1.2-2' }}%
+                  </span>
                 </div>
-
-                <!-- Month Boards (Columns mapped to exact month index for vertical alignment) -->
-                @for (item of group.items; track item.month.id) {
-                <!-- Calculate fixed column based on actual month name to align Aprils with Aprils, etc. -->
-                <div class="relative h-full" [style.grid-row]="yearIdx + 1"
-                    [style.grid-column]="getMonthColumn(item.month.date)">
-
-                    <app-month-board [monthIndex]="item.index"></app-month-board>
-
-                    @if (store.compareState()?.baseMonthId === item.month.id && store.isCompareRibbonVisible()) {
-                    <app-comparison-overlay [baseId]="item.month.id"
-                        [targetId]="store.compareState()!.targetMonthId"></app-comparison-overlay>
-                    }
-                </div>
-                }
-
-                <!-- Month Skeletons-->
-                @for (mIdx of getMissingMonthIndices(group); track mIdx) {
-                <div class="w-full h-full min-w-5xl min-h-5xl border-2 border-gray-200 rounded-[48px] bg-slate/3 backdrop-blur-[2px] flex flex-col items-center justify-center gap-8 z-0 shadow-inner group transition-all duration-300"
-                    [style.grid-row]="yearIdx + 1" [style.grid-column]="mIdx + 1">
-
-                    <button
-                        class="w-24 h-24 rounded-full bg-slate shadow-lg border-2 border-slate/10 flex items-center justify-center transition-all duration-300 opacity-20 text-white hover:opacity-100 hover:scale-110 cursor-pointer"
-                        (click)="addSpecificMonth(+group.year, mIdx)">
-                        <span class="text-5xl font-black pointer-events-none">+</span>
-                    </button>
-
-                    <div
-                        class="flex flex-col items-center gap-2 opacity-100 group-hover:scale-105 transition-all duration-700">
-                        <span class="text-6xl font-black text-slate-600 leading-none select-none">{{
-                            getMonthNameFromIndex(mIdx) || 'Unknown' }}</span>
-                        <span
-                            class="text-4xl font-black text-slate-400 tracking-[0.2em] leading-none select-none ml-[0.2em] uppercase">{{
-                            group.year }}</span>
-                    </div>
-                </div>
-                }
-
-                }
+              }
             </div>
-        </div>
-    </main>
-    @defer (when store.isChartsModalOpen(); on idle) {
-    <app-portfolio-charts-modal #chartsModal></app-portfolio-charts-modal>
-    }
+          </div>
+
+          <!-- Month Boards (Columns mapped to exact month index for vertical alignment) -->
+          @for (item of group.items; track item.month.id) {
+            <!-- Calculate fixed column based on actual month name to align Aprils with Aprils, etc. -->
+            <div
+              class="relative h-full"
+              [style.grid-row]="yearIdx + 1"
+              [style.grid-column]="getMonthColumn(item.month.date)"
+            >
+              <app-month-board [monthIndex]="item.index" />
+
+              @if (
+                store.compareState()?.baseMonthId === item.month.id &&
+                store.isCompareRibbonVisible()
+              ) {
+                <app-comparison-overlay
+                  [baseId]="item.month.id"
+                  [targetId]="store.compareState()!.targetMonthId"
+                />
+              }
+            </div>
+          }
+
+          <!-- Month Skeletons-->
+          @for (mIdx of getMissingMonthIndices(group); track mIdx) {
+            <div
+              class="w-full h-full min-w-5xl min-h-5xl border-2 border-gray-200 rounded-[48px] bg-slate/3 backdrop-blur-[2px] flex flex-col items-center justify-center gap-8 z-0 shadow-inner group transition-all duration-300"
+              [style.grid-row]="yearIdx + 1"
+              [style.grid-column]="mIdx + 1"
+            >
+              <button
+                class="w-24 h-24 rounded-full bg-slate shadow-lg border-2 border-slate/10 flex items-center justify-center transition-all duration-300 opacity-20 text-white hover:opacity-100 hover:scale-110 cursor-pointer"
+                (click)="addSpecificMonth(+group.year, mIdx)"
+              >
+                <span class="text-5xl font-black pointer-events-none">+</span>
+              </button>
+
+              <div
+                class="flex flex-col items-center gap-2 opacity-100 group-hover:scale-105 transition-all duration-700"
+              >
+                <span class="text-6xl font-black text-slate-600 leading-none select-none">{{
+                  getMonthNameFromIndex(mIdx) || 'Unknown'
+                }}</span>
+                <span
+                  class="text-4xl font-black text-slate-400 tracking-[0.2em] leading-none select-none ml-[0.2em] uppercase"
+                  >{{ group.year }}</span
+                >
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </main>
+  @defer (when store.isChartsModalOpen(); on idle) {
+    <app-portfolio-charts-modal #chartsModal />
+  }
 </div>
