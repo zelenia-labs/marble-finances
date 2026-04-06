@@ -10,8 +10,6 @@
 ## 💡 Features & Tech Debt
 - [ ] Add undo functionality to revert changes. Include a changelog in the session that persists only during the session. Use session storage for saving it. Create a button ground navigation in the form of [Changelog + Undo]. When click in a specific changelog item, revert to that state only after a confirmation dialog that double checks if the user would like to revert to that state.
 
-- [ ] Enhance Data Visualization Interactivity. The marbles lack immediate context. Add hover or tap event listeners to trigger tooltips displaying the exact dollar amount represented by each block.
-
 - [ ] Breakdown the app Angular component into smaller components.
 
 - [ ] Improve the look and feel to avoid zooming too much on the months information.
@@ -23,17 +21,20 @@
 
 - [ ] In the loading screen, provide the user an option to see an explanation on how to convert their data from their current CSV, XSL, text, database or any other format to the marbles CSV format that is used by the app. Add a Marbles CSV validation engine with explainability to help the user to fix any issues with the data import.
 
-- [ ] Create a JSON file that has the same structure as the marbles.json database but with dummy data to be used for demos.
-
-- [ ] Optimize DOM Rendering for Visualizations. If each individual square in the "marble" visualizations is a separate DOM node, scaling up to larger net worths will create layout thrashing and performance bottlenecks. Migrating these charts to HTML5 Canvas or SVG will ensure smooth rendering and fast paint times when navigating between monthly views.
-
-- [ ] Add Vitest tests to protect computed properties, calculations, and validations.
-
 - [ ] Add E2E tests using Playwright to protect the UI and user interactions.
 
 ## 🏃🏽 In Progress
 
+- [ ] Add Vitest tests to protect computed properties, calculations, and validations.
+
+- [ ] Create a JSON file that has the same structure as the marbles.json database but with dummy data to be used for demos.
+
+
 ## ✅ Finished
+- [x] Optimize DOM Rendering for Visualizations. If each individual square in the "marble" visualizations is a separate DOM node, scaling up to larger net worths will create layout thrashing and performance bottlenecks. Migrating these charts to HTML5 Canvas or SVG will ensure smooth rendering and fast paint times when navigating between monthly views.
+
+- [x] Enhance Data Visualization Interactivity. The marbles lack immediate context. Add hover or tap event listeners to trigger tooltips displaying the exact dollar amount represented by each block.
+
 - [x] Reuse app-marble-stack component inside the monthly-cash-flow component.
 
 - [x] Create a comparison tool to compare two different months. By default, the comparison should be between the latest month and the previous month.
