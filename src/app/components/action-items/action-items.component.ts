@@ -1,10 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, signal, viewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  viewChildren,
+} from '@angular/core';
 import { FinanceStore } from '../../store/finance.store';
 
 @Component({
   selector: 'app-action-items',
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './action-items.component.html',
 })
@@ -18,8 +26,8 @@ export class ActionItemsComponent {
 
   sortedActionItems = computed(() => {
     const items = this.store.months()[this.monthIndex()].actionItems || [];
-    const incomplete = items.filter(i => !i.completed);
-    const completed = items.filter(i => i.completed);
+    const incomplete = items.filter((i) => !i.completed);
+    const completed = items.filter((i) => i.completed);
     return { incomplete, completed };
   });
 

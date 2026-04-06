@@ -1,31 +1,31 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FinanceStore } from '../../store/finance.store';
 
 @Component({
   selector: 'app-forward-modal',
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './forward-modal.component.html',
   host: {
-    '(window:keydown.enter)': 'onEnter()'
-  }
+    '(window:keydown.enter)': 'onEnter()',
+  },
 })
 export class ForwardModalComponent {
   store = inject(FinanceStore);
 
   onEnter() {
-      if (this.store.forwardTarget()) {
-          this.store.executeForwardAction(undefined, true);
-      }
+    if (this.store.forwardTarget()) {
+      this.store.executeForwardAction(undefined, true);
+    }
   }
 
   toggleAutoApply(event: Event) {
-      const el = event.target as HTMLInputElement;
-      this.store.setAutoApplyForward(el.checked);
+    const el = event.target as HTMLInputElement;
+    this.store.setAutoApplyForward(el.checked);
   }
 
   close() {
-      this.store.cancelForwardUpdate();
+    this.store.cancelForwardUpdate();
   }
 }

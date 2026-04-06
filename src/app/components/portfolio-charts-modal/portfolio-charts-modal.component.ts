@@ -1,5 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { ChartConfiguration, ChartDataset, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { FinanceStore } from '../../store/finance.store';
@@ -7,10 +15,10 @@ import { FinanceStore } from '../../store/finance.store';
 @Component({
   selector: 'app-portfolio-charts-modal',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [BaseChartDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './portfolio-charts-modal.component.html',
-  styleUrl: './portfolio-charts-modal.component.css'
+  styleUrl: './portfolio-charts-modal.component.css',
 })
 export class PortfolioChartsModalComponent {
   store = inject(FinanceStore);
@@ -18,7 +26,7 @@ export class PortfolioChartsModalComponent {
 
   activeIndex = signal(0);
   isReady = signal(false);
-  
+
   isOpen = this.store.isChartsModalOpen;
 
   lowerBound = signal(2); // 2%
@@ -26,31 +34,31 @@ export class PortfolioChartsModalComponent {
   futureMonths = signal(6);
 
   // Design-system color constants (mirrors CSS token values for use in Chart.js)
-  private static readonly COLOR_BORDER_CARD = '#F3F4F6';  // --color-border-card
-  private static readonly COLOR_POSITIVE = '#10B981';  // --color-positive
-  private static readonly COLOR_NEGATIVE = '#F43F5E';  // --color-negative
-  private static readonly COLOR_ACCENT = '#3B82F6';  // --color-accent
+  private static readonly COLOR_BORDER_CARD = '#F3F4F6'; // --color-border-card
+  private static readonly COLOR_POSITIVE = '#10B981'; // --color-positive
+  private static readonly COLOR_NEGATIVE = '#F43F5E'; // --color-negative
+  private static readonly COLOR_ACCENT = '#3B82F6'; // --color-accent
 
   public stackedOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       tooltip: { mode: 'index', intersect: false },
-      legend: { display: false }
+      legend: { display: false },
     },
     scales: {
       x: { grid: { display: false } },
-      y: { stacked: true, grid: { color: PortfolioChartsModalComponent.COLOR_BORDER_CARD } }
+      y: { stacked: true, grid: { color: PortfolioChartsModalComponent.COLOR_BORDER_CARD } },
     },
     elements: {
       line: { tension: 0.4 },
-      point: { radius: 0 } // Hide points for cleaner area look
+      point: { radius: 0 }, // Hide points for cleaner area look
     },
     interaction: {
       mode: 'nearest',
       axis: 'x',
-      intersect: false
-    }
+      intersect: false,
+    },
   };
 
   public lineOptions: ChartOptions<'line'> = {
@@ -58,26 +66,26 @@ export class PortfolioChartsModalComponent {
     maintainAspectRatio: false,
     plugins: {
       tooltip: { mode: 'index', intersect: false },
-      legend: { display: false }
+      legend: { display: false },
     },
     scales: {
       x: { grid: { display: false } },
-      y: { grid: { color: PortfolioChartsModalComponent.COLOR_BORDER_CARD } }
+      y: { grid: { color: PortfolioChartsModalComponent.COLOR_BORDER_CARD } },
     },
     elements: {
-      point: { radius: 2, hitRadius: 10, hoverRadius: 4 }
+      point: { radius: 2, hitRadius: 10, hoverRadius: 4 },
     },
     interaction: {
       mode: 'nearest',
       axis: 'x',
-      intersect: false
-    }
+      intersect: false,
+    },
   };
 
   compositionData = computed<ChartConfiguration<'line'>['data']>(() => {
     return {
       labels: this.store.chartData().labels,
-      datasets: this.store.chartData().compositionDatasets as ChartDataset<'line'>[]
+      datasets: this.store.chartData().compositionDatasets as ChartDataset<'line'>[],
     };
   });
 
@@ -106,16 +114,34 @@ export class PortfolioChartsModalComponent {
       const parts = lastLabel.trim().split(' ');
       const mStr = parts[0];
       let yNum = parseInt(parts[1], 10);
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      let mIdx = monthNames.findIndex(m => m.toLowerCase().includes(mStr.toLowerCase()));
+      const monthNames = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      let mIdx = monthNames.findIndex((m) => m.toLowerCase().includes(mStr.toLowerCase()));
       if (mIdx === -1) mIdx = 0;
 
       for (let i = 1; i <= this.futureMonths(); i++) {
-        if (mIdx === 11) { mIdx = 0; yNum++; } else { mIdx++; }
+        if (mIdx === 11) {
+          mIdx = 0;
+          yNum++;
+        } else {
+          mIdx++;
+        }
         labels.push(monthNames[mIdx] + ' ' + yNum);
 
-        prevLower = prevLower * (1 + (this.lowerBound() / 100));
-        prevUpper = prevUpper * (1 + (this.upperBound() / 100));
+        prevLower = prevLower * (1 + this.lowerBound() / 100);
+        prevUpper = prevUpper * (1 + this.upperBound() / 100);
         (historicData as (number | null)[]).push(null);
         lowerProjData.push(prevLower);
         upperProjData.push(prevUpper);
@@ -132,7 +158,7 @@ export class PortfolioChartsModalComponent {
           backgroundColor: `${PortfolioChartsModalComponent.COLOR_POSITIVE}33`,
           borderWidth: 2,
           tension: 0.1,
-          fill: true
+          fill: true,
         } as ChartDataset<'line'>,
         {
           label: 'Lower Bound (+' + this.lowerBound() + '%) ',
@@ -141,7 +167,7 @@ export class PortfolioChartsModalComponent {
           borderDash: [5, 5],
           backgroundColor: 'transparent',
           borderWidth: 2,
-          tension: 0.1
+          tension: 0.1,
         } as ChartDataset<'line'>,
         {
           label: 'Upper Bound (+' + this.upperBound() + '%) ',
@@ -150,9 +176,9 @@ export class PortfolioChartsModalComponent {
           borderDash: [5, 5],
           backgroundColor: 'transparent',
           borderWidth: 2,
-          tension: 0.1
-        } as ChartDataset<'line'>
-      ]
+          tension: 0.1,
+        } as ChartDataset<'line'>,
+      ],
     };
   });
 
@@ -166,7 +192,7 @@ export class PortfolioChartsModalComponent {
       }
     });
   }
-  
+
   open() {
     this.store.toggleCharts(true);
   }
@@ -187,7 +213,7 @@ export class PortfolioChartsModalComponent {
     if (this.carouselContainer) {
       this.carouselContainer.nativeElement.scrollTo({
         left: window.innerWidth * index,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   }
