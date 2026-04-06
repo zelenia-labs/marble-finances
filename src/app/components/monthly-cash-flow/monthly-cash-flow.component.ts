@@ -27,7 +27,12 @@ export class MonthlyCashFlowComponent {
     const groupMap = new Map<string, { label: string, total: number, items: GroupedCashFlowItem[] }>();
     this.monthRecord().flow.forEach((item, originalIndex) => {
       if (item.parentCategory !== 'expense') return;
-      const type = item.type || 'fixed';
+      
+      // IA RULE: Map Housing/Food/Groceries to 'fixed', renamed 'flex' to 'flexible'
+      let type = (item.type || 'fixed').toLowerCase();
+      if (type === 'housing' || type === 'food' || type === 'groceries') type = 'fixed';
+      if (type === 'flex') type = 'flexible';
+
       if (!groupMap.has(type)) {
          groupMap.set(type, { label: type, total: 0, items: [] });
       }
@@ -37,6 +42,7 @@ export class MonthlyCashFlowComponent {
     });
     
     return Array.from(groupMap.values()).sort((a, b) => {
+        // IA RULE: FIXED first, then FLEXIBLE
         if (a.label === 'fixed') return -1;
         if (b.label === 'fixed') return 1;
         if (a.label === 'flexible') return -1;
@@ -148,6 +154,39 @@ export class MonthlyCashFlowComponent {
     event.preventDefault();
     event.stopPropagation();
     (event.target as HTMLElement)?.blur();
+  }
+
+  updateAmountFromInput(index: number, event: Event, originalValue: number) {
+    const el = event.target as HTMLElement;
+    const rawText = el.innerText.trim().toUpperCase();
+    
+    let numericValue = parseFloat(rawText.replace(/[^0-9.]/g, ''));
+    if (isNaN(numericValue)) return;
+
+    if (rawText.includes('K')) numericValue *= 1000;
+    else if (rawText.includes('M')) numericValue *= 1000000;
+
+    const newMarbleVal = numericValue / this.store.marbleMultiplier();
+    
+    if (newMarbleVal === originalValue) {
+       el.innerText = this.formatUSD(originalValue);
+       return;
+    }
+
+    const action = { 
+        type: 'flowAmount' as const, monthIdx: this.monthIndex(), idx: index, value: newMarbleVal,
+        targetId: this.store.months()[this.monthIndex()].flow[index].id 
+    };
+    this.store.promptForwardUpdate(action);
+  }
+
+  selectAll(evt: Event) {
+    const el = evt.target as HTMLElement;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
   }
 
   updateFlowLabel(index: number, event: Event, originalValue: string) {

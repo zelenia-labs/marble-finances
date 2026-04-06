@@ -56,7 +56,7 @@
                      <span class="text-xs font-bold tracking-wide text-slate whitespace-nowrap">{{ sub.label }}</span>
                   </div>
                </div>
-               <app-marble-stack [val]="sub.val" [color]="asset().color" [size]="store.assetsGridSize()">
+               <app-marble-stack [val]="sub.val" [color]="asset().color" [size]="store.assetsGridSize()" [useThresholdRounding]="true">
                </app-marble-stack>
             </div>
          </div>
@@ -132,7 +132,7 @@
 
                <!-- Bento Stack -->
                <app-marble-stack [val]="sub.val" [color]="asset().color" [size]="store.assetsGridSize()"
-                  (amountChanged)="updateMarbleAmount(subIndex, $event)">
+                  [useThresholdRounding]="true" (amountChanged)="updateMarbleAmount(subIndex, $event)">
                </app-marble-stack>
             </div>
 
@@ -145,7 +145,7 @@
                      placeholder="Add optional note..." (mousedown)="$event.stopPropagation()"
                      (blur)="updateNote($event, subIndex, sub.note)"
                      (keydown.enter)="$event.preventDefault(); triggerBlur($event)"
-                     class="bg-transparent outline-none w-full text-[11px] font-medium text-gray-500 placeholder-gray-400 interactive-element input-minimal-focus">
+                     class="bg-transparent outline-none w-full text-[11px] font-medium text-slate-500 placeholder-slate-400 interactive-element input-minimal-focus">
                </div>
             </div>
             }

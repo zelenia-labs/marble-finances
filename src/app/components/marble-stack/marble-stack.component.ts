@@ -25,6 +25,7 @@ export class MarbleStackComponent {
   color = input.required<string>();
   simple = input<boolean>(false);
   size = input<number>(5);
+  useThresholdRounding = input<boolean>(false);
 
   amountChanged = output<number>();
   store = inject(FinanceStore);
@@ -84,7 +85,21 @@ export class MarbleStackComponent {
   stackWidth = computed(() => (!this.simple() && this.bigMarblesCount() > 0 ? 'wide' : 'narrow'));
 
   showGrid = computed(() => true);
-  activeRemaining = computed(() => this.remainder() % this.pageSize());
+  activeRemaining = computed(() => {
+    const raw = this.remainder() % this.pageSize();
+    if (!this.useThresholdRounding() || raw === 0) return raw;
+
+    const whole = Math.floor(raw);
+    const fract = raw - whole;
+
+    if (fract < 0.0001) return whole;
+
+    // RULE:
+    // If number is UNDER half the block's amount (0.5), fill until half.
+    // If number is OVER half the block's amount (0.5), fill entire block.
+    if (fract <= 0.5001) return whole + 0.5;
+    return whole + 1;
+  });
   baseForGrid = computed(() => this.currentAccounted() + (this.bigMarblesCount() * this.pageSize()));
 
   marbleRows = computed(() => {

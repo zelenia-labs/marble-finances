@@ -11,16 +11,16 @@
         </div>
 
         @for (grp of expenseGroups(); track grp.label) {
-        <div class="w-full mb-10">
-            <div class="flex items-baseline justify-between border-b border-slate/20 pb-3 mb-4">
-                <h4 class="text-[11px] font-black uppercase tracking-widest" style="color: #314158;">{{ grp.label }}</h4>
+        <div class="w-full mb-12">
+            <div class="flex items-baseline justify-between border-b-2 border-gray-100 pb-3 mb-5">
+                <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500">{{ grp.label }}</h4>
                 <span class="text-[13px] font-black" style="color: #314158;">{{ formatUSD(grp.total) }}</span>
             </div>
 
-            <div class="flex flex-row flex-wrap gap-y-5 gap-x-8 items-start">
+            <div class="flex flex-row flex-wrap gap-y-6 gap-x-8 items-start">
                 @for (item of grp.items; track item.id) {
                 <div class="flex flex-col items-start w-fit">
-                    <div class="flex items-baseline gap-1.5 mb-1.5 relative">
+                    <div class="flex items-baseline gap-1.5 mb-1 relative">
                         <div class="interactive-element cursor-pointer relative" tabindex="0" role="button"
                             aria-label="Toggle item menu"
                             (click)="toggleMenu($event, 'menu_flow_' + item.originalIndex)"
@@ -45,10 +45,9 @@
                                     class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
                             </div>
                         </div>
-                        <span class="text-[13px] font-black tracking-normal" style="color: #314158;">{{ formatUSD(item.val)
-                            }}</span>
+                        <span contenteditable="true" (blur)="updateAmountFromInput(item.originalIndex, $event, item.val)" (keydown.enter)="blurElement($event)" (focus)="selectAll($event)" (mousedown)="$event.stopPropagation()" class="text-[13px] font-black tracking-normal outline-none border-b border-transparent focus:border-slate/30 interactive-element" style="color: #314158;">{{ formatUSD(item.val) }}</span>
                     </div>
-                    <app-marble-stack [val]="item.val" [color]="'bg-flow-orange'" [simple]="true"
+                    <app-marble-stack [val]="item.val" [color]="'bg-flow-orange'" [simple]="true" [useThresholdRounding]="true"
                         [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
                     </app-marble-stack>
                 </div>
@@ -58,9 +57,9 @@
         }
 
         <!-- TOTAL EXPENSES LINE -->
-        <div class="w-full mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
-            <h4 class="text-[11px] font-black uppercase tracking-widest" style="color: #314158;">Total Expenses</h4>
-            <span class="text-[16px] font-black" style="color: #314158;">{{ formatUSD(combinedFlowTotal()) }}</span>
+        <div class="w-full mt-10 pt-6 border-t-2 border-gray-100 flex items-center justify-between">
+            <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500">Total Expenses</h4>
+            <span class="text-[18px] font-black" style="color: #314158;">{{ formatUSD(combinedFlowTotal()) }}</span>
         </div>
     </div>
 
@@ -74,16 +73,16 @@
         </div>
 
         @for (grp of savingsGroups(); track grp.label) {
-        <div class="w-full mb-10">
-            <div class="flex items-baseline justify-between border-b border-slate/20 pb-3 mb-4">
-                <h4 class="text-[11px] font-black uppercase tracking-widest" style="color: #314158;">{{ grp.label }}</h4>
+        <div class="w-full mb-12">
+            <div class="flex items-baseline justify-between border-b-2 border-gray-100 pb-3 mb-5">
+                <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500">{{ grp.label }}</h4>
                 <span class="text-[13px] font-black" style="color: #314158;">{{ formatUSD(grp.total) }}</span>
             </div>
 
-            <div class="flex flex-row flex-wrap gap-y-5 gap-x-8 items-start">
+            <div class="flex flex-row flex-wrap gap-y-6 gap-x-8 items-start">
                 @for (item of grp.items; track item.id) {
                 <div class="flex flex-col items-start w-fit">
-                    <div class="flex items-baseline gap-1.5 mb-1.5 relative">
+                    <div class="flex items-baseline gap-1.5 mb-1 relative">
                         <div class="interactive-element cursor-pointer relative" tabindex="0" role="button"
                             aria-label="Toggle item menu"
                             (click)="toggleMenu($event, 'menu_flow_' + item.originalIndex)"
@@ -108,10 +107,9 @@
                                     class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
                             </div>
                         </div>
-                        <span class="text-[13px] font-black tracking-normal" style="color: #314158;">{{ formatUSD(item.val)
-                            }}</span>
+                        <span contenteditable="true" (blur)="updateAmountFromInput(item.originalIndex, $event, item.val)" (keydown.enter)="blurElement($event)" (focus)="selectAll($event)" (mousedown)="$event.stopPropagation()" class="text-[13px] font-black tracking-normal outline-none border-b border-transparent focus:border-slate/30 interactive-element" style="color: #314158;">{{ formatUSD(item.val) }}</span>
                     </div>
-                    <app-marble-stack [val]="item.val" [color]="'bg-flow-blue'" [simple]="true"
+                    <app-marble-stack [val]="item.val" [color]="'bg-flow-blue'" [simple]="true" [useThresholdRounding]="true"
                         [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
                     </app-marble-stack>
                 </div>
@@ -121,9 +119,9 @@
         }
 
         <!-- TOTAL SAVINGS LINE -->
-        <div class="w-full mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
-            <h4 class="text-[11px] font-black uppercase tracking-widest" style="color: #314158;">Total Savings</h4>
-            <span class="text-[16px] font-black" style="color: #314158;">{{ formatUSD(savingsTotal()) }}</span>
+        <div class="w-full mt-10 pt-6 border-t-2 border-gray-100 flex items-center justify-between">
+            <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500">Total Savings</h4>
+            <span class="text-[18px] font-black" style="color: #314158;">{{ formatUSD(savingsTotal()) }}</span>
         </div>
     </div>
 
