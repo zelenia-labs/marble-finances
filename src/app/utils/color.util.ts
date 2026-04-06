@@ -5,27 +5,30 @@
  * DO NOT use these for UI components — use the CSS tokens (--color-*) instead.
  */
 export const TAILWIND_COLOR_MAP: Record<string, string> = {
-    'bg-assetGreen':  '#429C5A', // Easter Mint block
-    'bg-assetPurple': '#A174D2', // Easter Lilac block
-    'bg-assetBlue':   '#5B8CD9', // Easter Sky block
-    'bg-assetCyan':   '#469EA1', // Easter Cyan block
-    'bg-assetOrange': '#D97544', // Easter Peach block
-    'bg-assetSand':   '#968153',
-    'bg-assetRose':   '#D96D8D', // Easter Pink block
-    'bg-assetTeal':   '#499978',
+    'bg-assetGreen':  '#52CB6C', 
+    'bg-assetPurple': '#67A2F9', 
+    'bg-assetBlue':   '#C380F5', 
+    'bg-assetCyan':   '#707AFF', 
+    'bg-assetOrange': '#F89160', 
+    'bg-assetSand':   '#8B7A58',
+    'bg-assetRose':   '#B66A6A',
+    'bg-assetTeal':   '#548E8D',
     'bg-assetStone':  '#6B7280',
-    'bg-flowOrange':  '#FB9F78',
+    'bg-flowOrange':  '#FF7E7E',
+    'bg-flowBlue':    '#4AB1FF',
     'bg-labelYellow': '#FBDE72',
 };
 
 export function getColorProps(color: string, type: 'full' | 'shadow' = 'full'): { cls: string; stl: string } {
     const isHex = color.startsWith('#');
     
-    // If it's a Tailwind-style class (e.g. bg-assetGreen)
-    if (!isHex && (color.startsWith('bg-asset') || color.startsWith('bg-block-asset'))) {
+    // If it's a Tailwind-style class (e.g. bg-assetGreen, bg-flowOrange)
+    if (!isHex && color.startsWith('bg-')) {
         // Map camelCase class to kebab-case variable name
         const camelToKebab = (str: string) => str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
         const baseName = camelToKebab(color.replace('bg-', ''));
+        
+        // Asset classes map to 'block-' variants, flow classes use directly
         const varName = baseName.startsWith('asset') ? `block-${baseName}` : baseName;
         
         if (type === 'full') {
@@ -37,7 +40,7 @@ export function getColorProps(color: string, type: 'full' | 'shadow' = 'full'): 
         if (type === 'shadow') {
             return {
                 cls: '',
-                stl: `background-color: color-mix(in srgb, var(--color-${varName}) 15%, transparent);`
+                stl: 'background-color: #EDF2F7;'
             };
         }
     }
@@ -51,8 +54,8 @@ export function getColorProps(color: string, type: 'full' | 'shadow' = 'full'): 
     }
     if (type === 'shadow') {
         return {
-            cls: isHex ? '' : `${color}/15`,
-            stl: isHex ? `background-color: ${color}26;` : (!isHex ? 'background-color: rgba(0,0,0,0.03);' : '')
+            cls: '',
+            stl: 'background-color: #EDF2F7;'
         };
     }
     return { cls: '', stl: '' };

@@ -2,11 +2,11 @@
 <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 flex p-16 h-full w-fit flex-1">
 
     <!-- Left Column: Report Details -->
-    <div class="w-[340px] flex flex-col justify-between shrink-0 h-full">
+    <div class="w-[340px] flex flex-col justify-start shrink-0 h-full">
 
         <!-- Month and Year -->
         <div class="flex-none">
-            <div class="flex items-center gap-4 mb-2">
+            <div class="flex items-center gap-4 mb-[120px]">
                 <h1 class="text-[52px] font-black text-slate tracking-tighter outline-none interactive-element select-none leading-none"
                     contenteditable="true" [innerText]="monthRecord().date"
                     (blur)="updateOverview($event, 'date', monthRecord().date)"
@@ -17,7 +17,7 @@
             <app-action-items [monthIndex]="monthIndex()"></app-action-items>
         </div>
 
-        <div class="flex-none mt-12">
+        <div class="flex-none mt-0">
             <app-monthly-cash-flow [monthIndex]="monthIndex()"></app-monthly-cash-flow>
 
             <div class="mt-20 w-[240px]">

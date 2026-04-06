@@ -114,7 +114,7 @@
                         <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val)
                             }}</span>
                     </div>
-                    <app-marble-stack [val]="item.val" [color]="'bg-assetBlue'" [simple]="true"
+                    <app-marble-stack [val]="item.val" [color]="'bg-flowBlue'" [simple]="true"
                         [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
                     </app-marble-stack>
                 </div>
@@ -160,9 +160,9 @@
 
             <!-- Visual Bar -->
             <div class="h-1 flex mx-3 mb-3 rounded-full overflow-hidden bg-gray-50">
-                <div class="bg-flowOrange transition-all duration-300 h-full"
+                <div class="bg-flow-orange transition-all duration-300 h-full"
                     [style.width.%]="expenseSavingsRatio().expensesPct"></div>
-                <div class="bg-assetBlue flex-1 transition-all duration-300 h-full"></div>
+                <div class="bg-flow-blue flex-1 transition-all duration-300 h-full"></div>
             </div>
 
         </div>

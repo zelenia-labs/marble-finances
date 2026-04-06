@@ -16,10 +16,6 @@
          (keydown.enter)="onBlockClick(currentAccounted() + ($index + 1) * pageSize() - 1)"
          (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + ($index + 1) * pageSize()))"
          (mouseleave)="hideTooltip()">
-         <div
-            class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none">
-         </div>
-
          <!-- 🎉 Easter Egg: celebrate when this big block is newly formed -->
          @if (celebratingBigBlockIdx() === $index) {
          <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
@@ -56,18 +52,7 @@
                [class.w-1/2]="hoveredIsHalf() && slot.idx === hoveredSlotIdx()"></div>
             }
 
-            <!-- Split darkening: filled/half slots only -->
-            @if (!isGhost(slot)) {
-            <div class="absolute inset-0 z-20 flex opacity-0 group-hover:opacity-100 transition-opacity">
-               <div class="w-1/2 h-full hover:bg-black/10 border-r border-white/10 z-10"></div>
-               <div class="w-1/2 h-full group/right z-10">
-                  <div
-                     class="absolute inset-0 -left-full w-[200%] h-full bg-black/20 opacity-0 group-hover/right:opacity-100 pointer-events-none -z-10">
-                  </div>
-               </div>
             </div>
-            }
-         </div>
          }
       </div>
       }
@@ -82,10 +67,6 @@
       [attr.aria-label]="'Add 100 marbles'" (mousedown)="$event.stopPropagation()"
       (click)="onBlockClick(100 * ($index + 1) - 1)" (keydown.enter)="onBlockClick(100 * ($index + 1) - 1)"
       (mouseenter)="showTooltip($event, formatUSD(100 * (hundredsCount() - $index)))" (mouseleave)="hideTooltip()">
-      <div
-         class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-[inherit] pointer-events-none">
-      </div>
-
       <!-- 💯 Easter Egg: celebrate when this huge block is newly formed -->
       @if (celebratingHugeBlockIdx() === $index) {
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">

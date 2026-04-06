@@ -1,5 +1,5 @@
 <div
-  class="bg-labelYellowMuted/60 backdrop-blur-sm rounded-[32px] border border-labelYellow/30 p-8 w-full max-w-sm mb-12 shadow-sm select-none">
+  class="bg-label-yellow-muted/60 backdrop-blur-sm rounded-[32px] border border-label-yellow/30 p-8 w-full max-w-sm mb-10 shadow-sm select-none">
   <div class="flex items-center justify-between mb-8">
     <div class="flex items-center gap-2">
       <span class="text-xl" aria-hidden="true">💡</span>
@@ -14,12 +14,12 @@
     <!-- INCOMPLETE ITEMS -->
     <div class="space-y-4">
       @for (item of sortedActionItems().incomplete; track item.id) {
-      <div class="flex items-start gap-3 relative">
+      <div class="flex items-center gap-3 relative">
         <button (click)="store.toggleActionItem(monthIndex(), item.id)"
           [attr.aria-label]="'Status: ' + item.label"
-          class="-m-2 p-2 shrink-0 flex items-center justify-center mt-0.5 interactive-element transition-all group/check">
+          class="-m-2 p-2 shrink-0 flex items-center justify-center interactive-element transition-all group/check">
           <span
-            class="w-6 h-6 rounded border-2 border-actionIndicator flex items-center justify-center transition-all group-hover/check:border-labelYellow bg-white"></span>
+            class="w-6 h-6 rounded border-2 border-actionIndicator flex items-center justify-center transition-all group-hover/check:border-label-yellow bg-white"></span>
         </button>
 
         <div class="flex-1 min-w-0 relative">
@@ -54,11 +54,11 @@
     <!-- COMPLETED ITEMS -->
     <div class="space-y-4 opacity-60">
       @for (item of sortedActionItems().completed; track item.id) {
-      <div class="flex items-start gap-3 relative">
+      <div class="flex items-center gap-3 relative">
         <button (click)="store.toggleActionItem(monthIndex(), item.id)"
           [attr.aria-label]="'Status: ' + item.label"
-          class="-m-2 p-2 shrink-0 flex items-center justify-center mt-0.5 interactive-element transition-all">
-          <span class="w-6 h-6 rounded border-2 border-actionIndicator bg-labelYellow/10 flex items-center justify-center">
+          class="-m-2 p-2 shrink-0 flex items-center justify-center interactive-element transition-all">
+          <span class="w-6 h-6 rounded border-2 border-actionIndicator bg-label-yellow/10 flex items-center justify-center">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-actionIndicator" stroke-width="4"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="20 6 9 17 4 12"></polyline>

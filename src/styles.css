@@ -7,30 +7,31 @@
   --color-slate: #333333;         /* Near-black — primary text & dark surfaces */
 
   /* ── Brand / Asset ── */
-  --color-labelYellow: #FBDE72;   /* Brighter Easter Yellow */
-  --color-labelYellowMuted: #FFFAE6; 
-  --color-flowOrange: #FB9F78;    /* Peachy Flow */
+  --color-label-yellow: #FBDE72;   /* Brighter Easter Yellow */
+  --color-label-yellow-muted: #FFFAE6; 
+  --color-flow-orange: #FF7E7E;    /* Expenses Red/Pink */
+  --color-flow-blue: #4AB1FF;      /* Salary/Income Blue */
   
-  /* Primary Asset Colors (Cute & Bright) */
-  --color-assetGreen: #88DF9B;    /* Mint */
-  --color-assetPurple: #CDA4FB;   /* Lilac */
-  --color-assetBlue: #90B9FB;     /* Sky Blue */
-  --color-assetCyan: #86E2E4;     /* Pale Cyan */
-  --color-assetOrange: #FFC09F;   /* Peach */
-  --color-assetSand: #E5D0A1;     
-  --color-assetRose: #FFB3BA;     /* Pink */
-  --color-assetTeal: #98DDBB;     
-  --color-assetStone: #B0C4DE;    
+  /* Primary Asset Colors (Label Bubbles) */
+  --color-asset-green: #52CB6C;    
+  --color-asset-purple: #67A2F9;   
+  --color-asset-blue: #C380F5;     
+  --color-asset-cyan: #707AFF;     /* Business/Company */
+  --color-asset-orange: #F89160;   
+  --color-asset-sand: #E5D0A1;     
+  --color-asset-rose: #FFB3BA;     
+  --color-asset-teal: #98DDBB;     
+  --color-asset-stone: #B0C4DE;    
 
-  /* 🧱 Block/Marble Variants (Darker for WCAG 3.1:1 Contrast vs White) */
-  --color-block-asset-green: #429C5A;    
-  --color-block-asset-purple: #A174D2;   
-  --color-block-asset-blue: #5B8CD9;     
-  --color-block-asset-cyan: #469EA1;     
-  --color-block-asset-orange: #D97544;   
-  --color-block-asset-sand: #968153;     
-  --color-block-asset-rose: #D96D8D;     
-  --color-block-asset-teal: #499978;     
+  /* 🧱 Block/Marble Variants (Updated per user request) */
+  --color-block-asset-green: #52CB6C;    
+  --color-block-asset-purple: #67A2F9;   
+  --color-block-asset-blue: #C380F5;     
+  --color-block-asset-cyan: #707AFF;     
+  --color-block-asset-orange: #F89160;   
+  --color-block-asset-sand: #8B7A58;     
+  --color-block-asset-rose: #B66A6A;     
+  --color-block-asset-teal: #548E8D;     
   --color-block-asset-stone: #6B7280;    
 
   /* ── Semantic / Functional ── */

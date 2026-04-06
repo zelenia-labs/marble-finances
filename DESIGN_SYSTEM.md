@@ -37,11 +37,11 @@ All colors are defined as CSS custom properties in the codebase. **Do NOT introd
 
 | CSS Variable | Hex | Usage |
 |---|---|---|
-| `--color-assetGreen` | `#82C37E` | Investments |
-| `--color-assetPurple` | `#C694F9` | Retirement |
-| `--color-assetBlue` | `#84ADF8` | Cash |
-| `--color-assetCyan` | `#7ED2C4` | Company |
-| `--color-assetOrange` | `#F8A86B` | Tangible |
+| `--color-assetGreen` | `#2FC04F` | Investments |
+| `--color-assetPurple` | `#67A2F9` | Retirement |
+| `--color-assetBlue` | `#C380F5` | Cash |
+| `--color-assetCyan` | `#707AFF` | Company |
+| `--color-assetOrange` | `#F89160` | Tangible |
 | `--color-assetSand` | `#D4C3A3` | Reserved |
 | `--color-assetRose` | `#F0A8A8` | Reserved |
 | `--color-assetTeal` | `#82C4C3` | Reserved |
@@ -57,13 +57,13 @@ All colors are defined as CSS custom properties in the codebase. **Do NOT introd
 
 ### Chart & Block Variants
 
-| Asset Type | Block Variant Token | Hex (3.1:1 Contrast) | Usage |
+| Asset Type | Block Variant Token | Hex (User Choice) | Usage |
 |---|---|---|---|
-| Green | `--color-block-asset-green` | `#679267` | Investment Marbles |
-| Purple | `--color-block-asset-purple` | `#8B85B6` | Retirement Marbles |
-| Blue | `--color-block-asset-blue` | `#7089BD` | Cash Marbles |
-| Cyan | `--color-block-asset-cyan` | `#678E92` | Company Marbles |
-| Orange | `--color-block-asset-orange` | `#A1826D` | Tangible Marbles |
+| Green | `--color-block-asset-green` | `#8670FF` | Investment Marbles |
+| Purple | `--color-block-asset-purple` | `#67A2F9` | Retirement Marbles |
+| Blue | `--color-block-asset-blue` | `#C380F5` | Cash Marbles |
+| Cyan | `--color-block-asset-cyan` | `#707AFF` | Business/Company Marbles |
+| Orange | `--color-block-asset-orange` | `#F89160` | Tangible Marbles |
 
 **The Block Rule:** Marbles, blocks, and plates must use the `block-` variant tokens. These are slightly darker/more saturated versions of the brand colors designed to pass **WCAG 3:1 contrast** against both the cream canvas and pure white backgrounds. This rule does *not* apply to text labels or background bubbles, which should use the primary brand tokens.
 
