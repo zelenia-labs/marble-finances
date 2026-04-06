@@ -8,7 +8,6 @@ import {
   OnDestroy,
   signal,
   untracked,
-  ViewChild,
   viewChild,
 } from '@angular/core';
 import { ComparisonOverlayComponent } from './components/comparison-overlay/comparison-overlay.component';
@@ -165,6 +164,11 @@ export class App implements OnDestroy {
     window.addEventListener('mousemove', (e: MouseEvent) => this.onMouseMove(e));
     window.addEventListener('mouseup', () => this.onMouseUp());
     window.addEventListener('resize', () => this.onResize());
+    
+    // Sync the tooltip popover reference to the service whenever it's available
+    effect(() => {
+      this.tooltipService.setPopoverRef(this.tooltipPopover() ?? null);
+    });
   }
 
   scale = signal<number>(1);
@@ -178,11 +182,7 @@ export class App implements OnDestroy {
   private startX = 0;
   private startY = 0;
 
-  // TODO: Skipped for migration because:
-  //  Accessor queries cannot be migrated as they are too complex.
-  @ViewChild('tooltipPopover', { static: false }) set tooltipPopover(ref: ElementRef<HTMLElement>) {
-    if (ref) this.tooltipService.setPopoverRef(ref);
-  }
+  readonly tooltipPopover = viewChild<ElementRef<HTMLElement>>('tooltipPopover');
 
   ngOnDestroy() {
     window.removeEventListener('mousemove', (e: MouseEvent) => this.onMouseMove(e));
