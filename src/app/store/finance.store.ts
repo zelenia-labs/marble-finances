@@ -1126,12 +1126,5 @@ export const FinanceStore = signalStore(
     }
 
   })),
-  withHooks((store) => ({
-    onInit() {
-      // Record an initial baseline if history is brand new
-      if (store.changelog().length === 0) {
-        store.recordChange('Initial Portfolio Snapshot', 'Baseline point for the current session');
-      }
-    }
-  }))
+  withHooks(() => ({}))
 );
