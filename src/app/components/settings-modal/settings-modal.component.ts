@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
+import { FinanceStore } from '../../store/finance.store';
 
 @Component({
   selector: 'app-settings-modal',
@@ -16,58 +16,75 @@ import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
         </button>
 
-        <h2 class="text-2xl font-black text-slate mb-2 tracking-tight">App Settings</h2>
-        <p class="text-sm text-gray-500 mb-8 font-medium">Configure global mechanics for Marble Finances</p>
+        <h2 class="text-2xl font-black text-slate mb-2 tracking-tight">Financial Scale</h2>
+        <p class="text-sm text-gray-500 mb-8 font-medium italic">How each weight of marble translates to currency</p>
 
-        <!-- Setting: Marble Multiplier -->
         <div class="space-y-6">
-            <div>
-                <label for="multiplierInput" class="block text-sm font-bold text-slate mb-1">Marble Block Multiplier</label>
-                <p class="text-xs text-gray-500 font-medium mb-3">Define how much actual dollar value a single full marble block represents in the visualization.</p>
-                
-                <div class="relative flex items-center mb-6">
-                    <span class="absolute left-4 text-gray-400 font-bold">$</span>
-                    <input id="multiplierInput" type="number" 
-                        [value]="store.marbleMultiplier()" 
-                        (input)="onMultiplierInput($event)"
-                        class="w-full h-14 pl-8 pr-4 bg-gray-50 border border-gray-200 rounded-2xl text-lg font-bold text-slate focus:outline-none focus:ring-2 focus:ring-assetBlue/50 focus:border-assetBlue transition-all text-right">
-                </div>
-                
-                <!-- UX Visualization Helper -->
-                <div class="bg-blue-50/50 rounded-2xl p-4 border border-blue-100 flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-[14px] bg-assetBlue shrink-0 shadow-sm border border-black/5"></div>
-                    <div class="flex flex-col">
-                        <span class="text-xl font-black text-slate">= {{ formatHumanUSD(1, store.marbleMultiplier()) }}</span>
-                        <span class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Value of 1 block</span>
-                    </div>
+            <!-- Setting: Marble Value Input -->
+            <div class="p-6 bg-slate-50 border border-slate-100 rounded-[28px]">
+                <label for="marbleValueInput" class="block text-[11px] font-black uppercase text-slate/40 tracking-widest mb-4">Unit Value ($)</label>
+                <div class="relative flex items-center mb-0">
+                    <span class="absolute left-4 text-gray-400 font-black">$</span>
+                    <input id="marbleValueInput" type="number" 
+                        [value]="getMarbleValue()" 
+                        (input)="onMarbleInput($event)"
+                        class="w-full h-14 pl-10 pr-4 bg-white border border-gray-100 rounded-2xl text-xl font-black text-slate focus:outline-none focus:ring-4 focus:ring-assetBlue/10 transition-all text-right shadow-sm tracking-tight">
                 </div>
             </div>
 
-            <!-- Setting: Squared Grid Sizes -->
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label for="assetsGridSizeInput" class="block text-sm font-bold text-slate mb-1">Asset Block (NxN)</label>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">Square dimension</p>
-                    <input id="assetsGridSizeInput" type="number" 
-                        [value]="store.assetsGridSize()" 
-                        (input)="onAssetsGridSizeInput($event)"
-                        class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl text-lg font-bold text-slate focus:outline-none focus:ring-2 focus:ring-assetBlue/50 focus:border-assetBlue transition-all">
+            <!-- Legend Grid -->
+            <div class="space-y-3 px-2">
+                <h3 class="text-[10px] font-black uppercase text-slate/30 tracking-[.2em] px-4 mb-4">Legend</h3>
+                
+                <!-- 1 Marble -->
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-white border border-gray-50 shadow-sm transition-all hover:border-gray-200">
+                    <div class="flex items-center gap-4">
+                        <div class="w-6 h-6 rounded-[2px] bg-assetBlue shadow-sm"></div>
+                        <span class="text-xs font-bold text-slate/80">1 Marble</span>
+                    </div>
+                    <span class="text-sm font-black text-slate">{{ formatUSD(getMarbleValue()) }}</span>
                 </div>
-                <div>
-                    <label for="flowGridSizeInput" class="block text-sm font-bold text-slate mb-1">Flow Block (NxN)</label>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">Square dimension</p>
-                    <input id="flowGridSizeInput" type="number" 
-                        [value]="store.flowGridSize()" 
-                        (input)="onFlowGridSizeInput($event)"
-                        class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl text-lg font-bold text-slate focus:outline-none focus:ring-2 focus:ring-assetBlue/50 focus:border-assetBlue transition-all">
+
+                <!-- 5x5 Block -->
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-white border border-gray-50 shadow-sm transition-all hover:border-gray-200">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-[4px] bg-assetBlue shadow-sm relative overflow-hidden flex items-center justify-center p-0.5">
+                             <div class="grid grid-cols-2 grid-rows-2 gap-[1px] w-full h-full opacity-30">
+                                <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
+                                <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
+                             </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate/80 leading-none">5x5 Block</span>
+                            <span class="text-[9px] font-black text-slate/30 uppercase tracking-widest mt-1">25 Marbles</span>
+                        </div>
+                    </div>
+                    <span class="text-sm font-black text-assetBlue">{{ formatUSD(getMarbleValue() * 25) }}</span>
+                </div>
+
+                <!-- 10x10 Huge Block -->
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-white border border-gray-50 shadow-sm transition-all hover:border-gray-200">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-[6px] bg-assetBlue shadow-sm relative overflow-hidden flex items-center justify-center p-1">
+                             <div class="grid grid-cols-2 grid-rows-2 gap-[2px] w-full h-full opacity-40">
+                                <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
+                                <div class="bg-white rounded-[1px]"></div><div class="bg-white rounded-[1px]"></div>
+                             </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate/80 leading-none">10x10 Block</span>
+                            <span class="text-[9px] font-black text-slate/30 uppercase tracking-widest mt-1">100 Marbles</span>
+                        </div>
+                    </div>
+                    <span class="text-base font-black text-slate">{{ formatUSD(getMarbleValue() * 100) }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Action / Save -->
-        <div class="mt-8 pt-6 border-t border-gray-100 w-full">
-            <button (click)="close()" class="w-full h-14 bg-slate-900 border-2 border-slate-900 text-white hover:bg-slate-800 rounded-2xl font-bold tracking-wide transition-all shadow-md active:scale-[0.98]">
-              Done
+        <div class="mt-8 pt-4 w-full border-t border-gray-50">
+            <button (click)="close()" class="w-full h-14 bg-slate-900 border-2 border-slate-900 text-white hover:bg-slate-800 rounded-2xl font-black tracking-widest uppercase text-[11px] transition-all shadow-xl active:scale-[0.98]">
+              Confirm Update
             </button>
         </div>
       </div>
@@ -81,22 +98,18 @@ export class SettingsModalComponent {
     this.store.setSettingsOpen(false);
   }
 
-  onMultiplierInput(event: Event) {
-    const val = parseInt((event.target as HTMLInputElement).value) || 1;
-    this.store.setMarbleMultiplier(Math.max(1, val));
+  getMarbleValue(): number {
+    return this.store.marbleMultiplier() / 25;
   }
 
-  onAssetsGridSizeInput(event: Event) {
-    const val = parseInt((event.target as HTMLInputElement).value) || 1;
-    this.store.setAssetsGridSize(Math.max(1, val));
+  onMarbleInput(event: Event) {
+    const marbleVal = parseInt((event.target as HTMLInputElement).value) || 1;
+    this.store.setMarbleMultiplier(Math.max(1, marbleVal * 25));
   }
 
-  onFlowGridSizeInput(event: Event) {
-    const val = parseInt((event.target as HTMLInputElement).value) || 1;
-    this.store.setFlowGridSize(Math.max(1, val));
-  }
-
-  formatHumanUSD(blocks: number, multiplier: number): string {
-    return formatHumanUSD(blocks, multiplier);
+  formatUSD(val: number): string {
+    if (val >= 1000000) return `$${(val / 1000000).toLocaleString()}M`;
+    if (val >= 1000) return `$${(val / 1000).toLocaleString()}K`;
+    return `$${val.toLocaleString()}`;
   }
 }

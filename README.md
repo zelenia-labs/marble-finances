@@ -64,7 +64,7 @@ Navigate to `http://localhost:4200/`. The application will automatically reload 
 ## 🎨 Design Philosophy
 
 Marble Finances follows a **Warm Minimalism** approach defined in our [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md):
-- **Physical Metaphor**: UI elements have weight; blocks stack, marbles roll.
+- **Physical Metaphor**: UI elements have marble stacks.
 - **Deep Shadows**: Soft, diffused shadows for layers and hierarchy.
 - **Rounded Aesthetics**: From pill-shaped buttons to heavily rounded boards.
 

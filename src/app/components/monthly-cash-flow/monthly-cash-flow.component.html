@@ -1,62 +1,60 @@
-<div class="w-[221px] flex flex-col items-start select-none bg-gray-50/60 rounded-[32px] p-8 pb-10 border border-gray-100/40">
+<div
+    class="w-[221px] flex flex-col items-start select-none bg-gray-50/60 rounded-[32px] p-8 pb-10 border border-gray-100/40">
     <h2 class="text-[28px] font-black text-slate tracking-tight mb-12">Monthly Flow</h2>
 
     <!-- EXPENSES SECTION -->
     <div class="w-full mb-12">
         <div class="flex items-center justify-between mb-8">
             <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-widest">Expenses</h3>
-            <button (click)="store.openAddFlowModal(monthIndex(), 'expense')" class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element">+ Add</button>
+            <button (click)="store.openAddFlowModal(monthIndex(), 'expense')"
+                class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element">+
+                Add</button>
         </div>
 
         @for (grp of expenseGroups(); track grp.label) {
-            <div class="w-full mb-10">
-                <div class="flex items-baseline justify-between border-b border-slate/20 pb-3 mb-4">
-                    <h4 class="text-[11px] font-black uppercase text-slate tracking-widest">{{ grp.label }}</h4>
-                    <span class="text-[13px] font-black text-slate">{{ formatUSD(grp.total) }}</span>
-                </div>
-                
-                <div class="flex flex-row flex-wrap gap-y-5 gap-x-8 items-start">
-                    @for (item of grp.items; track item.id) {
-                        <div class="flex flex-col items-start w-fit">
-                            <div class="flex items-baseline gap-1.5 mb-1.5 relative">
-                                <div class="interactive-element cursor-pointer relative" 
-                                     tabindex="0" role="button" aria-label="Toggle item menu"
-                                     (click)="toggleMenu($event, 'menu_flow_' + item.originalIndex)"
-                                     (keydown.enter)="toggleMenu($event, 'menu_flow_' + item.originalIndex)">
-                                    <span contenteditable="true"
-                                          class="text-[13px] font-bold text-slate/80 tracking-tight outline-none border-b border-transparent focus:border-slate/30"
-                                          [innerText]="item.label"
-                                          (blur)="updateFlowLabel(item.originalIndex, $event, item.label)"
-                                          (keydown.enter)="blurElement($event)"
-                                          (mousedown)="$event.stopPropagation()"></span>
-                                          
-                                    <!-- Menu Modal -->
-                                    <div class="absolute bottom-full mb-1 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex z-60 transition-all duration-200"
-                                         tabindex="-1"
-                                         [class.opacity-0]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
-                                         [class.pointer-events-none]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
-                                         [class.translate-y-1]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
-                                         [class.opacity-100]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
-                                         [class.translate-y-0]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
-                                         (click)="$event.stopPropagation()"
-                                         (keydown)="$event.stopPropagation()">
-                                         <button (click)="promptDeleteFlow(item.originalIndex)" class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
-                                    </div>
-                                </div>
-                                <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val) }}</span>
-                            </div>
-                            <!-- Blocks -->
-                            <app-marble-stack 
-                                [val]="item.val" 
-                                [color]="'bg-flowOrange'"
-                                [simple]="true"
-                                [size]="store.flowGridSize()"
-                                (amountChanged)="updateAmount(item.originalIndex, $event)">
-                            </app-marble-stack>
-                        </div>
-                    }
-                </div>
+        <div class="w-full mb-10">
+            <div class="flex items-baseline justify-between border-b border-slate/20 pb-3 mb-4">
+                <h4 class="text-[11px] font-black uppercase text-slate tracking-widest">{{ grp.label }}</h4>
+                <span class="text-[13px] font-black text-slate">{{ formatUSD(grp.total) }}</span>
             </div>
+
+            <div class="flex flex-row flex-wrap gap-y-5 gap-x-8 items-start">
+                @for (item of grp.items; track item.id) {
+                <div class="flex flex-col items-start w-fit">
+                    <div class="flex items-baseline gap-1.5 mb-1.5 relative">
+                        <div class="interactive-element cursor-pointer relative" tabindex="0" role="button"
+                            aria-label="Toggle item menu"
+                            (click)="toggleMenu($event, 'menu_flow_' + item.originalIndex)"
+                            (keydown.enter)="toggleMenu($event, 'menu_flow_' + item.originalIndex)">
+                            <span contenteditable="true"
+                                class="text-[13px] font-bold text-slate/80 tracking-tight outline-none border-b border-transparent focus:border-slate/30"
+                                [innerText]="item.label"
+                                (blur)="updateFlowLabel(item.originalIndex, $event, item.label)"
+                                (keydown.enter)="blurElement($event)" (mousedown)="$event.stopPropagation()"></span>
+
+                            <!-- Menu Modal -->
+                            <div class="absolute bottom-full mb-1 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex z-60 transition-all duration-200"
+                                tabindex="-1"
+                                [class.opacity-0]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
+                                [class.pointer-events-none]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
+                                [class.translate-y-1]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
+                                [class.opacity-100]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
+                                [class.translate-y-0]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
+                                (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                                <button (click)="promptDeleteFlow(item.originalIndex)"
+                                    class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
+                            </div>
+                        </div>
+                        <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val)
+                            }}</span>
+                    </div>
+                    <app-marble-stack [val]="item.val" [color]="'bg-flowOrange'" [simple]="true"
+                        [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
+                    </app-marble-stack>
+                </div>
+                }
+            </div>
+        </div>
         }
 
         <!-- TOTAL EXPENSES LINE -->
@@ -74,57 +72,55 @@
     <div class="w-full mb-6">
         <div class="flex items-center justify-between mb-8">
             <h3 class="text-[12px] font-black uppercase text-slate/90 tracking-widest">Savings</h3>
-            <button (click)="store.openAddFlowModal(monthIndex(), 'savings')" class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element">+ Add</button>
+            <button (click)="store.openAddFlowModal(monthIndex(), 'savings')"
+                class="px-3 py-1.5 -mr-3 rounded-full text-[11px] font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-400/15 transition-all whitespace-nowrap interactive-element">+
+                Add</button>
         </div>
-        
-        @for (grp of savingsGroups(); track grp.label) {
-            <div class="w-full mb-10">
-                <div class="flex items-baseline justify-between border-b border-slate/20 pb-3 mb-4">
-                    <h4 class="text-[11px] font-black uppercase text-slate tracking-widest">{{ grp.label }}</h4>
-                    <span class="text-[13px] font-black text-slate">{{ formatUSD(grp.total) }}</span>
-                </div>
 
-                <div class="flex flex-row flex-wrap gap-y-5 gap-x-8 items-start">
-                    @for (item of grp.items; track item.id) {
-                        <div class="flex flex-col items-start w-fit">
-                            <div class="flex items-baseline gap-1.5 mb-1.5 relative">
-                                <div class="interactive-element cursor-pointer relative" 
-                                     tabindex="0" role="button" aria-label="Toggle item menu"
-                                     (click)="toggleMenu($event, 'menu_flow_' + item.originalIndex)"
-                                     (keydown.enter)="toggleMenu($event, 'menu_flow_' + item.originalIndex)">
-                                    <span contenteditable="true"
-                                          class="text-[13px] font-bold text-slate/80 tracking-tight outline-none border-b border-transparent focus:border-slate/30"
-                                          [innerText]="item.label"
-                                          (blur)="updateFlowLabel(item.originalIndex, $event, item.label)"
-                                          (keydown.enter)="blurElement($event)"
-                                          (mousedown)="$event.stopPropagation()"></span>
-                                          
-                                    <!-- Menu Modal -->
-                                    <div class="absolute bottom-full mb-1 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex z-60 transition-all duration-200"
-                                         tabindex="-1"
-                                         [class.opacity-0]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
-                                         [class.pointer-events-none]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
-                                         [class.translate-y-1]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
-                                         [class.opacity-100]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
-                                         [class.translate-y-0]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
-                                         (click)="$event.stopPropagation()"
-                                         (keydown)="$event.stopPropagation()">
-                                         <button (click)="promptDeleteFlow(item.originalIndex)" class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
-                                    </div>
-                                </div>
-                                <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val) }}</span>
-                            </div>
-                            <app-marble-stack 
-                                [val]="item.val" 
-                                [color]="'bg-assetBlue'"
-                                [simple]="true"
-                                [size]="store.flowGridSize()"
-                                (amountChanged)="updateAmount(item.originalIndex, $event)">
-                            </app-marble-stack>
-                        </div>
-                    }
-                </div>
+        @for (grp of savingsGroups(); track grp.label) {
+        <div class="w-full mb-10">
+            <div class="flex items-baseline justify-between border-b border-slate/20 pb-3 mb-4">
+                <h4 class="text-[11px] font-black uppercase text-slate tracking-widest">{{ grp.label }}</h4>
+                <span class="text-[13px] font-black text-slate">{{ formatUSD(grp.total) }}</span>
             </div>
+
+            <div class="flex flex-row flex-wrap gap-y-5 gap-x-8 items-start">
+                @for (item of grp.items; track item.id) {
+                <div class="flex flex-col items-start w-fit">
+                    <div class="flex items-baseline gap-1.5 mb-1.5 relative">
+                        <div class="interactive-element cursor-pointer relative" tabindex="0" role="button"
+                            aria-label="Toggle item menu"
+                            (click)="toggleMenu($event, 'menu_flow_' + item.originalIndex)"
+                            (keydown.enter)="toggleMenu($event, 'menu_flow_' + item.originalIndex)">
+                            <span contenteditable="true"
+                                class="text-[13px] font-bold text-slate/80 tracking-tight outline-none border-b border-transparent focus:border-slate/30"
+                                [innerText]="item.label"
+                                (blur)="updateFlowLabel(item.originalIndex, $event, item.label)"
+                                (keydown.enter)="blurElement($event)" (mousedown)="$event.stopPropagation()"></span>
+
+                            <!-- Menu Modal -->
+                            <div class="absolute bottom-full mb-1 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex z-60 transition-all duration-200"
+                                tabindex="-1"
+                                [class.opacity-0]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
+                                [class.pointer-events-none]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
+                                [class.translate-y-1]="store.activeMenuId() !== 'menu_flow_' + item.originalIndex"
+                                [class.opacity-100]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
+                                [class.translate-y-0]="store.activeMenuId() === 'menu_flow_' + item.originalIndex"
+                                (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                                <button (click)="promptDeleteFlow(item.originalIndex)"
+                                    class="text-xs font-bold text-red-400 hover:text-red-600 interactive-element px-2 py-1">Delete</button>
+                            </div>
+                        </div>
+                        <span class="text-[13px] font-black text-slate/70 tracking-tight">{{ formatUSD(item.val)
+                            }}</span>
+                    </div>
+                    <app-marble-stack [val]="item.val" [color]="'bg-assetBlue'" [simple]="true"
+                        [size]="store.flowGridSize()" (amountChanged)="updateAmount(item.originalIndex, $event)">
+                    </app-marble-stack>
+                </div>
+                }
+            </div>
+        </div>
         }
 
         <!-- TOTAL SAVINGS LINE -->
@@ -139,7 +135,7 @@
     <!-- EXPENSES/SAVINGS RATIO TABLE (Matching Reference) -->
     <div class="w-full mt-2">
         <div class="bg-white rounded-2xl border border-gray-100/80 overflow-hidden">
-            
+
             <!-- Headers -->
             <div class="grid grid-cols-2 bg-gray-50 border-b border-gray-100">
                 <div class="py-3 px-3 text-center border-r border-gray-100/60">
@@ -153,20 +149,22 @@
             <!-- Percentages -->
             <div class="grid grid-cols-2">
                 <div class="py-4 px-3 flex items-center justify-center border-r border-gray-100/60">
-                    <span class="text-[15px] font-bold text-slate">{{ expenseSavingsRatio().expensesPct.toFixed(2) }}%</span>
+                    <span class="text-[15px] font-bold text-slate">{{ expenseSavingsRatio().expensesPct.toFixed(2)
+                        }}%</span>
                 </div>
                 <div class="py-4 px-3 flex items-center justify-center">
-                    <span class="text-[15px] font-bold text-slate">{{ expenseSavingsRatio().savingsPct.toFixed(2) }}%</span>
+                    <span class="text-[15px] font-bold text-slate">{{ expenseSavingsRatio().savingsPct.toFixed(2)
+                        }}%</span>
                 </div>
             </div>
 
             <!-- Visual Bar -->
             <div class="h-1 flex mx-3 mb-3 rounded-full overflow-hidden bg-gray-50">
-                <div class="bg-flowOrange transition-all duration-300 h-full" 
-                     [style.width.%]="expenseSavingsRatio().expensesPct"></div>
+                <div class="bg-flowOrange transition-all duration-300 h-full"
+                    [style.width.%]="expenseSavingsRatio().expensesPct"></div>
                 <div class="bg-assetBlue flex-1 transition-all duration-300 h-full"></div>
             </div>
-            
+
         </div>
     </div>
 </div>

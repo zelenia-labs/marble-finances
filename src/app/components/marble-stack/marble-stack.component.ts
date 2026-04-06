@@ -1,14 +1,14 @@
-import { Component, ChangeDetectionStrategy, input, output, computed, signal, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { getColorProps, getPreviewStyle } from '../../utils/color.util';
-import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { TooltipService } from '../../services/tooltip.service';
+import { FinanceStore, formatHumanUSD } from '../../store/finance.store';
+import { getColorProps, getPreviewStyle } from '../../utils/color.util';
 
 export interface GridSlot {
-    idx: number;
-    value: number; // For rendering 1 to 25
-    activeRemaining: number;
-    baseValue: number; // Value representing what's below this grid
+  idx: number;
+  value: number; // For rendering 1 to 25
+  activeRemaining: number;
+  baseValue: number; // Value representing what's below this grid
 }
 
 @Component({
@@ -74,23 +74,27 @@ export class MarbleStackComponent {
 
   remainder = computed(() => this.val() % 100);
   currentAccounted = computed(() => this.val() - this.remainder());
-  
+
   pageSize = computed(() => this.size() * this.size());
 
   bigMarblesCount = computed(() => Math.floor(this.remainder() / this.pageSize()));
   bigMarbles = computed(() => Array(this.bigMarblesCount()).fill(0));
-  
+
   showMarbleBox = computed(() => this.remainder() > 0 || this.val() === 0);
   stackWidth = computed(() => (!this.simple() && this.bigMarblesCount() > 0 ? 'wide' : 'narrow'));
-  
+
   showGrid = computed(() => true);
   activeRemaining = computed(() => this.remainder() % this.pageSize());
   baseForGrid = computed(() => this.currentAccounted() + (this.bigMarblesCount() * this.pageSize()));
 
-  gridRows = computed(() => {
-    const active = this.activeRemaining();
-    // Always provide an empty row if the current one is full
-    return Math.floor(active / this.size()) + 1;
+  marbleRows = computed(() => {
+    if (this.simple()) {
+      const active = this.activeRemaining();
+      // Always provide an empty row if the current one is full
+      return Math.floor(active / this.size()) + 1;
+    }
+    // Asset Categories always show the full square context
+    return this.size();
   });
 
   gridSlots = computed(() => {
@@ -98,7 +102,7 @@ export class MarbleStackComponent {
     const active = this.activeRemaining();
     const base = this.baseForGrid();
     const size = this.size();
-    const rows = this.gridRows();
+    const rows = this.marbleRows();
 
     // Render only the rows we need
     for (let row = rows - 1; row >= 0; row--) {
@@ -165,7 +169,7 @@ export class MarbleStackComponent {
   showTooltip(evt: MouseEvent, label: string) {
     this.tooltip.show(evt, label);
   }
- 
+
   hideTooltip() {
     this.tooltip.hide();
   }
@@ -190,12 +194,12 @@ export class MarbleStackComponent {
     const target = evt.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     const isHalfPos = (evt.clientX - rect.left) < (rect.width / 2);
-    
+
     if (this.isGhost(slot)) {
       this.hoveredSlotIdx.set(slot.idx);
       this.hoveredIsHalf.set(isHalfPos);
     }
-    
+
     // Update tooltip as well
     this.showTooltip(evt, this.formatUSD(this.getHoverValue(evt, slot)));
   }
@@ -215,7 +219,7 @@ export class MarbleStackComponent {
       const rect = target.getBoundingClientRect();
       isHalfClick = (evt.clientX - rect.left) < (rect.width / 2);
     }
-    
+
     // Value equals base blocks total + slot index + (half or full addition)
     const updatedVal = slot.baseValue + slot.idx + (isHalfClick ? 0.5 : 1);
     this.amountChanged.emit(updatedVal);
@@ -223,15 +227,16 @@ export class MarbleStackComponent {
 
   getBigBlockStyle = computed(() => {
     const size = this.size();
+    const marbleRows = size;
     return {
       'width.px': size * 32 - 4,
-      'height.px': size * 32 - 4
+      'height.px': marbleRows * 32 - 4
     };
   });
 
   getGridStyle = computed(() => {
     const size = this.size();
-    const rows = this.gridRows();
+    const rows = this.marbleRows();
     return {
       'grid-template-columns': `repeat(${size}, minmax(0, 1fr))`,
       'width.px': size * 32 - 4,

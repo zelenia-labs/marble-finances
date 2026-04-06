@@ -174,17 +174,17 @@ export function sanitizeMonths(months: MonthRecord[]): MonthRecord[] {
  * - $1000 = $1K
  * - $1000000 = $1M
  */
-export function formatHumanUSD(blocks: number, multiplier: number): string {
-    const val = blocks * multiplier;
-    if (Math.abs(val) >= 1000000) {
-        const m = val / 1000000;
-        return `$${Number.isInteger(m) ? m : m.toFixed(1)}M`;
-    }
-    if (Math.abs(val) >= 1000) {
-        const k = val / 1000;
-        return `$${Number.isInteger(k) ? k : k.toFixed(1)}K`;
-    }
-    return `$${Math.round(val)}`;
+export function formatHumanUSD(marbles: number, multiplier: number): string {
+  const val = marbles * multiplier;
+  if (Math.abs(val) >= 1000000) {
+    const m = val / 1000000;
+    return `$${Number.isInteger(m) ? m : m.toFixed(1)}M`;
+  }
+  if (Math.abs(val) >= 1000) {
+    const k = val / 1000;
+    return `$${Number.isInteger(k) ? k : k.toFixed(1)}K`;
+  }
+  return `$${Math.round(val)}`;
 }
 
 export const FinanceStore = signalStore(

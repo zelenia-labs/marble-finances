@@ -11,10 +11,11 @@
          [class.opacity-100]="asset().assets.length === 0" [class.scale-100]="asset().assets.length === 0"
          [class.hidden]="asset().assets.length > 0">
          <div class="flex flex-col items-center gap-2 opacity-60">
-             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate/50" stroke-width="2.5">
-                <path d="M12 5v14M5 12h14" />
-             </svg>
-             <span class="text-[10px] font-black uppercase tracking-widest text-slate/50">Drop Assets Here</span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate/50"
+               stroke-width="2.5">
+               <path d="M12 5v14M5 12h14" />
+            </svg>
+            <span class="text-[10px] font-black uppercase tracking-widest text-slate/50">Drop Assets Here</span>
          </div>
       </div>
 
@@ -55,11 +56,7 @@
                      <span class="text-xs font-bold tracking-wide text-slate whitespace-nowrap">{{ sub.label }}</span>
                   </div>
                </div>
-               <!-- Bento Blocks -->
-               <app-marble-stack 
-                  [val]="sub.val" 
-                  [color]="asset().color"
-                  [size]="store.assetsGridSize()">
+               <app-marble-stack [val]="sub.val" [color]="asset().color" [size]="store.assetsGridSize()">
                </app-marble-stack>
             </div>
          </div>
@@ -120,8 +117,7 @@
                         [class.translate-y-1]="store.activeMenuId() !== 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
                         [class.opacity-100]="store.activeMenuId() === 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
                         [class.translate-y-0]="store.activeMenuId() === 'menu_sub_' + monthIndex() + '_' + index() + '_' + subIndex"
-                        (click)="$event.stopPropagation()"
-                        (keydown)="$event.stopPropagation()">
+                        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
                         @if (sub.note === null || sub.note === undefined) {
                         <button (click)="addNote(subIndex)"
                            class="text-xs font-bold text-gray-500 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
@@ -135,10 +131,7 @@
                </div>
 
                <!-- Bento Stack -->
-               <app-marble-stack 
-                  [val]="sub.val" 
-                  [color]="asset().color"
-                  [size]="store.assetsGridSize()"
+               <app-marble-stack [val]="sub.val" [color]="asset().color" [size]="store.assetsGridSize()"
                   (amountChanged)="updateMarbleAmount(subIndex, $event)">
                </app-marble-stack>
             </div>
@@ -179,14 +172,12 @@
 
             <div
                class="absolute top-full mt-2 left-0 bg-white shadow-lg border border-gray-100 rounded-md px-2 py-1 flex gap-2 z-60 transition-all duration-200"
-               tabindex="-1"
-               [class.opacity-0]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
+               tabindex="-1" [class.opacity-0]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
                [class.pointer-events-none]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
                [class.translate-y-1]="store.activeMenuId() !== 'menu_main_' + monthIndex() + '_' + index()"
                [class.opacity-100]="store.activeMenuId() === 'menu_main_' + monthIndex() + '_' + index()"
                [class.translate-y-0]="store.activeMenuId() === 'menu_main_' + monthIndex() + '_' + index()"
-               (click)="$event.stopPropagation()"
-               (keydown)="$event.stopPropagation()">
+               (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
                <button (click)="addSubcategory()"
                   class="text-xs font-bold text-gray-500 hover:text-assetBlue whitespace-nowrap interactive-element px-2 py-1">+
                   Add</button>

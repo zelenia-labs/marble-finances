@@ -94,7 +94,7 @@ input[type=number] {
     appearance: textfield;
 }
 
-/* 🎉 Big Block Celebration Easter Egg */
+/* 🎉 Marble Block Celebration Easter Egg */
 @keyframes celebrate-burst {
   0%   { opacity: 0; transform: scale(0.5); }
   20%  { opacity: 1; transform: scale(1.375); }
