@@ -22,7 +22,7 @@ export interface GridSlot {
 }
 
 export interface RenderElement {
-  type: 'huge' | 'large' | 'grid';
+  type: 'viginti' | 'deca' | 'penta' | 'grid';
   x: number;
   y: number;
   width: number;
@@ -51,53 +51,79 @@ export class MarbleStackComponent {
 
   hoveredSlotIdx = signal<number | null>(null);
   hoveredIsHalf = signal<boolean>(false);
-  celebratingLargeBlockIdx = signal<number | null>(null);
-  celebratingHugeBlockIdx = signal<number | null>(null);
+  celebratingPentaBlockIdx = signal<number | null>(null);
+  celebratingDecaBlockIdx = signal<number | null>(null);
+  celebratingVigintiBlockIdx = signal<number | null>(null);
 
-  private prevBigBlocksCount = 0;
-  private prevHugeBlocksCount = 0;
-  private celebrateTimer: ReturnType<typeof setTimeout> | null = null;
-  private celebrateHugeTimer: ReturnType<typeof setTimeout> | null = null;
+  private prevPentaBlocksCount = 0;
+  private prevDecaBlocksCount = 0;
+  private prevVigintiBlocksCount = 0;
+  private celebratePentaTimer: ReturnType<typeof setTimeout> | null = null;
+  private celebrateDecaTimer: ReturnType<typeof setTimeout> | null = null;
+  private celebrateVigintiTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     effect(() => {
-      const current = this.largeMarbleBlocksCount();
-      if (current > this.prevBigBlocksCount) {
-        const newIdx = current - 1;
-        if (this.celebrateTimer) clearTimeout(this.celebrateTimer);
-        this.celebratingLargeBlockIdx.set(newIdx);
-        this.celebrateTimer = setTimeout(() => this.celebratingLargeBlockIdx.set(null), 1080);
+      const current = this.pentaMarbleBlocksCount();
+      if (current > this.prevPentaBlocksCount) {
+        if (this.celebratePentaTimer) clearTimeout(this.celebratePentaTimer);
+        this.celebratingPentaBlockIdx.set(current - 1);
+        this.celebratePentaTimer = setTimeout(() => this.celebratingPentaBlockIdx.set(null), 1080);
       }
-      this.prevBigBlocksCount = current;
+      this.prevPentaBlocksCount = current;
     });
 
     effect(() => {
-      const current = this.hugeMarbleBlocksCount();
-      if (current > this.prevHugeBlocksCount) {
-        if (this.celebrateHugeTimer) clearTimeout(this.celebrateHugeTimer);
-        this.celebratingHugeBlockIdx.set(0);
-        this.celebrateHugeTimer = setTimeout(() => this.celebratingHugeBlockIdx.set(null), 1080);
+      const current = this.decaMarbleBlocksCount();
+      if (current > this.prevDecaBlocksCount) {
+        if (this.celebrateDecaTimer) clearTimeout(this.celebrateDecaTimer);
+        this.celebratingDecaBlockIdx.set(current - 1);
+        this.celebrateDecaTimer = setTimeout(() => this.celebratingDecaBlockIdx.set(null), 1080);
       }
-      this.prevHugeBlocksCount = current;
+      this.prevDecaBlocksCount = current;
+    });
+
+    effect(() => {
+      const current = this.vigintiMarbleBlocksCount();
+      if (current > this.prevVigintiBlocksCount) {
+        if (this.celebrateVigintiTimer) clearTimeout(this.celebrateVigintiTimer);
+        this.celebratingVigintiBlockIdx.set(current - 1);
+        this.celebrateVigintiTimer = setTimeout(() => this.celebratingVigintiBlockIdx.set(null), 1080);
+      }
+      this.prevVigintiBlocksCount = current;
     });
   }
 
   colorPropsFull = computed(() => getColorProps(this.color(), 'full'));
   colorPropsShadow = computed(() => getColorProps(this.color(), 'shadow'));
 
-  hugeMarbleBlocksCount = computed(() => Math.floor(this.val() / 100));
-  hugeMarbleBlocks = computed(() => Array(this.hugeMarbleBlocksCount()).fill(0));
+  // A Viginti block represents 400 units (20x20 blocks)
+  vigintiMarbleBlocksCount = computed(() => Math.floor(this.val() / 400));
+  vigintiMarbleBlocks = computed(() => Array(this.vigintiMarbleBlocksCount()).fill(0));
 
-  remainder = computed(() => this.val() % 100);
-  currentAccounted = computed(() => this.val() - this.remainder());
+  remainderAfterViginti = computed(() => this.val() % 400);
 
-  pageSize = computed(() => this.size() * this.size());
+  // A Deca block represents 100 units (10x10 blocks)
+  decaMarbleBlocksCount = computed(() => Math.floor(this.remainderAfterViginti() / 100));
+  decaMarbleBlocks = computed(() => Array(this.decaMarbleBlocksCount()).fill(0));
 
-  largeMarbleBlocksCount = computed(() => Math.floor(this.remainder() / this.pageSize()));
-  largeMarbleBlocks = computed(() => Array(this.largeMarbleBlocksCount()).fill(0));
+  remainderAfterDeca = computed(() => this.remainderAfterViginti() % 100);
+  currentAccounted = computed(() => this.val() - this.remainderAfterDeca());
+
+  pageSize = computed(() => this.size() * this.size()); // Default 25 for 5x5
+
+  pentaMarbleBlocksCount = computed(() => Math.floor(this.remainderAfterDeca() / this.pageSize()));
+  pentaMarbleBlocks = computed(() => Array(this.pentaMarbleBlocksCount()).fill(0));
+
+  remainder = computed(() => this.remainderAfterDeca() % this.pageSize());
 
   showMarbleBox = computed(() => this.remainder() > 0 || this.val() === 0);
-  stackWidth = computed(() => (!this.simple() && this.largeMarbleBlocksCount() > 0 ? 'wide' : 'narrow'));
+  
+  stackWidth = computed(() => {
+    if (this.simple()) return 'narrow';
+    if (this.vigintiMarbleBlocksCount() > 0 || this.decaMarbleBlocksCount() > 0 || this.pentaMarbleBlocksCount() > 1) return 'wide'; // 636
+    return 'narrow';
+  });
 
   showGrid = computed(() => true);
   activeRemaining = computed(() => {
@@ -112,7 +138,7 @@ export class MarbleStackComponent {
     if (fract <= 0.5001) return whole + 0.5;
     return whole + 1;
   });
-  baseForGrid = computed(() => this.currentAccounted() + this.largeMarbleBlocksCount() * this.pageSize());
+  baseForGrid = computed(() => this.currentAccounted() + this.pentaMarbleBlocksCount() * this.pageSize());
 
   marbleRows = computed(() => {
     if (this.simple()) {
@@ -236,57 +262,93 @@ export class MarbleStackComponent {
 
   allElements = computed(() => {
     const list: RenderElement[] = [];
-    const sizeValue = this.size();
-    const blockSide = sizeValue * 32 - 4;
-    const hugeSide = 316;
-    const gap = 4;
-    const isWide = this.stackWidth() === 'wide';
-    const rowMax = isWide ? 2 : 1;
-    
-    let currentX = 0;
     let currentY = 0;
-    let itemsInCurrentRow = 0;
-    let maxRowH = 0;
+    const gap = 4;
+    const blockSide = this.size() * 32 - 4; // Penta side (156)
+    const decaSide = 10 * 32 - 4; // Deca side (316)
+    const vigintiSide = 20 * 32 - 4; // Viginti side (636)
+    const showGrid = this.showGrid() || this.simple();
 
-    const addItem = (type: 'huge' | 'large' | 'grid', w: number, h: number, id: string) => {
-      if ((type === 'huge' && currentX > 0) || (itemsInCurrentRow >= rowMax && type !== 'huge')) {
-        currentX = 0;
-        currentY += maxRowH + gap;
-        itemsInCurrentRow = 0;
-        maxRowH = 0;
-      }
+    // 1. Viginti Blocks (Foundation tier - 1 per row, Full 636px Width)
+    this.vigintiMarbleBlocks().forEach((_, i) => {
+      list.push({ 
+        type: 'viginti', 
+        x: 0, 
+        y: currentY, 
+        width: vigintiSide, 
+        height: vigintiSide, 
+        id: `viginti-${i}` 
+      });
+      currentY += vigintiSide + gap;
+    });
 
-      list.push({ type, x: currentX, y: currentY, width: w, height: h, id });
-      
-      maxRowH = Math.max(maxRowH, h);
-      currentX += w + gap;
-      
-      if (type === 'huge') {
-        itemsInCurrentRow = rowMax; // Force wrap after huge
-      } else {
-        itemsInCurrentRow++;
+    // 2. Prepare Deca Cells (Max 2 per row in the 636px column)
+    const decaCells: RenderElement[][] = [];
+
+    // Real Deca blocks (100s)
+    this.decaMarbleBlocks().forEach((_, i) => {
+      decaCells.push([{
+        type: 'deca',
+        x: 0,
+        y: 0,
+        width: decaSide,
+        height: decaSide,
+        id: `deca-${i}`
+      }]);
+    });
+
+    // Sub-Cell: Penta/Grid
+    const smallItems: RenderElement[] = [];
+    let curSmallX = 0;
+    let curSmallY = 0;
+    let maxSmallRowH = 0;
+
+    const addSmall = (type: 'penta' | 'grid', w: number, h: number, id: string) => {
+      if (curSmallX > 0 && curSmallX + w > decaSide + 1) {
+        curSmallX = 0;
+        curSmallY += maxSmallRowH + gap;
+        maxSmallRowH = 0;
       }
+      smallItems.push({ type, x: curSmallX, y: curSmallY, width: w, height: h, id });
+      maxSmallRowH = Math.max(maxSmallRowH, h);
+      curSmallX += w + gap;
     };
 
-    // 1. Huge Blocks (Foundation)
-    this.hugeMarbleBlocks().forEach((_, i) => addItem('huge', hugeSide, hugeSide, `huge-${i}`));
-
-    // 2. Large Blocks
-    this.largeMarbleBlocks().forEach((_, i) => addItem('large', blockSide, blockSide, `large-${i}`));
-
-    // 3. Grid
-    if (this.showGrid() || this.simple()) {
-      const rows = this.marbleRows();
-      addItem('grid', blockSide, rows * 32 - 4, 'grid');
+    this.pentaMarbleBlocks().forEach((_, i) => addSmall('penta', blockSide, blockSide, `penta-${i}`));
+    if (showGrid) {
+      addSmall('grid', blockSide, this.marbleRows() * 32 - 4, 'grid');
     }
 
-    const totalH = Math.max(...list.map(e => e.y + e.height));
-    return list.map(el => ({ ...el, y: totalH - el.y - el.height }));
+    if (smallItems.length > 0) {
+      decaCells.push(smallItems);
+    }
+
+    // Wrap Deca cells into rows (max 2 per row) within the 636px column
+    const maxDecaPerRow = 2;
+    decaCells.forEach((cell, i) => {
+      const row = Math.floor(i / maxDecaPerRow);
+      const col = i % maxDecaPerRow;
+      const cellOffX = col * (decaSide + gap);
+      const cellOffY = currentY + row * (decaSide + gap);
+
+      cell.forEach(item => {
+        list.push({
+          ...item,
+          x: cellOffX + item.x,
+          y: cellOffY + item.y
+        });
+      });
+    });
+
+    // Flip coordinates for bottom-up growth
+    const totalH = Math.max(0, ...list.map(e => e.y + e.height));
+    return list.map(el => ({ ...el, y: totalH - el.y - el.height } as RenderElement));
   });
 
   totalSvgWidth = computed(() => {
-    const isWide = this.stackWidth() === 'wide';
-    return isWide ? this.size() * 64 - 4 : Math.max(this.size() * 32 - 4, 316);
+    const sw = this.stackWidth();
+    if (sw === 'wide') return 636;
+    return 316;
   });
 
   totalSvgHeight = computed(() => {

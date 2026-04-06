@@ -1,87 +1,92 @@
 <!-- src/app/components/marble-stack/marble-stack.component.html -->
-<svg
-  [attr.width]="totalSvgWidth()"
-  [attr.height]="totalSvgHeight()"
-  class="marble-mount overflow-visible"
-  (mouseleave)="onGridLeave()"
->
+<svg [attr.width]="totalSvgWidth()" [attr.height]="totalSvgHeight()" class="marble-mount overflow-visible"
+  (mouseleave)="onGridLeave()">
   @for (el of allElements(); track el.id; let idx = $index) {
-    @switch (el.type) {
-      @case ('large') {
-        <g
-          data-type="large"
-          class="interactive-element cursor-pointer group transition-transform active:scale-95"
-          role="button"
-          tabindex="0"
-          (mousedown)="$event.stopPropagation()"
-          (click)="onBlockClick(currentAccounted() + (el.id.split('-')[1] ? (+el.id.split('-')[1] + 1) : 1) * pageSize() - 1)"
-          (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + (el.id.split('-')[1] ? (+el.id.split('-')[1] + 1) : 1) * pageSize()))"
-          (mouseleave)="hideTooltip()"
-        >
-          <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="4"
-            [attr.fill]="colorPropsFull().val" />
+  @switch (el.type) {
+  @case ('viginti') {
+  <g data-type="viginti" class="interactive-element cursor-pointer group transition-transform active:scale-95"
+    role="button" tabindex="0" (mousedown)="$event.stopPropagation()"
+    (click)="onBlockClick(400 * (+el.id.split('-')[1] + 1) - 1)"
+    (mouseenter)="showTooltip($event, formatUSD(400 * (+el.id.split('-')[1] + 1)))" (mouseleave)="hideTooltip()">
+    <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="8"
+      [attr.fill]="colorPropsFull().val" />
 
-          @if (celebratingLargeBlockIdx() !== null && 'large-' + celebratingLargeBlockIdx() === el.id) {
-            <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
-              <div class="w-full h-full flex items-center justify-center pointer-events-none z-30" xmlns="http://www.w3.org/1999/xhtml">
-                <span class="celebrate-burst text-3xl select-none">🎉</span>
-              </div>
-            </foreignObject>
-          }
-        </g>
-      }
-      @case ('grid') {
-        <g data-type="grid" (mouseleave)="onGridLeave()">
-          @for (slot of gridSlots(); track slot.idx) {
-            <g class="interactive-element cursor-pointer group" [attr.transform]="'translate(' + el.x + ',' + el.y + ')'"
-              (mouseenter)="
+    @if (celebratingVigintiBlockIdx() !== null && 'viginti-' + celebratingVigintiBlockIdx() === el.id) {
+    <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
+      <div class="w-full h-full flex items-center justify-center pointer-events-none z-30"
+        xmlns="http://www.w3.org/1999/xhtml">
+        <span class="celebrate-burst text-7xl select-none">✨</span>
+      </div>
+    </foreignObject>
+    }
+  </g>
+  }
+  @case ('deca') {
+  <g data-type="deca" class="interactive-element cursor-pointer group transition-transform active:scale-95"
+    role="button" tabindex="0" (mousedown)="$event.stopPropagation()"
+    (click)="onBlockClick(100 * (+el.id.split('-')[1] + 1) - 1 + vigintiMarbleBlocksCount() * 400)"
+    (mouseenter)="showTooltip($event, formatUSD(100 * (+el.id.split('-')[1] + 1) + vigintiMarbleBlocksCount() * 400))"
+    (mouseleave)="hideTooltip()">
+    <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="6"
+      [attr.fill]="colorPropsFull().val" />
+
+    @if (celebratingDecaBlockIdx() !== null && 'deca-' + celebratingDecaBlockIdx() === el.id) {
+    <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
+      <div class="w-full h-full flex items-center justify-center pointer-events-none z-30"
+        xmlns="http://www.w3.org/1999/xhtml">
+        <span class="celebrate-burst text-5xl select-none">💯</span>
+      </div>
+    </foreignObject>
+    }
+  </g>
+  }
+  @case ('penta') {
+  <g data-type="penta" class="interactive-element cursor-pointer group transition-transform active:scale-95"
+    role="button" tabindex="0" (mousedown)="$event.stopPropagation()"
+    (click)="onBlockClick(currentAccounted() + (+el.id.split('-')[1] + 1) * pageSize() - 1)"
+    (mouseenter)="showTooltip($event, formatUSD(currentAccounted() + (+el.id.split('-')[1] + 1) * pageSize()))"
+    (mouseleave)="hideTooltip()">
+    <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="4"
+      [attr.fill]="colorPropsFull().val" />
+
+    @if (celebratingPentaBlockIdx() !== null && 'penta-' + celebratingPentaBlockIdx() === el.id) {
+    <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
+      <div class="w-full h-full flex items-center justify-center pointer-events-none z-30"
+        xmlns="http://www.w3.org/1999/xhtml">
+        <span class="celebrate-burst text-3xl select-none">🎉</span>
+      </div>
+    </foreignObject>
+    }
+  </g>
+  }
+  @case ('grid') {
+  <g data-type="grid" (mouseleave)="onGridLeave()">
+    @for (slot of gridSlots(); track slot.idx) {
+    <g class="interactive-element cursor-pointer group" [attr.transform]="'translate(' + el.x + ',' + el.y + ')'"
+      (mouseenter)="
                         onSlotEnter($event, slot);
                         showTooltip($event, formatUSD(getHoverValue($event, slot)))
                       " (mousemove)="onSlotMouseMove($event, slot)" (mousedown)="$event.stopPropagation()"
-              (click)="onSlotClick($event, slot)" (keydown.enter)="onSlotClick($event, slot)"
-              (mouseleave)="onGridLeave(); hideTooltip()">
-              <rect [attr.x]="slot.x" [attr.y]="slot.y" width="28" height="28" rx="2" [attr.fill]="getSlotFill(slot)"
-                class="transition-all duration-100" />
+      (click)="onSlotClick($event, slot)" (keydown.enter)="onSlotClick($event, slot)"
+      (mouseleave)="onGridLeave(); hideTooltip()">
+      <rect [attr.x]="slot.x" [attr.y]="slot.y" width="28" height="28" rx="2" [attr.fill]="getSlotFill(slot)"
+        class="transition-all duration-100" />
 
-              @if (isHalf(slot)) {
-                <rect [attr.x]="slot.x" [attr.y]="slot.y" width="28" height="28" rx="2" fill="rgba(249, 250, 251, 0.5)" />
-                <path [attr.d]="'M ' + slot.x + ' ' + slot.y + ' h 14 v 28 h -14 Z'" [attr.fill]="colorPropsFull().val" />
-              }
-
-              @if (isGhostInHoverRange(slot)) {
-                @let isPrimary = slot.idx === hoveredSlotIdx();
-                <rect [attr.x]="slot.x" [attr.y]="slot.y"
-                  [attr.width]="(hoveredIsHalf() && slot.idx === hoveredSlotIdx()) ? 14 : 28" height="28" rx="2"
-                  [attr.fill]="colorPropsFull().val" [attr.fill-opacity]="isPrimary ? 0.7 : 0.4"
-                  class="pointer-events-none" />
-              }
-            </g>
-          }
-        </g>
+      @if (isHalf(slot)) {
+      <rect [attr.x]="slot.x" [attr.y]="slot.y" width="28" height="28" rx="2" fill="rgba(249, 250, 251, 0.5)" />
+      <path [attr.d]="'M ' + slot.x + ' ' + slot.y + ' h 14 v 28 h -14 Z'" [attr.fill]="colorPropsFull().val" />
       }
-      @case ('huge') {
-        <g
-          data-type="huge"
-          class="interactive-element cursor-pointer group transition-transform active:scale-95"
-          role="button"
-          tabindex="0"
-          (mousedown)="$event.stopPropagation()"
-          (click)="onBlockClick(100 * (el.id.split('-')[1] ? (+el.id.split('-')[1] + 1) : 1) - 1)"
-          (mouseenter)="showTooltip($event, formatUSD(100 * (hugeMarbleBlocksCount() - (el.id.split('-')[1] ? +el.id.split('-')[1] : 0))))"
-          (mouseleave)="hideTooltip()"
-        >
-          <rect [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height" rx="6"
-            [attr.fill]="colorPropsFull().val" />
 
-          @if (celebratingHugeBlockIdx() !== null && 'huge-' + celebratingHugeBlockIdx() === el.id) {
-            <foreignObject [attr.x]="el.x" [attr.y]="el.y" [attr.width]="el.width" [attr.height]="el.height">
-              <div class="w-full h-full flex items-center justify-center pointer-events-none z-30" xmlns="http://www.w3.org/1999/xhtml">
-                <span class="celebrate-burst text-5xl select-none">💯</span>
-              </div>
-            </foreignObject>
-          }
-        </g>
+      @if (isGhostInHoverRange(slot)) {
+      @let isPrimary = slot.idx === hoveredSlotIdx();
+      <rect [attr.x]="slot.x" [attr.y]="slot.y"
+        [attr.width]="(hoveredIsHalf() && slot.idx === hoveredSlotIdx()) ? 14 : 28" height="28" rx="2"
+        [attr.fill]="colorPropsFull().val" [attr.fill-opacity]="isPrimary ? 0.7 : 0.4" class="pointer-events-none" />
       }
+    </g>
     }
+  </g>
+  }
+  }
   }
 </svg>

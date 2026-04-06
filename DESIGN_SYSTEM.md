@@ -312,20 +312,32 @@ The `.btn-dismiss` CSS utility class is the **single, canonical implementation**
 |---|---|
 | **Solid Marble** | Full opacity `marble-` variant · 2px radius (`rounded-[2px]`) |
 | **Inactive Marble** | 8% tint of `marble-` variant · Mixed with `--color-canvas` |
+
+## Marble Types
+| Element | Spec |
+|---|---|
 | **Half Marble** | Solid left half · Semi-transparent tinted background |
 | **Ghost Marble** | 40% translucent `marble-` variant · Animated overlay |
-| **Large Marble block** | Full opacity `marble-` variant · 4px radius (`rounded-[4px]`) · Light shadow |
-| **Huge Marble Block** | Full opacity `marble-` variant · 6px radius (`rounded-[6px]`) · Standard shadow |
+| **Deca Marble Block** | Full opacity `marble-` variant · 4px radius (`rounded-[4px]`) · Standard shadow |
+| **Penta Marble block** | Full opacity `marble-` variant · 4px radius (`rounded-[4px]`) · Light shadow |
+| **Tetraconta Marble Block** | Full opacity `marble-` variant · 8px radius (`rounded-[8px]`) · Standard shadow |
 
 ### Marble Growth & Progression
 
-Marbles and blocks follow a **Bottom-Left Progression** model. As a balance grows, new units are added in a way that grounds the component at its bottom edge and expands upwards.
+Marbles and blocks follow a **Bottom-Left Foundation** model. As a balance grows, new units are added in a way that grounds the component at its bottom edge and expands upwards.
 
-- **Stack Order (Vertical)**: Huge blocks (100s) form the base at the bottom. Large blocks (25s) stack above them. The active dynamic grid (remainder) always sits at the very top of the stack.
-- **Internal Direction**: 
-  - Within a row of blocks, items fill from **Left to Right**. 
-  - Within the dynamic grid, individual marbles fill from the **Bottom Row upwards**, starting from the Left.
-- **Wrapping**: When the component is "wide", blocks wrap upwards to form new rows.
+- **1x1**: Marble ($1 unit)
+- **5x5**: Penta Block (25 units)
+- **10x10**: Deca Block (100 units)
+- **20x20**: Viginti Block (400 units)
+
+The layout engine uses a hierarchical cellular packing system with specific density constraints:
+
+1. **Category Column ($636$px)**: The stack is contained within a $636$px wide vertical column.
+2. **Viginti Foundation ($20\times 20$)**: These solid blocks represent $400$ units and are restricted to **one per row**, spanning the full $636$px width of the column.
+3. **Deca Stacking ($10\times 10$)**: Above the Viginti foundation, Deca blocks wrap with a maximum of **two per row** inside the $636$px column.
+4. **Virtual Deca Cell ($316$px)**: Penta blocks and the active Dynamic Grid are nested within a $316$px virtual container (the footprint of a Deca block), ensuring smaller units are always contained in the virtual space of the immediate future bigger block.
+- **Wrapping**: Items fill their respective containers (Cells -> Columns -> Foundation) from left to right, bottom to top.
 
 ---
 
