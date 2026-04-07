@@ -38,14 +38,14 @@ import { PanelComponent } from './panel.component';
             >
               <div class="flex flex-col flex-1 order-1">
                 <!-- Timestamp header -->
-                <div class="flex items-center gap-1.5 mb-1.5 justify-start">
+                <time [attr.datetime]="item.timestamp | date: 'yyyy-MM-ddTHH:mm:ss'" class="flex items-center gap-1.5 mb-1.5 justify-start">
                   <span class="text-[10px] font-bold text-slate/30 tracking-wider uppercase">
                     {{ item.timestamp | date: 'h:mm a' }}
                   </span>
                   <span class="text-[10px] font-bold text-slate/20 hidden group-hover:block transition-all whitespace-nowrap uppercase">
                      • {{ item.timestamp | date: 'MMM d, y' }}
                   </span>
-                </div>
+                </time>
 
                 <div class="flex flex-col gap-0.5">
                   <span class="text-[15px] font-black text-slate/90 tracking-tight leading-tight">
