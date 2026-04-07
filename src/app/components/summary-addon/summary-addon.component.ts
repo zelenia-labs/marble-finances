@@ -3,12 +3,12 @@ import { DecimalPipe } from '@angular/common';
 import { FinanceStore, sumAssets, formatHumanUSD } from '../../store/finance.store';
 
 @Component({
-  selector: 'app-summary-panel',
+  selector: 'app-summary-addon',
   imports: [DecimalPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './summary-panel.component.html',
+  templateUrl: './summary-addon.component.html',
 })
-export class SummaryPanelComponent {
+export class SummaryAddonComponent {
   monthIndex = input.required<number>();
   liquidNetWorth = input<number>(0);
   mtm = input<number>(0);

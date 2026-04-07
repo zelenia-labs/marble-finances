@@ -9,6 +9,7 @@ import {
 import { DecimalPipe } from '@angular/common';
 import { FinanceStore } from '../../store/finance.store';
 import { TooltipService } from '../../services/tooltip.service';
+import { PanelComponent } from './panel.component';
 
 interface TimelineYear {
   year: string;
@@ -18,18 +19,15 @@ interface TimelineYear {
 }
 
 @Component({
-  selector: 'app-timeline-sidebar',
-  imports: [DecimalPipe],
+  selector: 'app-timeline-panel',
+  imports: [DecimalPipe, PanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav
-      class="fixed top-0 left-0 bottom-0 w-[280px] bg-white/90 backdrop-blur-xl flex flex-col px-8 pt-[120px] pb-8 overflow-y-auto z-100 custom-scrollbar border-r border-border-timeline shadow-[20px_0_40px_rgba(0,0,0,0.05)] transform transition-transform duration-300"
-      tabindex="-1"
-      aria-label="Portfolio Timeline"
-      (click)="$event.stopPropagation()"
-      (keydown)="$event.stopPropagation()"
-      [class.-translate-x-full]="!store.isTimelineOpen()"
-      [class.translate-x-0]="store.isTimelineOpen()"
+    <app-panel
+      [isOpen]="store.isTimelineOpen()"
+      [position]="'left'"
+      [width]="'320px'"
+      [ariaLabel]="'Portfolio Timeline'"
     >
       <ul class="flex flex-col gap-6 w-full relative list-none p-0 m-0">
         @for (grp of yearsGrouped(); track grp.year; let lastGrp = $last) {
@@ -123,18 +121,16 @@ interface TimelineYear {
           </li>
         }
       </ul>
-    </nav>
+    </app-panel>
   `,
-  styles: [
-    `
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-      }
-    `,
-  ],
+  styles: `
+    :host {
+      display: contents;
+    }
+  `,
 })
-export class TimelineSidebarComponent {
+export class TimelinePanelComponent {
+
   store = inject(FinanceStore);
   tooltip = inject(TooltipService);
 
@@ -219,3 +215,4 @@ export class TimelineSidebarComponent {
     this.jumpTo.emit(idx);
   }
 }
+

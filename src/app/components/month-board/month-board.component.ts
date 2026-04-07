@@ -5,14 +5,14 @@ import { FinanceStore } from '../../store/finance.store';
 import { ActionItemsComponent } from '../action-items/action-items.component';
 import { AssetCategoryComponent } from '../asset-category/asset-category.component';
 import { MonthlyCashFlowComponent } from '../monthly-cash-flow/monthly-cash-flow.component';
-import { SummaryPanelComponent } from '../summary-panel/summary-panel.component';
+import { SummaryAddonComponent } from '../summary-addon/summary-addon.component';
 
 @Component({
   selector: 'app-month-board',
   imports: [
     AssetCategoryComponent,
     MonthlyCashFlowComponent,
-    SummaryPanelComponent,
+    SummaryAddonComponent,
     ActionItemsComponent,
     DragDropModule,
   ],

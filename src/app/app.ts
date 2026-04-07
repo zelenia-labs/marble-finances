@@ -1,4 +1,4 @@
-import { DatePipe, DecimalPipe, NgOptimizedImage } from '@angular/common';
+import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,7 +20,8 @@ import { MonthBoardComponent } from './components/month-board/month-board.compon
 import { PortfolioChartsModalComponent } from './components/portfolio-charts-modal/portfolio-charts-modal.component';
 import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
 import { ModalComponent, ModalButton } from './components/modals/modal.component';
-import { TimelineSidebarComponent } from './components/timeline-sidebar/timeline-sidebar.component';
+import { TimelinePanelComponent } from './components/panel/timeline-panel.component';
+import { HistoryPanelComponent } from './components/panel/history-panel.component';
 import { TooltipService } from './services/tooltip.service';
 import { FinanceStore } from './store/finance.store';
 import { calculateCenteringCoordinates } from './utils/geometry.utils';
@@ -32,7 +33,8 @@ import { calculateCenteringCoordinates } from './utils/geometry.utils';
     AddAssetModalComponent,
     DeleteModalComponent,
     ForwardModalComponent,
-    TimelineSidebarComponent,
+    TimelinePanelComponent,
+    HistoryPanelComponent,
     MonthBoardComponent,
     PortfolioChartsModalComponent,
     SettingsModalComponent,
@@ -40,8 +42,8 @@ import { calculateCenteringCoordinates } from './utils/geometry.utils';
     ComparisonOverlayComponent,
     ModalComponent,
     DecimalPipe,
-    DatePipe,
   ],
+
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
   host: {

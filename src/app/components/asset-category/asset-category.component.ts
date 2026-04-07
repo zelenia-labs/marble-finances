@@ -100,7 +100,7 @@ export class AssetCategoryComponent {
     };
 
     // OPTIMISTIC UI: Apply locally immediately so the blocks change instantly
-    this.store.applyLocalUpdate(action, false);
+    this.store.executeForwardAction(action, false, false);
 
     // DEBOUNCE THE CASCADE PROMPT
     if (this.marbleTimeoutMap.has(action.targetId)) {

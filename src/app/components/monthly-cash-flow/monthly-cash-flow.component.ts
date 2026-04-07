@@ -125,7 +125,7 @@ export class MonthlyCashFlowComponent {
     };
 
     // OPTIMISTIC UI: Instant update for the blocks
-    this.store.applyLocalUpdate(action, false);
+    this.store.executeForwardAction(action, false, false);
 
     if (this.flowTimeoutMap.has(action.targetId)) {
       clearTimeout(this.flowTimeoutMap.get(action.targetId));

@@ -34,6 +34,8 @@ describe('App Component — Zoom Functionality', () => {
       isHistoryOpen: signal(false),
       isRevertModalOpen: signal(false),
       revertTarget: signal(null),
+      monthStats: signal(new Map()),
+      autoApplyForward: signal(false),
       setActiveTimelineIndex: vi.fn(),
       toggleTimeline: vi.fn(),
       toggleHistory: vi.fn(),
