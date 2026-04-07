@@ -21,23 +21,29 @@ import { PanelComponent } from './panel.component';
     >
       <ul class="relative list-none p-0 m-0">
         <!-- Vertical Version History Line (Symmetrical to Timeline, but on the right) -->
-        @if (store.changelogInverse().length > 0) {
-          <div class="absolute right-[17px] top-6 bottom-12 w-px bg-slate-300"></div>
-        }
 
-        @for (item of store.changelogInverse(); track item.id; let first = $first) {
+
+        @for (item of store.changelogInverse(); track item.id; let first = $first, last = $last) {
           <li class="relative group">
+            <!-- Connective Guide Line Segments (Gapless logic) -->
+            @if (!first) {
+              <div class="absolute right-[17px] top-0 h-[55px] w-px bg-slate-300"></div>
+            }
+            @if (!last) {
+              <div class="absolute right-[17px] top-[55px] bottom-0 w-px bg-slate-300"></div>
+            }
+
             <div
               class="w-full text-left pr-[14px] py-4 rounded-[28px] flex items-start gap-4 group relative border border-transparent transition-colors"
             >
               <div class="flex flex-col flex-1 order-1">
                 <!-- Timestamp header -->
-                <div class="flex items-center gap-1.5 mb-1.5 justify-end">
-                  <span class="text-[10px] font-bold text-slate/20 hidden group-hover:block transition-all whitespace-nowrap uppercase">
-                    {{ item.timestamp | date: 'MMM d, y' }} •
-                  </span>
+                <div class="flex items-center gap-1.5 mb-1.5 justify-start">
                   <span class="text-[10px] font-bold text-slate/30 tracking-wider uppercase">
                     {{ item.timestamp | date: 'h:mm a' }}
+                  </span>
+                  <span class="text-[10px] font-bold text-slate/20 hidden group-hover:block transition-all whitespace-nowrap uppercase">
+                     • {{ item.timestamp | date: 'MMM d, y' }}
                   </span>
                 </div>
 
@@ -54,7 +60,7 @@ import { PanelComponent } from './panel.component';
               </div>
 
               <!-- Right Visual Guide Column: Visual center at 17px from panel end -->
-              <div class="relative flex flex-col items-center shrink-0 w-1.5 mt-[2px] order-2">
+              <div class="relative flex flex-col items-center shrink-0 w-1.5 mt-[39px] order-2">
                 <!-- Revert Button: Exactly centered over the dot on hover -->
                 <button (click)="store.promptRevert(item)"
                   class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white border border-gray-200 text-slate/60 hover:text-white hover:bg-slate shadow-sm hover:shadow-lg z-30 transition-all opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-105 interactive-element appearance-none cursor-pointer"
@@ -69,7 +75,7 @@ import { PanelComponent } from './panel.component';
 
                 <!-- Static Indicator Dot (Gray by default, matches Timeline inactive state) -->
                 <div
-                  class="w-1.5 h-1.5 rounded-full bg-slate-300 z-10 transition-colors group-hover:opacity-0">
+                  class="w-1.5 h-1.5 rounded-full bg-slate-500 z-10 transition-colors group-hover:opacity-0">
                 </div>
               </div>
             </div>
@@ -91,7 +97,7 @@ import { PanelComponent } from './panel.component';
         }
       </ul>
       
-      <div footer class="pt-6 border-t border-gray-100 italic text-[11px] text-slate/30 font-medium leading-tight text-right">
+      <div footer class="pt-6 border-t border-gray-100 italic text-[11px] text-slate/30 font-medium leading-tight text-left">
         Version history is temporary and will be cleared if you refresh the page or close this tab.
       </div>
     </app-panel>
