@@ -1,14 +1,14 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  inject,
-  ElementRef,
-  AfterViewInit,
-  viewChild,
   computed,
+  ElementRef,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { FinanceStore } from '../../store/finance.store';
-import { ModalComponent, ModalButton } from '../modals/modal.component';
+import { ModalButton, ModalComponent } from '../modals/modal.component';
 
 @Component({
   selector: 'app-settings-modal',
@@ -123,8 +123,7 @@ export class SettingsModalComponent implements AfterViewInit {
   readonly marbleInput = viewChild.required<ElementRef<HTMLInputElement>>('marbleInput');
 
   settingsButtons = computed<ModalButton[]>(() => [
-    { label: 'Reset to Demo Data', type: 'danger', action: () => this.resetDemo() },
-    { label: 'Confirm Update', type: 'slate', action: () => this.close() }
+    { label: 'Update', type: 'slate', action: () => this.close() }
   ]);
 
   ngAfterViewInit() {
@@ -137,11 +136,6 @@ export class SettingsModalComponent implements AfterViewInit {
 
   close() {
     this.store.setSettingsOpen(false);
-  }
-
-  resetDemo() {
-    this.store.resetToDemoData();
-    this.close();
   }
 
   getMarbleValue(): number {

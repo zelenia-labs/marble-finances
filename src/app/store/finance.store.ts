@@ -214,9 +214,9 @@ export const FinanceStore = signalStore(
     unloadData() {
       persistence.unloadData();
       patchState(store, {
-        months: DEMO_DATA.months,
-        marbleMultiplier: DEMO_DATA.marbleMultiplier,
-        customColors: DEMO_DATA.customColors,
+        months: [],
+        marbleMultiplier: 1000,
+        customColors: [],
         changelog: []
       });
     },
@@ -291,15 +291,7 @@ export const FinanceStore = signalStore(
       });
     },
     setAutoApplyForward(val: boolean) { patchState(store, { autoApplyForward: val }); },
-    cancelForwardUpdate() { patchState(store, { forwardTarget: null }); },
-    resetToDemoData() {
-      patchState(store, {
-        months: DEMO_DATA.months,
-        marbleMultiplier: DEMO_DATA.marbleMultiplier,
-        customColors: DEMO_DATA.customColors,
-        changelog: []
-      });
-    },
+    cancelForwardUpdate() { patchState(store, { forwardTarget: null }); }
   })),
   // Block 2: Mutation Methods
   withMethods((store,
