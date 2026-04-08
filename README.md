@@ -6,13 +6,9 @@
 [![Signals](https://img.shields.io/badge/State-Signals-orange.svg?style=flat-square)](https://angular.dev/guide/signals)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
----
-
 ## 🟩 The Concept
 
 Inspired by our original FigJam board, it represents your portfolio as physical "marble stacks" on a canvas. This physical metaphor provides an immediate overview of asset distribution.
-
----
 
 ## ✨ Key Features
 
