@@ -14,10 +14,29 @@
       <!-- Slide 1: Composition Area Chart -->
       <div class="w-screen h-screen shrink-0 snap-start flex flex-col items-center justify-center p-20 pt-32 relative">
         <h3 class="text-slate/40 uppercase tracking-[0.3em] font-black text-sm mb-6">Portfolio Composition</h3>
-        <div class="w-full max-w-6xl h-[65vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 flex flex-col">
+        <div class="w-full max-w-6xl h-[70vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 pb-24 flex flex-col">
           @if (isReady()) {
-             <div class="flex-1 relative min-h-0">
+             <div class="flex-1 relative min-h-0" (mousemove)="handleMouseMove($event)" (mouseleave)="handleMouseLeave()">
                <canvas baseChart [data]="compositionData()" [type]="'line'" [options]="stackedOptions"></canvas>
+               
+               <!-- Multi-level Timeline Labels -->
+               <div class="absolute top-full left-0 w-full select-none cursor-default pointer-events-auto"
+                    (mousemove)="handleMouseMove($event)" (mouseleave)="handleMouseLeave()">
+                 <div class="flex items-start absolute top-[-1.5px]" 
+                       [style.left.px]="chartAreaSignal()?.left" 
+                       [style.width.px]="chartAreaSignal()?.width">
+                    @for (label of timelineLabels(); track label.index) {
+                       <div class="flex-1 flex flex-col items-center relative min-w-0">
+                          @if (label.isNewYear) {
+                             <div class="absolute top-0 left-0 w-px h-[42px] bg-asset-blue/20"></div>
+                             <div class="absolute top-[42px] left-[-4px] w-2.5 h-2.5 rounded-full bg-asset-blue/40"></div>
+                             <div class="absolute top-[36px] left-3 text-[18px] font-black text-slate tracking-tighter leading-none">{{ label.year }}</div>
+                          }
+                          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">{{ label.month }}</span>
+                       </div>
+                    }
+                 </div>
+               </div>
              </div>
           }
         </div>
@@ -46,10 +65,29 @@
               </div>
             </div>
         </div>
-        <div class="w-full max-w-6xl h-[60vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 flex flex-col">
+        <div class="w-full max-w-6xl h-[65vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 pb-24 flex flex-col">
           @if (isReady()) {
-             <div class="flex-1 relative min-h-0">
+             <div class="flex-1 relative min-h-0" (mousemove)="handleMouseMove($event)" (mouseleave)="handleMouseLeave()">
                <canvas baseChart [data]="projectionDataConfig()" [type]="'line'" [options]="lineOptions"></canvas>
+               
+               <!-- Timeline for Slide 2 -->
+               <div class="absolute top-full left-0 w-full select-none cursor-default pointer-events-auto"
+                    (mousemove)="handleMouseMove($event)" (mouseleave)="handleMouseLeave()">
+                 <div class="flex items-start absolute top-[-1.5px]"
+                      [style.left.px]="chartAreaSignal()?.left" 
+                      [style.width.px]="chartAreaSignal()?.width">
+                    @for (label of timelineLabels(); track label.index) {
+                       <div class="flex-1 flex flex-col items-center relative min-w-0">
+                          @if (label.isNewYear) {
+                             <div class="absolute top-0 left-0 w-px h-[42px] bg-emerald-400/20"></div>
+                             <div class="absolute top-[42px] left-[-4px] w-2.5 h-2.5 rounded-full bg-emerald-400/40"></div>
+                             <div class="absolute top-[36px] left-3 text-[18px] font-black text-slate tracking-tighter leading-none">{{ label.year }}</div>
+                          }
+                          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">{{ label.month }}</span>
+                       </div>
+                    }
+                 </div>
+               </div>
              </div>
           }
         </div>

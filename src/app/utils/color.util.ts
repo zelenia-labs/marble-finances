@@ -26,15 +26,13 @@ export const TAILWIND_COLOR_MAP: Record<string, string> = {
 
 export function getColorProps(color: string, type: 'full' | 'shadow' = 'full'): { cls: string; stl: string; val: string } {
     const isHex = color.startsWith('#');
-    
+
     // If it's a Tailwind-style class (e.g. bg-assetGreen, bg-flowOrange)
     if (!isHex && color.startsWith('bg-')) {
         const camelToKebab = (str: string) => str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
         const baseName = camelToKebab(color.replace('bg-', ''));
-        
         // Asset classes map to 'marble-' variants, flow classes use directly
         const varName = baseName.startsWith('asset') ? `marble-${baseName}` : baseName;
-        
         if (type === 'full') {
             const val = `var(--color-${varName})`;
             return {
@@ -106,4 +104,12 @@ export function hslToHex(h: number, s: number, l: number): string {
         return Math.round(255 * color).toString(16).padStart(2, '0');
     };
     return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
+
+/** Converts a 6-digit hex string to an rgba string with specified opacity */
+export function hexToRgba(hex: string, opacity: number): string {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }

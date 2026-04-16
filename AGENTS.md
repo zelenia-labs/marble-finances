@@ -18,6 +18,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use strict type checking
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
+  - Import and use specific types from third-party libraries (e.g., `ChartOptions`, `TooltipItem` from `chart.js`) instead of using `any`.
+  - If a type is fundamentally unknown, use `unknown` and implement type guards or narrowing before accessing properties.
+  - The `@typescript-eslint/no-explicit-any` rule is strictly enforced; usage of `any` will cause lint failures.
 
 ## Angular Best Practices
 
