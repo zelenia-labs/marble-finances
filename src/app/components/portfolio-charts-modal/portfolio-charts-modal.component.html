@@ -2,7 +2,7 @@
   <div class="fixed inset-0 z-200 bg-canvas/95 backdrop-blur-md flex flex-col items-center">
     <!-- Header -->
     <div class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-10 pointer-events-none">
-      <h2 class="text-slate text-3xl font-black tracking-tighter">Portfolio Analysis</h2>
+      <h2 class="text-slate text-3xl font-black">Portfolio Analysis</h2>
       <button (click)="close()" class="btn-dismiss interactive-element pointer-events-auto" aria-label="Close Portfolio Analysis">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
       </button>
@@ -13,7 +13,7 @@
       
       <!-- Slide 1: Composition Area Chart -->
       <div class="w-screen h-screen shrink-0 snap-start flex flex-col items-center justify-center p-20 pt-32 relative">
-        <h3 class="text-slate/40 uppercase tracking-[0.3em] font-black text-sm mb-6">Portfolio Composition</h3>
+        <h3 class="text-slate-500/60 uppercase tracking-[0.3em] font-black text-sm mb-6">Portfolio Composition</h3>
         <div class="w-full max-w-6xl h-[70vh] bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 pb-24 flex flex-col">
           @if (isReady()) {
              <div class="flex-1 relative min-h-0" (mousemove)="handleMouseMove($event)" (mouseleave)="handleMouseLeave()">
@@ -45,7 +45,7 @@
       <!-- Slide 2: Value & Projections -->
       <div class="w-screen h-screen shrink-0 snap-start flex flex-col items-center justify-center p-20 pt-32 relative">
          <div class="flex flex-col items-center gap-4 mb-6">
-            <h3 class="text-slate/40 uppercase tracking-[0.3em] font-black text-sm">Total Value & Projections</h3>
+            <h3 class="text-slate-500/60 uppercase tracking-[0.3em] font-black text-sm">Total Value & Projections</h3>
             <div class="flex gap-4 text-slate text-sm font-bold items-center bg-white px-5 py-2.5 rounded-full shadow-sm border border-gray-200">
               <div class="flex items-center gap-2">
                 <span class="text-xs uppercase tracking-widest text-gray-400">Low</span>
@@ -130,5 +130,23 @@
       [disabled]="activeIndex() === 1">
       <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"></path></svg>
     </button>
+
+    <!-- Custom HTML Tooltip -->
+    @if (activeTooltip(); as data) {
+      <div class="custom-tooltip" 
+           [style.left.px]="data.x" 
+           [style.top.px]="data.y - 10" 
+           [style.opacity]="data.opacity"
+           [style.transform]="data.side === 'right' ? 'translateX(-100%)' : 'none'">
+        <div class="tooltip-title">{{ data.title }}</div>
+        @for (item of data.items; track item.label) {
+          <div class="tooltip-item" [class.active]="data.items.length > 1 && item.label === focusedLabel()">
+            <div class="tooltip-color" [style.backgroundColor]="item.color"></div>
+            <span class="tooltip-label">{{ item.label }}</span>
+            <span class="tooltip-value">{{ item.value }}</span>
+          </div>
+        }
+      </div>
+    }
   </div>
 }

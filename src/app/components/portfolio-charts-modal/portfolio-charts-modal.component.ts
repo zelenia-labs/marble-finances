@@ -1,8 +1,60 @@
-import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, signal, viewChild, viewChildren } from '@angular/core';
-import { ChartConfiguration, ChartDataset, ChartOptions, TooltipItem, ScriptableContext, ActiveElement } from 'chart.js';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, viewChild, viewChildren } from '@angular/core';
+import { Chart, ChartConfiguration, ChartDataset, ChartOptions, TooltipItem, ScriptableContext, ActiveElement, Tooltip, TooltipModel } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { FinanceStore } from '../../store/finance.store';
 import { hexToRgba } from '../../utils/color.util';
+
+declare module 'chart.js' {
+  interface TooltipPositionerMap {
+    anchorTop: (items: readonly ActiveElement[], eventPosition: { x: number; y: number }) => { x: number; y: number } | false;
+  }
+}
+
+interface InternalChartElement {
+  x: number;
+  y: number;
+  $context: {
+    chart: Chart;
+    dataset: { label: string };
+  };
+}
+
+export interface CustomTooltipItem {
+  label: string;
+  value: string;
+  color: string;
+  raw: unknown;
+}
+
+export interface CustomTooltipData {
+  title: string;
+  items: CustomTooltipItem[];
+  x: number;
+  y: number;
+  opacity: number;
+  side: 'left' | 'right';
+}
+
+// Register custom tooltip positioner to anchor exactly at the top dot with a 14px gap
+Tooltip.positioners.anchorTop = function (items: readonly ActiveElement[]) {
+  if (items.length === 0) return false;
+  const top = items.reduce((prev, curr) => {
+    const prevY = (prev.element as unknown as InternalChartElement).y;
+    const currY = (curr.element as unknown as InternalChartElement).y;
+    return currY < prevY ? curr : prev;
+  });
+
+  // Access internal context safely through our transition interface
+  const element = top.element as unknown as InternalChartElement;
+  const { x, y } = element;
+  const chart = element.$context.chart;
+
+  const isRightHalf = x > (chart.chartArea.left + chart.chartArea.width / 2);
+  return {
+    x: x + (isRightHalf ? -14 : 14), // 14px horizontal gap (increased from 10px)
+    y: y
+  };
+};
 
 @Component({
   selector: 'app-portfolio-charts-modal',
@@ -18,6 +70,8 @@ export class PortfolioChartsModalComponent {
   activeIndex = signal(0);
   isReady = signal(false);
   chartAreaSignal = signal<{ left: number, width: number } | null>(null);
+  activeTooltip = signal<CustomTooltipData | null>(null);
+  focusedLabel = signal<string>('');
   isOpen = this.store.isChartsModalOpen;
 
   lowerBound = signal(2); // 2%
@@ -35,28 +89,17 @@ export class PortfolioChartsModalComponent {
   public stackedOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
+    events: [], // Disable internal interactions to allow custom manual tooltip anchoring
     layout: {
       padding: { bottom: 0, left: 0, right: 0, top: 0 }
     },
     plugins: {
       tooltip: {
+        enabled: false,
+        external: (context: { chart: Chart; tooltip: TooltipModel<'line'> }) => this.handleExternalTooltip(context),
+        position: 'anchorTop',
         mode: 'index',
         intersect: false,
-        usePointStyle: true,
-        padding: 12,
-        cornerRadius: 12,
-        boxPadding: 4,
-        boxWidth: 8,
-        boxHeight: 8,
-        callbacks: {
-          labelColor: (context: TooltipItem<'line'>) => {
-            return {
-              borderColor: '#fff',
-              backgroundColor: (context.dataset.borderColor as string) || '#000',
-              borderWidth: 2.5
-            };
-          }
-        }
       },
       legend: { display: false }
     },
@@ -92,28 +135,17 @@ export class PortfolioChartsModalComponent {
   public lineOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
+    events: [],
     layout: {
       padding: { bottom: 0, left: 0, right: 0, top: 0 }
     },
     plugins: {
       tooltip: {
+        enabled: false,
+        external: (context: { chart: Chart; tooltip: TooltipModel<'line'> }) => this.handleExternalTooltip(context),
+        position: 'anchorTop',
         mode: 'index',
         intersect: false,
-        usePointStyle: true,
-        padding: 12,
-        cornerRadius: 12,
-        boxPadding: 4,
-        boxWidth: 8,
-        boxHeight: 8,
-        callbacks: {
-          labelColor: (context: TooltipItem<'line'>) => {
-            return {
-              borderColor: '#fff',
-              backgroundColor: (context.dataset.borderColor as string) || '#000',
-              borderWidth: 2.5
-            };
-          }
-        }
       },
       legend: { display: false }
     },
@@ -128,9 +160,10 @@ export class PortfolioChartsModalComponent {
       }
     },
     elements: {
+      line: { tension: 0.4, borderWidth: 2 },
       point: {
         radius: 0,
-        hitRadius: 10,
+        borderWidth: 2,
         hoverRadius: 6,
         hoverBorderWidth: 0,
         hoverBackgroundColor: (ctx: ScriptableContext<'line'>) => ctx.dataset.borderColor as string,
@@ -144,203 +177,141 @@ export class PortfolioChartsModalComponent {
     },
   };
 
-  compositionData = computed<ChartConfiguration<'line'>['data']>(() => {
-    const rawData = this.store.chartData();
-    const datasets = (rawData.compositionDatasets as ChartDataset<'line'>[]).map(ds => ({
-      ...ds,
-      backgroundColor: (context: ScriptableContext<'line'>) => {
-        const chart = context.chart;
-        const { ctx, chartArea } = chart;
-        if (!chartArea) return 'transparent';
-        const color = ds.borderColor as string;
-        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        // Calibrated gradient: 30% at top to 5% at bottom for consistent visibility
-        gradient.addColorStop(0, hexToRgba(color, 0.3));
-        gradient.addColorStop(1, hexToRgba(color, 0.05));
-        return gradient;
-      }
-    }));
-    return {
-      labels: rawData.labels,
-      datasets
-    };
-  });
-
   timelineLabels = computed(() => {
-    const labels = this.store.chartData().labels;
-    return labels.map((l, i) => {
-      const parts = l.trim().split(' ');
-      const month = parts[0];
-      const year = parts[1];
-      const prev = i > 0 ? labels[i - 1].trim().split(' ')[1] : null;
+    const months = this.store.months();
+    const futureCount = this.futureMonths();
+    const lastMonth = months[months.length - 1];
+    
+    // Create extended timeline labels
+    const labels = months.map((m, i) => {
+      const date = new Date(m.date);
       return {
-        month: month.substring(0, 3),
-        year: year,
-        isNewYear: year !== prev,
+        month: date.toLocaleString('default', { month: 'short' }),
+        year: date.getFullYear(),
+        isNewYear: date.getMonth() === 0 || i === 0,
         index: i
       };
     });
+
+    // Add future months
+    const lastDate = new Date(lastMonth.date);
+    for (let i = 1; i <= futureCount; i++) {
+        const date = new Date(lastDate.getFullYear(), lastDate.getMonth() + i);
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        labels.push({
+            month: date.toLocaleString('default', { month: 'short' }),
+            year: year,
+            isNewYear: month === 0,
+            index: months.length + i - 1
+        });
+    }
+
+    return labels;
+  });
+
+  compositionData = computed<ChartConfiguration<'line'>['data']>(() => {
+    const data = this.store.chartData();
+    return {
+      labels: data.labels,
+      datasets: (data.compositionDatasets as ChartDataset<'line'>[]).map((ds, i) => ({
+        ...ds,
+        fill: i === 0 ? 'origin' : '-1',
+        pointHoverBackgroundColor: ds.borderColor,
+        pointHoverBorderColor: ds.borderColor,
+      }))
+    };
   });
 
   projectionDataConfig = computed<ChartConfiguration<'line'>['data']>(() => {
-    const baseData = this.store.chartData().totalValueData;
-    const labels = [...this.store.chartData().labels];
-    const dataSize = baseData.length;
+    const months = this.store.months();
+    const lowerRate = this.lowerBound() / 100;
+    const upperRate = this.upperBound() / 100;
+    const futureCount = this.futureMonths();
 
-    // Create base historic series
-    const historicData = [...baseData];
-    const lowerProjData: (number | null)[] = Array(dataSize).fill(null);
-    const upperProjData: (number | null)[] = Array(dataSize).fill(null);
+    const lastTotalValue = months[months.length - 1].assetCategories.reduce((sum, cat) => 
+        sum + cat.assets.reduce((s, a) => s + a.val, 0), 0
+    );
 
-    if (dataSize > 0) {
-      const lastVal = baseData[dataSize - 1];
+    const labels = this.timelineLabels().map(m => `${m.month} ${m.year}`);
+    
+    // Historical data
+    const historical = months.map(m => m.assetCategories.reduce((sum, cat) => 
+        sum + cat.assets.reduce((s, a) => s + a.val, 0), 0
+    ));
 
-      // Link the lines seamlessly
-      lowerProjData[dataSize - 1] = lastVal;
-      upperProjData[dataSize - 1] = lastVal;
+    // Projections
+    const lower = [...historical];
+    const upper = [...historical];
+    const current = [...historical];
 
-      let prevLower = lastVal;
-      let prevUpper = lastVal;
-
-      // Generate future labels beautifully aligned with actual months
-      const lastLabel = labels[labels.length - 1]; // e.g. "Mar 2025"
-      const parts = lastLabel.trim().split(' ');
-      const mStr = parts[0];
-      let yNum = parseInt(parts[1], 10);
-      const monthNames = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ];
-      let mIdx = monthNames.findIndex((m) => m.toLowerCase().includes(mStr.toLowerCase()));
-      if (mIdx === -1) mIdx = 0;
-
-      for (let i = 1; i <= this.futureMonths(); i++) {
-        if (mIdx === 11) {
-          mIdx = 0;
-          yNum++;
-        } else {
-          mIdx++;
-        }
-        labels.push(monthNames[mIdx] + ' ' + yNum);
-
-        prevLower = prevLower * (1 + this.lowerBound() / 100);
-        prevUpper = prevUpper * (1 + this.upperBound() / 100);
-        (historicData as (number | null)[]).push(null);
-        lowerProjData.push(prevLower);
-        upperProjData.push(prevUpper);
-      }
+    for (let i = 1; i <= futureCount; i++) {
+        const factor = i / 12;
+        lower.push(lastTotalValue * Math.pow(1 + lowerRate, factor));
+        upper.push(lastTotalValue * Math.pow(1 + upperRate, factor));
+        current.push(lastTotalValue);
     }
 
     return {
       labels,
       datasets: [
         {
-          label: 'Total Value',
-          data: historicData as (number | null)[],
-          borderColor: PortfolioChartsModalComponent.COLOR_POSITIVE,
-          backgroundColor: (context: ScriptableContext<'line'>) => {
-            const chart = context.chart;
-            const { ctx, chartArea } = chart;
-            if (!chartArea) return 'transparent';
-            const color = PortfolioChartsModalComponent.COLOR_POSITIVE;
-            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-            gradient.addColorStop(0, hexToRgba(color, 0.3));
-            gradient.addColorStop(1, hexToRgba(color, 0.05));
-            return gradient;
-          },
-          borderWidth: 2,
-          tension: 0.1,
-          fill: true,
+          label: 'Upper Bound',
+          data: upper,
+          borderColor: '#10B981',
+          backgroundColor: hexToRgba('#10B981', 0.1),
+          fill: 2, // Fill to Lower Bound
+          pointStyle: false,
         } as ChartDataset<'line'>,
         {
-          label: 'Lower Bound (+' + this.lowerBound() + '%) ',
-          data: lowerProjData as (number | null)[],
-          borderColor: PortfolioChartsModalComponent.COLOR_NEGATIVE,
-          borderDash: [5, 5],
+          label: 'Lower Bound',
+          data: lower,
+          borderColor: '#F43F5E',
           backgroundColor: 'transparent',
-          borderWidth: 2,
-          tension: 0.1,
+          fill: false,
+          pointStyle: false,
         } as ChartDataset<'line'>,
         {
-          label: 'Upper Bound (+' + this.upperBound() + '%) ',
-          data: upperProjData as (number | null)[],
-          borderColor: PortfolioChartsModalComponent.COLOR_ACCENT,
+          label: 'Current Value',
+          data: current,
+          borderColor: '#64748B',
           borderDash: [5, 5],
           backgroundColor: 'transparent',
-          borderWidth: 2,
-          tension: 0.1,
+          fill: false,
+          pointStyle: false,
         } as ChartDataset<'line'>,
-      ],
+      ]
     };
   });
 
-  constructor() {
-    effect(() => {
-      if (this.isOpen()) {
-        this.activeIndex.set(0);
-        setTimeout(() => this.isReady.set(true), 50);
-      } else {
-        this.isReady.set(false);
-      }
-    });
+  onScroll(event: Event) {
+    const el = event.target as HTMLDivElement;
+    const index = Math.round(el.scrollLeft / window.innerWidth);
+    this.activeIndex.set(index);
   }
 
-  open() {
-    this.store.toggleCharts(true);
+  scrollTo(index: number) {
+    const el = this.carouselContainer().nativeElement;
+    el.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
+  }
+
+  next() {
+    if (this.activeIndex() < 1) this.scrollTo(this.activeIndex() + 1);
+  }
+
+  prev() {
+    if (this.activeIndex() > 0) this.scrollTo(this.activeIndex() - 1);
   }
 
   close() {
     this.store.toggleCharts(false);
   }
 
-  onScroll(e: Event) {
-    const target = e.target as HTMLDivElement;
-    const index = Math.round(target.scrollLeft / window.innerWidth);
-    if (this.activeIndex() !== index) {
-      this.activeIndex.set(index);
-    }
-  }
-
-  scrollTo(index: number) {
-    const carouselContainer = this.carouselContainer();
-    if (carouselContainer) {
-      carouselContainer.nativeElement.scrollTo({
-        left: window.innerWidth * index,
-        behavior: 'smooth',
-      });
-    }
-  }
-
-  next() {
-    this.scrollTo(Math.min(this.activeIndex() + 1, 1));
-  }
-
-  prev() {
-    this.scrollTo(Math.max(this.activeIndex() - 1, 0));
-  }
-
-  /**
-   * Manual interaction handler to bridge labels -> chart tooltip.
-   * Uses the X-axis scale directly to find the nearest month index, 
-   * bypassing Chart.js's internal chartArea boundary checks.
-   */
   handleMouseMove(event: MouseEvent) {
     const currentChart = this.charts()[this.activeIndex()];
     if (!currentChart?.chart) return;
 
     const chart = currentChart.chart;
-
-    // Update chart area layout info for timeline alignment
     if (chart.chartArea) {
       this.chartAreaSignal.set({
         left: chart.chartArea.left,
@@ -380,13 +351,15 @@ export class PortfolioChartsModalComponent {
       if (elements.length > 0) {
         chart.setActiveElements(elements);
 
-        // Force tooltip at the cursor horizontal position, 
-        // anchored vertically within the chart area even if hovering labels.
-        const chartArea = chart.chartArea;
-        const tooltipY = Math.max(chartArea.top, Math.min(chartArea.bottom - 5, relativeY)) as number;
-        const tx = relativeX as number;
+        // Find specific focus for highlight
+        const nearest = elements.reduce((prev, curr) => {
+          const prevY = (prev.element as unknown as InternalChartElement).y;
+          const currY = (curr.element as unknown as InternalChartElement).y;
+          return Math.abs(currY - relativeY) < Math.abs(prevY - relativeY) ? curr : prev;
+        });
+        this.focusedLabel.set((nearest.element as unknown as InternalChartElement).$context.dataset.label || '');
 
-        chart.tooltip?.setActiveElements(elements, { x: tx, y: tooltipY });
+        // Position is now handled by the custom 'anchorTop' positioner
         chart.update('none'); // Update view without animation
       }
     }
@@ -397,8 +370,39 @@ export class PortfolioChartsModalComponent {
     if (!currentChart?.chart) return;
 
     currentChart.chart.setActiveElements([]);
-    currentChart.chart.tooltip?.setActiveElements([], { x: 0, y: 0 });
     currentChart.chart.update('none');
+  }
+
+  handleExternalTooltip(context: { chart: Chart; tooltip: TooltipModel<'line'> }) {
+    const { chart, tooltip } = context;
+    if (tooltip.opacity === 0) {
+      this.activeTooltip.set(null);
+      return;
+    }
+
+    const title = tooltip.title?.[0] || '';
+    const items: CustomTooltipItem[] = tooltip.dataPoints
+      .map((dp: TooltipItem<'line'>) => {
+        const color = (dp.dataset.borderColor as string) || '#000';
+        const label = dp.dataset.label || '';
+        const value = dp.formattedValue || '';
+        const raw = dp.raw;
+        return { label, value, color, raw };
+      })
+      .filter((item: CustomTooltipItem) => item.raw !== null && item.raw !== undefined)
+      .reverse(); // Reverse list to match the visual 'Top-to-Bottom' stack of the chart
+
+    const rect = chart.canvas.getBoundingClientRect();
+    const side = tooltip.caretX > (chart.chartArea.left + chart.chartArea.width / 2) ? 'right' : 'left';
+
+    this.activeTooltip.set({
+      title,
+      items,
+      x: rect.left + tooltip.caretX,
+      y: rect.top + tooltip.caretY,
+      opacity: tooltip.opacity,
+      side
+    });
   }
 
   updateInput(field: 'lowerBound' | 'upperBound' | 'futureMonths', e: Event) {

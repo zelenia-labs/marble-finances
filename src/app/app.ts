@@ -499,7 +499,7 @@ export class App implements OnDestroy {
   }
 
   openVisualizeModal() {
-    this.chartsModal()?.open();
+    this.store.toggleCharts(true);
   }
 
   openSettings() {

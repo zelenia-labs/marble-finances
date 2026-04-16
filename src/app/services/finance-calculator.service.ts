@@ -116,7 +116,7 @@ export class FinanceCalculatorService {
       });
     });
 
-    const compositionDatasets = Array.from(categoryMap.entries()).map(([key, info]) => {
+    const compositionDatasets = Array.from(categoryMap.entries()).map(([key, info], i) => {
       const data = months.map((m) => {
         const cat = m.assetCategories.find((c) => c.label.toLowerCase().trim() === key);
         return cat ? cat.assets.reduce((sum, a) => sum + a.val, 0) : 0;
@@ -124,12 +124,9 @@ export class FinanceCalculatorService {
       return {
         label: info.label,
         data,
-        stack: 'a',
-        fill: true,
+        fill: i === 0 ? 'origin' : '-1', // Explicitly fill to previous dataset
         backgroundColor: info.color,
         borderColor: info.color,
-        borderWidth: 1,
-        pointRadius: 2,
         tension: 0.4,
       };
     });
@@ -141,9 +138,8 @@ export class FinanceCalculatorService {
         data: totalValueData,
         borderColor: '#10B981',
         backgroundColor: 'rgba(16, 185, 129, 0.2)',
-        borderWidth: 2,
         tension: 0.1,
-        fill: true,
+        fill: 'origin',
       },
     ];
 

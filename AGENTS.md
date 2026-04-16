@@ -1,5 +1,13 @@
 You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
+## Development Environment
+
+- The AI's sandbox environment strictly blocks direct execution of NVM-managed node binaries (e.g., in `~/.nvm`) due to macOS sandbox constraints. 
+- **DO NOT** attempt to run `pnpm`, `npm`, `node`, or modify the `PATH` inside the sandbox to bypass this.
+- If a task requires a build, lint, or test check, you **MUST** ask the USER to run the command (e.g., `pnpm run build`) in their own local terminal.
+- Instruct the user to use pnpm instead of npm.
+
+
 ## Security rules
 
 - Never use ^ or ~ in dependency version specifiers. Always pin exact versions.
@@ -8,10 +16,8 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - New package versions must be at least 1 day old before they can be installed (release age gating is enabled).
 - When adding a dependency, verify it on npmjs.com before installing.
 - Prefer well-maintained packages with verified publishers and provenance.
-- Run pnpm install with the lockfile present — never bypass it.
 - Do not add git-based or tarball URL dependencies unless explicitly approved.
 - Do not run npm update, npx npm-check-updates, or any blind upgrade command. Review each update individually.
-- Use deterministic installs: prefer pnpm install --frozen-lockfile over pnpm install in CI and scripts.
 
 ## TypeScript Best Practices
 
@@ -77,5 +83,3 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - When adding new features, add comprehensive unit tests that cover core logic and edge cases.
 - Use `By.css` to verify the presence and styling of critical UI elements.
 - For interactive components, simulate user actions (click, hover, keyboard) and verify the expected state changes.
-
-

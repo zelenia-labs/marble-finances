@@ -1,8 +1,84 @@
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.custom-tooltip {
+  pointer-events: none;
+  position: fixed;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(0, 0, 0, 0.05);
+  transition: opacity 0.1s ease;
+  min-width: 200px;
+}
+
+.tooltip-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 10px;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.tooltip-item.active {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.tooltip-color {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.tooltip-item.active .tooltip-color {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+}
+
+.tooltip-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  flex: 1;
+  transition: color 0.2s ease;
+}
+
+.tooltip-item.active .tooltip-label {
+  color: #1e293b;
+}
+
+.tooltip-value {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.2s ease;
+}
+
+.tooltip-item.active .tooltip-value {
+  transform: translateX(-2px);
 }
