@@ -189,6 +189,7 @@ export class App implements OnDestroy {
   isCanvasReady = signal<boolean>(false);
   isAnimatingPan = signal<boolean>(false);
   isZoomControlsVisible = signal<boolean>(false);
+  isOverflowOpen = signal<boolean>(false);
 
   private zoomTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -471,6 +472,12 @@ export class App implements OnDestroy {
   onDocumentClick() {
     if (this.store.activeMenuId()) this.store.setActiveMenuId(null);
     if (this.store.isTimelineOpen()) this.store.toggleTimeline();
+    if (this.isOverflowOpen()) this.isOverflowOpen.set(false);
+  }
+
+  toggleOverflow(evt: Event) {
+    evt.stopPropagation();
+    this.isOverflowOpen.update((v) => !v);
   }
 
   toggleTimeline(evt: Event) {
