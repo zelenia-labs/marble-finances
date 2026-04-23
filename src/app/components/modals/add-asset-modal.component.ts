@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   computed,
   viewChild,
+  untracked,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -58,10 +59,10 @@ export class AddAssetModalComponent {
     ];
   });
 
-  readonly colorCanvas = viewChild.required<ElementRef<HTMLCanvasElement>>('colorCanvas');
-  readonly wheelContainer = viewChild.required<ElementRef<HTMLDivElement>>('wheelContainer');
-  readonly nameInput = viewChild.required<ElementRef<HTMLInputElement>>('nameInput');
-  readonly otherInput = viewChild.required<ElementRef<HTMLInputElement>>('otherInput');
+  readonly colorCanvas = viewChild<ElementRef<HTMLCanvasElement>>('colorCanvas');
+  readonly wheelContainer = viewChild<ElementRef<HTMLDivElement>>('wheelContainer');
+  readonly nameInput = viewChild<ElementRef<HTMLInputElement>>('nameInput');
+  readonly otherInput = viewChild<ElementRef<HTMLInputElement>>('otherInput');
 
   targetX = signal<number>(80);
   targetY = signal<number>(80);
@@ -91,25 +92,38 @@ export class AddAssetModalComponent {
   });
 
   constructor() {
+    // 1. Initial Reset Effect - only triggers when modal opens/closes or type changes
     effect(() => {
-      if (this.store.isAddModalOpen() && this.store.addModalMode() === 'palette') {
-        this.assetName = '';
-        this.assetAmount = null;
-        // Auto-focus the name field for quick entry
-        setTimeout(() => this.nameInput()?.nativeElement?.focus(), 80);
-      }
-      if (this.store.isAddModalOpen()) {
-        if (this.store.addModalType() === 'flow-expense') {
-          this.flowCategory = 'fixed';
-          this.customFlowCategory = '';
+      const isOpen = this.store.isAddModalOpen();
+      const type = this.store.addModalType();
+      
+      untracked(() => {
+        if (isOpen) {
+          if (this.store.addModalMode() === 'palette') {
+            this.assetName = '';
+            this.assetAmount = null;
+            setTimeout(() => this.nameInput()?.nativeElement?.focus(), 80);
+          }
+          if (type === 'flow-expense') {
+            this.flowCategory = 'fixed';
+            this.customFlowCategory = '';
+          }
+          if (type === 'flow-savings') {
+            this.flowCategory = 'general';
+            this.customFlowCategory = '';
+          }
+          this.cdr.markForCheck();
         }
-        if (this.store.addModalType() === 'flow-savings') {
-          this.flowCategory = 'general';
-          this.customFlowCategory = '';
-        }
-        this.cdr.markForCheck();
+      });
+    });
 
-        if (this.store.addModalMode() === 'custom') {
+    // 2. Custom Color Wheel Initialization Hook
+    effect(() => {
+      const isOpen = this.store.isAddModalOpen();
+      const mode = this.store.addModalMode();
+      
+      untracked(() => {
+        if (isOpen && mode === 'custom') {
           setTimeout(() => {
             if (this.colorCanvas()) {
               this.initColorWheel();
@@ -117,8 +131,15 @@ export class AddAssetModalComponent {
             }
           }, 50);
         }
-      }
+      });
     });
+
+  }
+
+  preventInvalidChars(event: KeyboardEvent) {
+    if (['e', 'E', '+', '-'].includes(event.key)) {
+      event.preventDefault();
+    }
   }
 
   getPaletteClass(color: string): string {
@@ -130,15 +151,34 @@ export class AddAssetModalComponent {
     return base + ' hover:scale-110 opacity-70 hover:opacity-100';
   }
 
-  openCustom() {
-    this.store.setAddModalMode('custom');
+  selectColor(col: string) {
+    this.store.selectColorRef(col);
+    this.cdr.detectChanges();
   }
 
-  initColorWheel() {
-    const canvas = this.colorCanvas().nativeElement;
+  confirmCustomColor() {
+    this.store.confirmCustomColor();
+    this.cdr.detectChanges();
+  }
+
+  openCustom() {
+    this.store.setAddModalMode('custom');
+    this.cdr.detectChanges();
+  }
+
+  initColorWheel(retries: number = 3) {
+    const canvas = this.colorCanvas()?.nativeElement;
+    if (!canvas) {
+      if (retries > 0) {
+        setTimeout(() => { this.initColorWheel(retries - 1); }, 50);
+      }
+      return;
+    }
     const radius = 80;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     for (let angle = 0; angle <= 360; angle++) {
       const startAngle = ((angle - 1) * Math.PI) / 180;
@@ -161,11 +201,18 @@ export class AddAssetModalComponent {
   }
 
   handleInteract(e: MouseEvent | TouchEvent) {
-    if (e.type === 'mousedown' || e.type === 'touchstart') this.isDragging = true;
-    if (!this.isDragging && e.type !== 'click') return;
+    if (e.type === 'mousedown' || e.type === 'touchstart') {
+      this.isDragging = true;
+    }
+    if (!this.isDragging && e.type !== 'click') {
+      return;
+    }
     e.preventDefault();
 
-    const container = this.wheelContainer().nativeElement;
+    const container = this.wheelContainer()?.nativeElement;
+    if (!container) {
+      return;
+    }
     const rect = container.getBoundingClientRect();
     const clientX = 'touches' in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
@@ -181,7 +228,9 @@ export class AddAssetModalComponent {
     }
 
     let angle = Math.atan2(y, x);
-    if (angle < 0) angle += 2 * Math.PI;
+    if (angle < 0) {
+      angle += 2 * Math.PI;
+    }
     const hue = Math.round((angle * 180) / Math.PI);
     const sat = Math.round((Math.min(distance, radius) / radius) * 100);
 
@@ -190,6 +239,7 @@ export class AddAssetModalComponent {
 
     this.targetX.set(x + radius);
     this.targetY.set(y + radius);
+    this.cdr.markForCheck();
   }
 
   // Handle outside events

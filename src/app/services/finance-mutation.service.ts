@@ -59,9 +59,9 @@ export class FinanceMutationService {
       }
     } else if (action.type === 'addCategory') {
       if (isCascade) {
-        months[idx].assetCategories.unshift(structuredClone(action.value as AssetCategory));
+        months[idx].assetCategories.push(structuredClone(action.value as AssetCategory));
       } else {
-        months[idx].assetCategories.splice(action.idx, 0, action.value as AssetCategory);
+        months[idx].assetCategories.push(action.value as AssetCategory);
       }
     } else if (action.type === 'addAsset') {
       const asset = isCascade
@@ -72,7 +72,7 @@ export class FinanceMutationService {
       if (isCascade) {
         months[idx].flow.push(structuredClone(action.value as CashFlowItem));
       } else {
-        months[idx].flow.splice(action.idx, 0, action.value as CashFlowItem);
+        months[idx].flow.push(action.value as CashFlowItem);
       }
     } else if (action.type === 'deleteCategory') {
       months[idx].assetCategories = months[idx].assetCategories.filter(

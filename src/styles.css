@@ -12,6 +12,28 @@
   --color-flow-orange: #FF7E7E;    /* Expenses Red/Pink */
   --color-flow-blue: #4AB1FF;      /* Salary/Income Blue */
   
+  /* Primary Asset Colors (Legacy Fallbacks) */
+  --color-asset-green-val: #52CB6C;    
+  --color-asset-purple-val: #67A2F9;   
+  --color-asset-blue-val: #C380F5;     
+  --color-asset-cyan-val: #707AFF;     
+  --color-asset-orange-val: #F89160;   
+  --color-asset-sand-val: #E5D0A1;     
+  --color-asset-rose-val: #FFB3BA;     
+  --color-asset-teal-val: #98DDBB;     
+  --color-asset-stone-val: #B0C4DE;    
+
+  /* 🧱 Marble Variants (Legacy Fallbacks) */
+  --color-marble-asset-green-val: #52CB6C;    
+  --color-marble-asset-purple-val: #67A2F9;   
+  --color-marble-asset-blue-val: #C380F5;     
+  --color-marble-asset-cyan-val: #707AFF;     
+  --color-marble-asset-orange-val: #F89160;   
+  --color-marble-asset-sand-val: #E5D0A1;     
+  --color-marble-asset-rose-val: #FFB3BA;     
+  --color-marble-asset-teal-val: #98DDBB;     
+  --color-marble-asset-stone-val: #B0C4DE;    
+
   /* Primary Asset Colors (Label Bubbles) */
   --color-asset-green: #52CB6C;    
   --color-asset-purple: #67A2F9;   
@@ -29,10 +51,10 @@
   --color-marble-asset-blue: #C380F5;     
   --color-marble-asset-cyan: #707AFF;     
   --color-marble-asset-orange: #F89160;   
-  --color-marble-asset-sand: #8B7A58;     
-  --color-marble-asset-rose: #B66A6A;     
-  --color-marble-asset-teal: #548E8D;     
-  --color-marble-asset-stone: #6B7280;    
+  --color-marble-asset-sand: #E5D0A1;     
+  --color-marble-asset-rose: #FFB3BA;     
+  --color-marble-asset-teal: #98DDBB;     
+  --color-marble-asset-stone: #B0C4DE;    
 
   /* ── Semantic / Functional ── */
   --color-positive: #10B981;      /* Emerald 500 — gains */
@@ -50,6 +72,28 @@
   --color-surface-history: #F6F5EF; /* Warm off-white — history sidebar background */
   --color-surface-inset: #F9FAFB; /* Gray 50 — inset panel background */
   --color-surface-timeline: #F6F5EF; /* Warm off-white — timeline sidebar background */
+}
+
+:root {
+  --color-asset-green: #52CB6C;    
+  --color-asset-purple: #67A2F9;   
+  --color-asset-blue: #C380F5;     
+  --color-asset-cyan: #707AFF;     
+  --color-asset-orange: #F89160;   
+  --color-asset-sand: #E5D0A1;     
+  --color-asset-rose: #FFB3BA;     
+  --color-asset-teal: #98DDBB;     
+  --color-asset-stone: #B0C4DE;    
+
+  --color-marble-asset-green: #52CB6C;    
+  --color-marble-asset-purple: #67A2F9;   
+  --color-marble-asset-blue: #C380F5;     
+  --color-marble-asset-cyan: #707AFF;     
+  --color-marble-asset-orange: #F89160;   
+  --color-marble-asset-sand: #E5D0A1;     
+  --color-marble-asset-rose: #FFB3BA;     
+  --color-marble-asset-teal: #98DDBB;     
+  --color-marble-asset-stone: #B0C4DE;    
 }
 
 ::-webkit-scrollbar {

@@ -142,7 +142,7 @@ const initialState: MarbleFinancesState = {
   marbleMultiplier: 1000,
   isSettingsOpen: false,
   isFlowPanelOpen: false,
-  newAssetColor: 'bg-assetBlue',
+  newAssetColor: 'bg-asset-blue',
   tempCustomColor: '#82C4C3',
   customColors: [],
   forwardTarget: null,
@@ -479,22 +479,47 @@ export const FinanceStore = signalStore(
     confirmAddAsset(label: string, val: number) {
       const monthIdx = store.activeModalMonthIndex();
       const parentIdx = store.addBreakdownParentIndex();
+      const uniqueSuffix = Date.now() + Math.random().toString(36).substring(2, 6);
       if (parentIdx === null) {
         const color = store.addModalMode() === 'custom' ? store.tempCustomColor() : store.newAssetColor();
-        store.promptForwardUpdate({ type: 'addCategory', monthIdx, idx: 0, value: { label, color, assets: [] } });
+        const initialAsset: Asset = {
+          id: 'asset_' + uniqueSuffix,
+          label: 'Main',
+          val
+        };
+        store.promptForwardUpdate({ 
+          type: 'addCategory', 
+          monthIdx, 
+          idx: 0, 
+          value: { id: 'cat_' + uniqueSuffix, label, color, assets: [initialAsset] } 
+        });
       } else {
         const parentId = store.months()[monthIdx].assetCategories[parentIdx].id;
-        store.promptForwardUpdate({ type: 'addAsset', monthIdx, idx: parentIdx, parentId, value: { label, val } });
+        store.promptForwardUpdate({ 
+          type: 'addAsset', 
+          monthIdx, 
+          idx: parentIdx, 
+          parentId, 
+          value: { id: 'asset_' + uniqueSuffix, label, val } 
+        });
       }
       store.closeAddModal();
     },
     confirmAddFlow(label: string, val: number, type: string, parentCategory: 'expense' | 'savings') {
       const monthIdx = store.activeModalMonthIndex();
+      const uniqueSuffix = Date.now() + Math.random().toString(36).substring(2, 6);
       store.promptForwardUpdate({
         type: 'addFlow',
         monthIdx,
         idx: 0,
-        value: { label, val, type, parentCategory, color: parentCategory === 'expense' ? 'orange' : 'blue' },
+        value: { 
+          id: 'flow_' + uniqueSuffix, 
+          label, 
+          val, 
+          type, 
+          parentCategory, 
+          color: parentCategory === 'expense' ? 'orange' : 'blue' 
+        },
       });
       store.closeAddModal();
     },
