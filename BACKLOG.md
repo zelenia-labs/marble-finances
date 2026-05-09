@@ -25,10 +25,10 @@
 
 - [ ] In the loading screen, provide the user an option to see an explanation on how to convert their data from their current CSV, XSL, text, database or any other format to the marbles CSV format that is used by the app. Add a Marbles CSV validation engine with explainability to help the user to fix any issues with the data import.
 
-- [ ] Add E2E tests using Playwright to protect the UI and user interactions.
 
 ## 🏃🏽 In Progress
 
+- [ ] 🔥 **High Priority**: Add E2E tests using Playwright to protect the UI and user interactions and prevent regressions.
 - [ ] Add Vitest tests to protect computed properties, calculations, and validations.
 
 - [ ] Create a JSON file that has the same structure as the marbles.json database but with dummy data to be used for demos.
