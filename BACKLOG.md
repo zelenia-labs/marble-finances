@@ -11,6 +11,10 @@
 - [ ] Add undo functionality to revert changes. Include a changelog in the session that persists only during the session. Use session storage for saving it. Create a button ground navigation in the form of [Changelog + Undo]. When click in a specific changelog item, revert to that state only after a confirmation dialog that double checks if the user would like to revert to that state.
 
 - [ ] Breakdown the app Angular component into smaller components.
+  - [ ] Extract `AppHeader` component (navigation, logo, and global action buttons).
+  - [ ] Extract `Timeline` component (left sidebar for month selection).
+  - [ ] Extract `MarbleBoard` component (the central canvas for month visualization).
+  - [ ] Extract `ComputationPanel` component (the right panel with portfolio stats).
 
 - [ ] Improve the look and feel to avoid zooming too much on the months information.
   - Currently, the UX is centered on the months information, but it requires zooming in to see the details. 
