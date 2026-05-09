@@ -9,19 +9,19 @@ export class FinancePersistenceService {
   private readonly CHANGELOG_KEY = 'marble_changelog';
 
   saveMainState(state: unknown): void {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && window.localStorage) {
       window.localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
     }
   }
 
   saveChangelog(changelog: ChangelogEntry[]): void {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
       window.sessionStorage.setItem(this.CHANGELOG_KEY, JSON.stringify(changelog));
     }
   }
 
   loadMainState(): unknown | null {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === 'undefined' || !window.localStorage) return null;
     const saved = window.localStorage.getItem(this.STORAGE_KEY);
     if (!saved) return null;
     try {
@@ -42,7 +42,7 @@ export class FinancePersistenceService {
   }
 
   loadChangelog(): ChangelogEntry[] {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === 'undefined' || !window.sessionStorage) return [];
     const saved = window.sessionStorage.getItem(this.CHANGELOG_KEY);
     if (!saved) return [];
     try {
@@ -68,8 +68,8 @@ export class FinancePersistenceService {
 
   unloadData(): void {
     if (typeof window !== 'undefined') {
-      window.localStorage.removeItem(this.STORAGE_KEY);
-      window.sessionStorage.removeItem(this.CHANGELOG_KEY);
+      if (window.localStorage) window.localStorage.removeItem(this.STORAGE_KEY);
+      if (window.sessionStorage) window.sessionStorage.removeItem(this.CHANGELOG_KEY);
     }
   }
 

@@ -1,14 +1,29 @@
 import { TestBed } from '@angular/core/testing';
 import { FinanceStore } from './finance.store';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { FinancePersistenceService } from '../services/finance-persistence.service';
 
 describe('FinanceStore: Changelog & Undo Functionality', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let store: any;
 
   beforeEach(() => {
+    const mockPersistence = {
+      loadMainState: vi.fn().mockReturnValue(null),
+      loadChangelog: vi.fn().mockReturnValue([]),
+      saveMainState: vi.fn(),
+      saveChangelog: vi.fn(),
+      sanitizeMonths: vi.fn((m) => m),
+      unloadData: vi.fn(),
+      exportData: vi.fn(),
+      importData: vi.fn(),
+    };
+
     TestBed.configureTestingModule({
-      providers: [FinanceStore]
+      providers: [
+        FinanceStore,
+        { provide: FinancePersistenceService, useValue: mockPersistence }
+      ]
     });
     store = TestBed.inject(FinanceStore);
   });
