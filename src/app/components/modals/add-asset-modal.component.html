@@ -57,6 +57,9 @@
             role="slider"
             tabindex="0"
             aria-label="Color Wheel Selector"
+            aria-valuemin="0"
+            aria-valuemax="360"
+            aria-valuenow="180"
             (mousedown)="handleInteract($event)" (mousemove)="handleInteract($event)"
             (touchstart)="handleInteract($event)" (touchmove)="handleInteract($event)"
             (keydown)="null">
@@ -81,7 +84,6 @@
             </button>
          </div>
       </div>
-      }
       }
 
       @if (store.addModalType().startsWith('flow')) {

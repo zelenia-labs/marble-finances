@@ -166,7 +166,7 @@ export class AddAssetModalComponent {
     this.cdr.detectChanges();
   }
 
-  initColorWheel(retries: number = 3) {
+  initColorWheel(retries = 3) {
     const canvas = this.colorCanvas()?.nativeElement;
     if (!canvas) {
       if (retries > 0) {

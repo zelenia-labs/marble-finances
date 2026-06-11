@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChangelogEntry, MonthRecord } from '../store/finance.store';
+import { ChangelogEntry, MonthRecord, ImportedPortfolio } from '../store/finance.store';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +20,82 @@ export class FinancePersistenceService {
     }
   }
 
+  isValidImportedPortfolio(data: unknown): data is ImportedPortfolio {
+    if (!data || typeof data !== 'object') return false;
+    const d = data as Partial<ImportedPortfolio>;
+    if (!Array.isArray(d.months)) return false;
+
+    for (const m of d.months) {
+      if (!m || typeof m !== 'object') return false;
+      if (typeof m.id !== 'string') return false;
+      if (typeof m.date !== 'string') return false;
+      if (typeof m.grossAnnual !== 'string') return false;
+      if (typeof m.netAnnual !== 'string') return false;
+      if (typeof m.netMonthly !== 'string') return false;
+
+      // Validate flow items
+      if (!Array.isArray(m.flow)) return false;
+      for (const f of m.flow) {
+        if (!f || typeof f !== 'object') return false;
+        if (typeof f.id !== 'string') return false;
+        if (typeof f.label !== 'string') return false;
+        if (typeof f.val !== 'number' || isNaN(f.val)) return false;
+        if (typeof f.color !== 'string') return false;
+        if (typeof f.type !== 'string') return false;
+        if (f.parentCategory !== 'expense' && f.parentCategory !== 'savings') return false;
+      }
+
+      // Validate asset categories
+      if (!Array.isArray(m.assetCategories)) return false;
+      for (const cat of m.assetCategories) {
+        if (!cat || typeof cat !== 'object') return false;
+        if (typeof cat.id !== 'string') return false;
+        if (typeof cat.label !== 'string') return false;
+        if (typeof cat.color !== 'string') return false;
+        if (!Array.isArray(cat.assets)) return false;
+        for (const a of cat.assets) {
+          if (!a || typeof a !== 'object') return false;
+          if (typeof a.id !== 'string') return false;
+          if (typeof a.label !== 'string') return false;
+          if (typeof a.val !== 'number' || isNaN(a.val)) return false;
+          if (a.note !== undefined && a.note !== null && typeof a.note !== 'string') return false;
+        }
+      }
+
+      // Validate action items
+      if (!Array.isArray(m.actionItems)) return false;
+      for (const item of m.actionItems) {
+        if (!item || typeof item !== 'object') return false;
+        if (typeof item.id !== 'string') return false;
+        if (typeof item.label !== 'string') return false;
+        if (typeof item.completed !== 'boolean') return false;
+      }
+    }
+
+    if (d.marbleMultiplier !== undefined && (typeof d.marbleMultiplier !== 'number' || isNaN(d.marbleMultiplier))) {
+      return false;
+    }
+
+    if (d.customColors !== undefined) {
+      if (!Array.isArray(d.customColors)) return false;
+      for (const c of d.customColors) {
+        if (typeof c !== 'string') return false;
+      }
+    }
+
+    return true;
+  }
+
   loadMainState(): unknown | null {
     if (typeof window === 'undefined' || !window.localStorage) return null;
     const saved = window.localStorage.getItem(this.STORAGE_KEY);
     if (!saved) return null;
     try {
       const parsed = JSON.parse(saved);
+      if (!this.isValidImportedPortfolio(parsed)) {
+        console.warn('Saved local state fails validation check. Ignoring state.');
+        return null;
+      }
       if (parsed.months) {
         parsed.months = parsed.months.map((m: MonthRecord) => ({
           ...m,
@@ -87,7 +157,15 @@ export class FinancePersistenceService {
   async importData(file: File): Promise<unknown> {
     const text = await file.text();
     try {
-      return JSON.parse(text);
+      const parsed = JSON.parse(text);
+      if (!this.isValidImportedPortfolio(parsed)) {
+        console.warn('Imported file fails validation check.');
+        if (typeof window !== 'undefined' && window.alert) {
+          window.alert('Failed to import file: Invalid portfolio data schema.');
+        }
+        return null;
+      }
+      return parsed;
     } catch (e) {
       console.error('Failed to parse import file', e);
       return null;
